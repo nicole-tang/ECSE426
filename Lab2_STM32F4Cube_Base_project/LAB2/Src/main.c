@@ -77,6 +77,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN 2 */
+	/*Initialize ADC*/
 	initialize_ADC();
 	
 	
@@ -101,33 +102,30 @@ void initialize_ADC(void){
 	ADC_ChannelConfTypeDef channelConfig;
 
 	/*First struct ADC_InitTypeDef*/
-	ADC1_Handle.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV8; /*Select the frequency of the clock to the ADC*/
-	ADC1_Handle.Init.Resolution = ADC_RESOLUTION_12B; 
-	ADC1_Handle.Init.DataAlign = ADC_DATAALIGN_RIGHT; 
-	ADC1_Handle.Init.ScanConvMode =
-	ADC1_Handle.Init.EOCSelection =
-	ADC1_Handle.Init.ContinuousConvMode =
-	ADC1_Handle.Init.DMAContinuousRequests =
-	ADC1_Handle.Init.NbrOfConversion =
-	ADC1_Handle.Init.DiscontinuousConvMode =
-	ADC1_Handle.Init.NbrOfDiscConversion =
-	ADC1_Handle.Init.ExternalTrigConv =
-	ADC1_Handle.Init.ExternalTrigConvEdge =
+	ADC1_Handle.Init.ClockPrescaler =  													/*Select the frequency of the clock to the ADC*/
+	ADC1_Handle.Init.Resolution = ADC_RESOLUTION_12B;						/*Choose resolution to be 12 bits*/
+	ADC1_Handle.Init.DataAlign =  ADC_DATAALIGN_RIGHT;					/*Data alignment is right */
+	ADC1_Handle.Init.ScanConvMode = DISABLE; 										/*One channel mode*/
+	ADC1_Handle.Init.EOCSelection = ADC_EOC_SEQ_CONV; 					/*Perform ADC conversions without having to read all conversion data*/ 
+	ADC1_Handle.Init.ContinuousConvMode = ENABLE; 							/*Want continuous conversion mode*/
+	ADC1_Handle.Init.DMAContinuousRequests = DISABLE;						/*DMA request is not performed*/
+	ADC1_Handle.Init.NbrOfConversion = 1; 											/*number of ADC conversions that will be done using sequencer for regular channel group */
+	ADC1_Handle.Init.DiscontinuousConvMode = DISABLE;						/*Don't want discontinuous conversion mode*/
+	//ADC1_Handle.Init.NbrOfDiscConversion - do not need this
+	ADC1_Handle.Init.ExternalTrigConv = ADC_SOFTWARE_START;			/*Disable external trigger*/
+	ADC1_Handle.Init.ExternalTrigConvEdge = ADC_SOFTWARE_START;	/*Disable external trigger*/
 	
 	/*Second struct ADC_HandleTypeDef - For DMA*/
 	
 	
 	/*Third struct ADC_ChannelConfTypeDef*/
-	channelConfig.Channel = 
-	channelConfig.Rank =
-	channelConfig.SamplingTime =
+	channelConfig.Channel = ADC_CHANNEL_16; 
+	channelConfig.Rank = 1;
+	channelConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
 	channelConfig.Offset = 0;
-	
-	
-
-	
-	
 }
+
+
 
 /** System Clock Configuration
 */
