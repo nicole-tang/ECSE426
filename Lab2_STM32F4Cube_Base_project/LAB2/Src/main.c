@@ -40,6 +40,7 @@
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef ADC1_Handle;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
@@ -89,6 +90,40 @@ int main(void)
   /* USER CODE END 3 */
 
 }
+/* ADC -> Analog to Digital */
+void initialize_ADC(void){
+	
+	ADC1_Handle.Instance = ADC1; /*Specify that we are using ADC1, temperature sensor is internally connected to ADC1_IN16 */
+	ADC_ChannelConfTypeDef channelConfig;
+
+	/*First struct ADC_InitTypeDef*/
+	ADC1_Handle.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV8; /*Select the frequency of the clock to the ADC*/
+	ADC1_Handle.Init.Resolution = ADC_RESOLUTION_12B; 
+	ADC1_Handle.Init.DataAlign = ADC_DATAALIGN_RIGHT; 
+	ADC1_Handle.Init.ScanConvMode =
+	ADC1_Handle.Init.EOCSelection =
+	ADC1_Handle.Init.ContinuousConvMode =
+	ADC1_Handle.Init.DMAContinuousRequests =
+	ADC1_Handle.Init.NbrOfConversion =
+	ADC1_Handle.Init.DiscontinuousConvMode =
+	ADC1_Handle.Init.NbrOfDiscConversion =
+	ADC1_Handle.Init.ExternalTrigConv =
+	ADC1_Handle.Init.ExternalTrigConvEdge =
+	
+	/*Second struct ADC_HandleTypeDef - For DMA*/
+	
+	
+	/*Third struct ADC_ChannelConfTypeDef*/
+	channelConfig.Channel = 
+	channelConfig.Rank =
+	channelConfig.SamplingTime =
+	channelConfig.Offset = 0;
+	
+	
+
+	
+	
+}
 
 /** System Clock Configuration
 */
@@ -120,7 +155,8 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
   HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
 
-  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
+	/* might need to change the number to 100? -> 10 ms instead of 1 ms?*/
+	HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
 
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
@@ -159,5 +195,11 @@ void assert_failed(uint8_t* file, uint32_t line)
 /**
   * @}
 */ 
-
+/*
+Calculation the temperature using the following formula
+temperature in celsius = ((V_SENSE - V_25)/Avg_Slope)+25
+where V_25 is V_SENSE value for 25 degree celsius
+Avg_Slope is the average slope of the temperature vs V_SENSE 
+read from the right pin -> hardwired to the temperature?
+*/
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
