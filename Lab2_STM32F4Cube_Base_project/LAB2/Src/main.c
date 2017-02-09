@@ -51,6 +51,8 @@ ADC_HandleTypeDef ADC1_Handle;
 void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
+void initialize_ADC(void);
+
 /* Private function prototypes -----------------------------------------------*/
 
 /* USER CODE END PFP */
@@ -75,7 +77,9 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN 2 */
-
+	initialize_ADC();
+	
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
