@@ -52,6 +52,8 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 void initialize_ADC(void);
+void initialize_GPIO(void);
+void initialize_LCD(void);
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -95,27 +97,31 @@ int main(void)
   /* USER CODE END 3 */
 
 }
-/* ADC -> Analog to Digital */
+
+// Initialize ADC
 void initialize_ADC(void){
 	
-	ADC1_Handle.Instance = ADC1; /*Specify that we are using ADC1, temperature sensor is internally connected to ADC1_IN16 */
+	//ADC1_Handle.Instance = ADC1; /*Specify that we are using ADC1, temperature sensor is internally connected to ADC1_IN16 */
+	
+	ADC_InitTypeDef ADC_init;
 	ADC_ChannelConfTypeDef channelConfig;
 
 	/*First struct ADC_InitTypeDef*/
-	ADC1_Handle.Init.ClockPrescaler =  													/*Select the frequency of the clock to the ADC*/
-	ADC1_Handle.Init.Resolution = ADC_RESOLUTION_12B;						/*Choose resolution to be 12 bits*/
-	ADC1_Handle.Init.DataAlign =  ADC_DATAALIGN_RIGHT;					/*Data alignment is right */
-	ADC1_Handle.Init.ScanConvMode = DISABLE; 										/*One channel mode*/
-	ADC1_Handle.Init.EOCSelection = ADC_EOC_SEQ_CONV; 					/*Perform ADC conversions without having to read all conversion data*/ 
-	ADC1_Handle.Init.ContinuousConvMode = ENABLE; 							/*Want continuous conversion mode*/
-	ADC1_Handle.Init.DMAContinuousRequests = DISABLE;						/*DMA request is not performed*/
-	ADC1_Handle.Init.NbrOfConversion = 1; 											/*number of ADC conversions that will be done using sequencer for regular channel group */
-	ADC1_Handle.Init.DiscontinuousConvMode = DISABLE;						/*Don't want discontinuous conversion mode*/
-	//ADC1_Handle.Init.NbrOfDiscConversion - do not need this
-	ADC1_Handle.Init.ExternalTrigConv = ADC_SOFTWARE_START;			/*Disable external trigger*/
-	ADC1_Handle.Init.ExternalTrigConvEdge = ADC_SOFTWARE_START;	/*Disable external trigger*/
+	ADC_init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV8;			/*Select the frequency of the clock to the ADC*/
+	ADC_init.Resolution = ADC_RESOLUTION_12B;								/*Choose resolution to be 12 bits*/
+	ADC_init.DataAlign =  ADC_DATAALIGN_RIGHT;							/*Data alignment is right */
+	ADC_init.ScanConvMode = DISABLE; 												/*One channel mode*/
+	ADC_init.EOCSelection = ADC_EOC_SEQ_CONV; 							/*Perform ADC conversions without having to read all conversion data*/ 
+	ADC_init.ContinuousConvMode = DISABLE; 									
+	ADC_init.DMAContinuousRequests = DISABLE;								/*DMA request is not performed*/
+	ADC_init.NbrOfConversion = 1; 													/*number of ADC conversions that will be done using sequencer for regular channel group */
+	ADC_init.DiscontinuousConvMode = ENABLE;								
+	//ADC_init.NbrOfDiscConversion - do not need this
+	ADC_init.ExternalTrigConv = ADC_SOFTWARE_START;					/*Disable external trigger*/
+	ADC_init.ExternalTrigConvEdge = ADC_SOFTWARE_START;			/*Disable external trigger*/
 	
-	/*Second struct ADC_HandleTypeDef - For DMA*/
+	/*Second struct ADC_HandleTypeDef*/
+
 	
 	
 	/*Third struct ADC_ChannelConfTypeDef*/
@@ -125,7 +131,31 @@ void initialize_ADC(void){
 	channelConfig.Offset = 0;
 }
 
+// HAL_ADC_Start starts ADC conversions when the polling method is used
+float execute_ADC(void){
+	float value = 0.0;
+	HAL_ADC_Start(&ADC1_Handle);
+	value = HAL_ADC_GetValue(&ADC1_Handle);
+	HAL_ADC_Stop(&ADC1_Handle);
+	return (value*3.0)/4096.0;
+}
+	
 
+// Temperature conversion function
+float tempConversion(float voltage){
+	float V_25 = 0.76;
+	float avg_slope = 2.5/1000;
+	return ((voltage-V_25)/avg_slope)+25;
+}
+
+// Initialize GPIO
+void initialize_GPIO(void){
+
+}
+
+// Initialize LCD
+void initialize_LCD(void){
+}
 
 /** System Clock Configuration
 */
@@ -197,11 +227,5 @@ void assert_failed(uint8_t* file, uint32_t line)
 /**
   * @}
 */ 
-/*
-Calculation the temperature using the following formula
-temperature in celsius = ((V_SENSE - V_25)/Avg_Slope)+25
-where V_25 is V_SENSE value for 25 degree celsius
-Avg_Slope is the average slope of the temperature vs V_SENSE 
-read from the right pin -> hardwired to the temperature?
-*/
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
