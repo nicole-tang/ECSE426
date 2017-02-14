@@ -53,7 +53,6 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void initialize_ADC(void);
 void initialize_GPIO(void);
-void initialize_LCD(void);
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -101,14 +100,13 @@ int main(void)
 // Initialize ADC
 void initialize_ADC(void){
 	
-	//ADC1_Handle.Instance = ADC1; /*Specify that we are using ADC1, temperature sensor is internally connected to ADC1_IN16 */
-	
 	ADC_InitTypeDef ADC_init;
 	ADC_ChannelConfTypeDef channelConfig;
+	HAL_LockTypeDef ADC_lock;
 
 	/*First struct ADC_InitTypeDef*/
 	ADC_init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV8;			/*Select the frequency of the clock to the ADC*/
-	ADC_init.Resolution = ADC_RESOLUTION_12B;								/*Choose resolution to be 12 bits*/
+	ADC_init.Resolution = ADC_RESOLUTION_12B;								/*Choose resolution to be 12 bits, slower but more precision*/
 	ADC_init.DataAlign =  ADC_DATAALIGN_RIGHT;							/*Data alignment is right */
 	ADC_init.ScanConvMode = DISABLE; 												/*One channel mode*/
 	ADC_init.EOCSelection = ADC_EOC_SEQ_CONV; 							/*Perform ADC conversions without having to read all conversion data*/ 
@@ -121,8 +119,12 @@ void initialize_ADC(void){
 	ADC_init.ExternalTrigConvEdge = ADC_SOFTWARE_START;			/*Disable external trigger*/
 	
 	/*Second struct ADC_HandleTypeDef*/
-
-	
+	ADC1_Handle.Instance = ADC1;														/*Specify that we are using ADC1, temperature sensor is internally connected to ADC1_IN16 */
+	ADC1_Handle.Init = ADC_init;
+	ADC1_Handle.NbrOfCurrentConversionRank = 1;
+	ADC1_Handle.Lock = ADC_lock;
+	ADC1_Handle.State = 0;
+	ADC1_Handle.ErrorCode = HAL_ADC_ERROR_NONE;
 	
 	/*Third struct ADC_ChannelConfTypeDef*/
 	channelConfig.Channel = ADC_CHANNEL_16; 
@@ -132,15 +134,14 @@ void initialize_ADC(void){
 }
 
 // HAL_ADC_Start starts ADC conversions when the polling method is used
-float execute_ADC(void){
-	float value = 0.0;
+float call_ADC(void){
+	float voltage = 0.0;
 	HAL_ADC_Start(&ADC1_Handle);
-	value = HAL_ADC_GetValue(&ADC1_Handle);
+	voltage = HAL_ADC_GetValue(&ADC1_Handle);
 	HAL_ADC_Stop(&ADC1_Handle);
-	return (value*3.0)/4096.0;
+	return (voltage*3.0)/4096.0; // resolution is in 12 bits (4096 = 2^12) with Vref = 3V
 }
 	
-
 // Temperature conversion function
 float tempConversion(float voltage){
 	float V_25 = 0.76;
@@ -148,14 +149,44 @@ float tempConversion(float voltage){
 	return ((voltage-V_25)/avg_slope)+25;
 }
 
-// Initialize GPIO
+// Initialize GPIO (General-purpose input/output)
 void initialize_GPIO(void){
-
+	GPIO_InitTypeDef GPIO_init;
+	GPIO_init.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
+	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_init.Pull = GPIO_NOPULL;
+	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
 }
 
-// Initialize LCD
-void initialize_LCD(void){
+/*
+	7 segments display to STM32F4XX 
+	PIN 1 = 
+	PIN 2
+	PIN 3
+	PIN 4
+	PIN 5
+	PIN 6
+	PIN 7
+	PIN 8
+*/
+void led_number(char number, int dot){
+	switch(number){
+	
+		//Display number 0
+		/*
+		case 0:
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_, GPIO_PIN_SET);
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_, GPIO_PIN_RESET);
+		*/
+	}
 }
+
 
 /** System Clock Configuration
 */
