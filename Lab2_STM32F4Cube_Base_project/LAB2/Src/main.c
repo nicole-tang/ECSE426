@@ -160,7 +160,7 @@ void initialize_GPIO(void){
 	PIN C7 = G
 
 */
-void led_number(char number, int dot){
+void led_number(int number, int dot){
 	switch(number){
 		
 		//Display number 0
@@ -192,7 +192,8 @@ void led_number(char number, int dot){
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5, GPIO_PIN_SET);   //E
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);   //G
-			
+		
+		//Display number 3
 		case 3:
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);   //A;
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);   //B
@@ -202,6 +203,7 @@ void led_number(char number, int dot){
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);   //G
 			
+		//Display number 4
 		case 4:
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET); //A
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);   //B
@@ -211,6 +213,7 @@ void led_number(char number, int dot){
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);   //G
 			
+		//Display number 5
 		case 5:
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);   //A
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET); //B
@@ -220,6 +223,7 @@ void led_number(char number, int dot){
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);   //G
 			
+		//Display number 6
 		case 6:
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);   //A
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET); //B
@@ -229,6 +233,7 @@ void led_number(char number, int dot){
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);   //G
 			
+		//Display number 7
 		case 7:
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);   //A
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);   //B
@@ -238,6 +243,7 @@ void led_number(char number, int dot){
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_RESET); //G
 			
+		//Display number 8
 		case 8:
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);   //A
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);   //B
@@ -247,6 +253,7 @@ void led_number(char number, int dot){
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);   //G
 		
+		//Display number 9
 		case 9:
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);   //A
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);   //B
@@ -255,20 +262,83 @@ void led_number(char number, int dot){
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);   //G
-			
+
+		//Display 'C'
+		case 10:
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);				// A
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);			// B
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_3, GPIO_PIN_RESET);			// C
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_4, GPIO_PIN_SET);				// D
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_5, GPIO_PIN_SET);				// E
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);				// F
+			HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_RESET);			// G
+			break;
+					
 		default:
 		break;
 	}
 	
-	/*
+	//Set lower dot
 	if(dot ==1){
-
-	} else if (dot ==2){
-	} else{
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_SET);		//lower dot
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2,GPIO_PIN_RESET);	//upper dot
 	} 
-	
-	*/
+	//Set upper dot
+	else if (dot ==2){
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);		//lower dot
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2,GPIO_PIN_SET);			//upper dot
+	}
+	//No dots
+	else{
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);	//lower dot
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2,GPIO_PIN_RESET);	//upper dot
+	} 
 }
+
+void led_display(float temperature,int digit)
+{
+	switch(digit){
+		case 1:
+			// toggle the display
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_RESET); 
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_SET);
+			
+			// the number to display
+			led_number((((int)temperature%100)-((int)temperature%10))/10,0);
+			break;
+		
+		case 2:
+			// toggle the display
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_RESET); 
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_SET);
+			
+			// the number to display and lower dot as decimal point
+			led_number(((int)temperature%10),1);
+			break;
+
+		case 3:
+			// toggle the display
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_RESET); 
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_SET);
+			
+			// the number to display
+			led_number((((int)(temperature*10))%1000)-(((int)temperature%100)*10), 0);
+			break;
+					
+		case 4:
+			// toggle the display
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET); 
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET);
+			
+			// the number to display
+			led_number(10,0);
+			break;
+		
+		default:
+			break;
+	}
+}
+
 
 
 /** System Clock Configuration
