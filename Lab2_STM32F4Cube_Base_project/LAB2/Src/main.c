@@ -71,6 +71,7 @@ int main(void)
   while (1)
   {
 		adc_value = function_ADC();
+		printf("the adc_value is %f\n", adc_value);		
 		temp = tempConversion(adc_value);
 		printf("the temperature is %f\n", temp);
 		
@@ -124,8 +125,10 @@ void initialize_ADC(void){
 float function_ADC(void){
 	float voltage = 0.0;
 	HAL_ADC_Start(&ADC1_Handle);
-	if((HAL_ADC_PollForConversion(&ADC1_Handle, 100) == HAL_OK)){
+	printf("\nHAL_ADC_PollForConversion(&ADC1_Handle, 10)==%x",(int)HAL_ADC_PollForConversion(&ADC1_Handle, 10));
+	if((HAL_ADC_PollForConversion(&ADC1_Handle, 10) == HAL_OK)){
 		voltage = HAL_ADC_GetValue(&ADC1_Handle);
+		printf("the voltage is %f\n",voltage);
 	}
 	HAL_ADC_Stop(&ADC1_Handle);
 	return (voltage*3.0)/4096.0; // resolution is in 12 bits (4096 = 2^12) with Vref = 3V
