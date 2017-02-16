@@ -44,36 +44,51 @@ ADC_HandleTypeDef ADC1_Handle;
 void SystemClock_Config(void);
 void initialize_ADC(void);
 void initialize_GPIO(void);
-float function_ADC(void);
-float tempConversion(float);
+//float function_ADC(void);
+//float tempConversion(float);
 
 
 
 int main(void)
 {
-	float adc_value, temp;
+	float V_25 = 0.76, avg_slope = 2.5/1000;
 
-  /* MCU Configuration----------------------------------------------------------*/
+	float temp, temperature;
+	uint32_t voltage;
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
-  /* Configure the system clock */
+	/* Configure the system clock */
   SystemClock_Config();
+
 
 	/*Initialize ADC*/
 	initialize_ADC();
-	
 	
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		
+		voltage = 0.0;
+		if((HAL_ADC_PollForConversion(&ADC1_Handle, 10000) == HAL_OK))
+		voltage = HAL_ADC_GetValue(&ADC1_Handle);
+		HAL_ADC_Stop(&ADC1_Handle);
+		printf("the voltage is %d\n",voltage);
+		temp = voltage * (3.0/4096);
+		printf("temp %f\n", temp);
+		temperature = ((temp-V_25)/avg_slope)+25;
+		printf("the temperature is %f\n", temperature);
+		
+		/*
 		adc_value = function_ADC();
 		printf("the adc_value is %f\n", adc_value);		
 		temp = tempConversion(adc_value);
 		printf("the temperature is %f\n", temp);
+		*/
+		
 		
   /* USER CODE END WHILE */
 
@@ -89,10 +104,11 @@ void initialize_ADC(void){
 	
 	ADC_InitTypeDef ADC_init;
 	ADC_ChannelConfTypeDef channelConfig;
-	HAL_LockTypeDef ADC_lock;
-
+	
+	__HAL_RCC_ADC1_CLK_ENABLE();
+	
 	/*First struct ADC_InitTypeDef*/
-	ADC_init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV8;     /*Select the frequency of the clock to the ADC*/
+	ADC_init.ClockPrescaler = 8000000;     									/*Select the frequency of the clock to the ADC*/
 	ADC_init.Resolution = ADC_RESOLUTION_12B;               /*Choose resolution to be 12 bits, slower but more precision*/
 	ADC_init.DataAlign =  ADC_DATAALIGN_RIGHT;              /*Data alignment is right */
 	ADC_init.ScanConvMode = DISABLE;                        /*One channel mode*/
@@ -106,10 +122,9 @@ void initialize_ADC(void){
 	ADC_init.ExternalTrigConvEdge = ADC_SOFTWARE_START;     /*Disable external trigger*/
 	
 	/*Second struct ADC_HandleTypeDef*/
-	ADC1_Handle.Instance = ADC1;                            /*Specify that we are using ADC1, temperature sensor is internally connected to ADC1_IN16 */
+	ADC1_Handle.Instance = ADC1;                           
 	ADC1_Handle.Init = ADC_init;
 	ADC1_Handle.NbrOfCurrentConversionRank = 1;
-	ADC1_Handle.Lock = ADC_lock;
 	ADC1_Handle.State = 0;
 	ADC1_Handle.ErrorCode = HAL_ADC_ERROR_NONE;
 	
@@ -118,15 +133,20 @@ void initialize_ADC(void){
 	channelConfig.Rank = 1;
 	channelConfig.SamplingTime = ADC_SAMPLETIME_480CYCLES;
 	channelConfig.Offset = 0;
+	
+	HAL_ADC_ConfigChannel(&ADC1_Handle, &channelConfig);
+	HAL_ADC_Init(&ADC1_Handle);
+	
 }
 
 
 // HAL_ADC_Start starts ADC conversions when the polling method is used
+/*
 float function_ADC(void){
 	float voltage = 0.0;
 	HAL_ADC_Start(&ADC1_Handle);
-	printf("\nHAL_ADC_PollForConversion(&ADC1_Handle, 10)==%x",(int)HAL_ADC_PollForConversion(&ADC1_Handle, 10));
-	if((HAL_ADC_PollForConversion(&ADC1_Handle, 10) == HAL_OK)){
+	printf("\nHAL_ADC_PollForConversion(&ADC1_Handle, 10)==%x",(int)HAL_ADC_PollForConversion(&ADC1_Handle, 10000));
+	if((HAL_ADC_PollForConversion(&ADC1_Handle, 10000) == HAL_OK)){
 		voltage = HAL_ADC_GetValue(&ADC1_Handle);
 		printf("the voltage is %f\n",voltage);
 	}
@@ -141,7 +161,7 @@ float tempConversion(float voltage){
 	float avg_slope = 2.5/1000;
 	return ((voltage-V_25)/avg_slope)+25;
 }
-
+*/
 
 // Initialize GPIO (General-purpose input/output)
 void initialize_GPIO(void){
