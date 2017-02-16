@@ -52,7 +52,6 @@ void initialize_GPIO(void);
 int main(void)
 {
 	float V_25 = 0.76, avg_slope = 2.5/1000;
-
 	float temp, temperature;
 	uint32_t voltage;
 
@@ -62,17 +61,17 @@ int main(void)
 	/* Configure the system clock */
   SystemClock_Config();
 
-
+ 
 	/*Initialize ADC*/
 	initialize_ADC();
+	initialize_GPIO();
 	
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		
-		voltage = 0.0;
+		HAL_ADC_Start(&ADC1_Handle);
 		if((HAL_ADC_PollForConversion(&ADC1_Handle, 10000) == HAL_OK))
 		voltage = HAL_ADC_GetValue(&ADC1_Handle);
 		HAL_ADC_Stop(&ADC1_Handle);
@@ -101,14 +100,13 @@ int main(void)
 
 // Initialize ADC
 void initialize_ADC(void){
+	__HAL_RCC_ADC1_CLK_ENABLE();
 	
 	ADC_InitTypeDef ADC_init;
 	ADC_ChannelConfTypeDef channelConfig;
 	
-	__HAL_RCC_ADC1_CLK_ENABLE();
-	
 	/*First struct ADC_InitTypeDef*/
-	ADC_init.ClockPrescaler = 8000000;     									/*Select the frequency of the clock to the ADC*/
+	ADC_init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV8;     									/*Select the frequency of the clock to the ADC*/
 	ADC_init.Resolution = ADC_RESOLUTION_12B;               /*Choose resolution to be 12 bits, slower but more precision*/
 	ADC_init.DataAlign =  ADC_DATAALIGN_RIGHT;              /*Data alignment is right */
 	ADC_init.ScanConvMode = DISABLE;                        /*One channel mode*/
@@ -165,6 +163,7 @@ float tempConversion(float voltage){
 
 // Initialize GPIO (General-purpose input/output)
 void initialize_GPIO(void){
+	__HAL_RCC_GPIOC_CLK_ENABLE();
 	GPIO_InitTypeDef GPIO_init;
 	GPIO_init.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
 	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
