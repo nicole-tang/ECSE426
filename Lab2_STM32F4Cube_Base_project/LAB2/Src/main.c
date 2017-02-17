@@ -38,7 +38,7 @@
 
 #define SAMPLINGCOUNTER 10
 #define PROCESSINGCOUNTER 200
-#define DISPLAYINGCOUNTER 2
+#define DISPLAYINGCOUNTER 1
 #define ALARMCOUNTER 100
 #define TEMPERATURETHRESHOLD 60
 
@@ -50,17 +50,23 @@ volatile int systick_flag;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void initialize_ADC(void);
-void initialize_GPIO(void);
+void initialize_GPIO_segments(void);
+void initialize_GPIO_digits(void);
+void initialize_GPIO_dp(void);
+void initialize_GPIO_alarms(void);
 float function_ADC(void);
 float tempConversion(float);
 void alarm_overheating(void);
 void led_display(float,int);
-int FIR_C(float*,float*,float*,int,int);
+int FIR_C(float* , float*, float*, int, int);
+void led_number(int,int);
+void led_unit(char);
 
 int main(void)
 {
 	// initialize variables
-	float adc_value,filteredVoltage,temperature;
+	float adc_value,temperature;
+
 	// initialize counters for sampling, processing, and displaying
 	int sampling_count=0;
 	int processing_count=0;
@@ -68,8 +74,10 @@ int main(void)
 	int time_count=0;
 	int alarm_count=0;
 	// coefficient array for FIR filter
-	float coeff[]={0.1,0.15,0.5,0.15,0.1};
-
+	float coeff[]={0.1,0.1,0.1,0.1,0.1};
+	int filterArrayCounter=0;
+	float inputArray[15];
+	float filteredVoltage[15];
 	
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
@@ -80,12 +88,26 @@ int main(void)
  
 	/*Initialize ADC*/
 	initialize_ADC();
-	initialize_GPIO();
+	initialize_GPIO_segments();
+	initialize_GPIO_digits();
+	initialize_GPIO_dp();	
+	initialize_GPIO_alarms();	
 	
+	
+	
+	
+/*	// toggle the display
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET);
+	// the number to display
+	led_unit('f');
+*/
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
+
+/* Infinite loop */
+ while (1)
   {
 		//run only at interrupts
 		if(systick_flag==1){
@@ -97,15 +119,25 @@ int main(void)
 				sampling_count=0;
 				adc_value = function_ADC();
 				printf("the adc_value is: %f \n", adc_value);
+				
+				if(filterArrayCounter<=15){					
+					//store the adc_value at the array
+					inputArray[filterArrayCounter]=adc_value;
+					filterArrayCounter++;
+				}else{
+					filterArrayCounter=0;
+				}
 				//filter the sampled voltage
-//				FIR_C(&adc_value,&filteredVoltage,coeff,1,4);
-//				printf("the filteredVoltage (right after filter) is: %f \n", filteredVoltage);
+				FIR_C(inputArray, filteredVoltage, coeff,15,4);		
+				for (int i =0;i<15;i++){
+				printf("the filteredVoltage is: %f \n", filteredVoltage[i]);
+				}
 			}
 			// process only when processing counter hits the number of processing counter (200)
 			if(processing_count++ >=PROCESSINGCOUNTER){
 				processing_count=0;
-//			temperature=tempConversion(filteredVoltage);
-				temperature=tempConversion(adc_value);
+			temperature=tempConversion(*filteredVoltage);
+//				temperature=tempConversion(adc_value);
 				printf("the temperature is: %f \n", temperature);
 			}
 			// display only when time counter hits the number of displaying counter (2)
@@ -113,7 +145,7 @@ int main(void)
 				//reset time_count
 				time_count=0;
 				//if the increments of digit goes beyond 4, reset it
-				if(++digit_count>=4){
+				if(digit_count++>=4){
 					digit_count=0;
 				}
 				// if temperature is within threshold, display
@@ -133,53 +165,66 @@ int main(void)
 			}
 			
 		}
-	
-  /* USER CODE END WHILE */
-
-  /* USER CODE BEGIN 3 */
-
   }
-  /* USER CODE END 3 */
-
+	
 }
 
 void alarm_overheating (void){
 	__HAL_RCC_GPIOD_CLK_ENABLE();
 
-	for(int i=0; i<100; i++){
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_SET); 
+	// orange LED
+	for(int i=0; i<500000; i++){
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET); 
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);	
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET); 		
 	}  
-
-	for(int i=0; i<100; i++){
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_5, GPIO_PIN_SET); 
+	// red LED
+	for(int i=0; i<500000; i++){
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);	
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET); 
 	}
-
-	for(int i=0; i<100; i++){
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_6, GPIO_PIN_SET); 
+	// blue LED
+	for(int i=0; i<500000; i++){
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET); 
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);	
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET); 
 	}
-
-	for(int i=0; i<100; i++){
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET); 
+	// green LED
+	for(int i=0; i<10000; i++){
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);	
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET); 		
 	}
-
+	
+	
+/*	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET); 
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET); 
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET); 
+*/
+printf("too hot \n\n");
 }
 
-int FIR_C(float* InputArray, float* OutputArray,float* coeff, int Length, int Order){
-	//for all sample in the InputArray
-	for(int n=0;n<Length-Order-1;n++){
+int FIR_C(float* inputArray, float* outputArray, float* coeff, int length, int order){
+	//for all sample in the inputArray
+	for(int n=0; n<length-order; n++){
 		//temp variable to store the accumulative sum of the filter
-		float sum=0;
+		float sum = 0;
 		//iterate for the number of existing coefficients
-		for(int b=0;b<=Order;b++){
+		for(int b=0; b<=order; b++){
 			//multiply the content of pointer coeff to content of point input array
-			sum+= InputArray[n+b] * coeff[b];
+			sum += inputArray[n+b] * coeff[b];
 		}		
 		//store the result
-		OutputArray[n] = sum;
+		outputArray[n] = sum;
 	}
 	return 0;
 }
-
 // Initialize ADC
 void initialize_ADC(void){
 	__HAL_RCC_ADC1_CLK_ENABLE();
@@ -242,7 +287,7 @@ float tempConversion(float voltage){
 
 
 // Initialize GPIO (General-purpose input/output)
-void initialize_GPIO(void){
+void initialize_GPIO_segments(void){
 	__HAL_RCC_GPIOE_CLK_ENABLE();
 	GPIO_InitTypeDef GPIO_init;
 	GPIO_init.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10;
@@ -252,6 +297,42 @@ void initialize_GPIO(void){
 	
 	HAL_GPIO_Init(GPIOE,&GPIO_init);
 	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10,GPIO_PIN_RESET);
+}
+
+void initialize_GPIO_digits(void){
+	__HAL_RCC_GPIOD_CLK_ENABLE();
+	GPIO_InitTypeDef GPIO_init;
+	GPIO_init.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4;
+	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_init.Pull = GPIO_NOPULL;
+	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
+	
+	HAL_GPIO_Init(GPIOD,&GPIO_init);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4,GPIO_PIN_RESET);
+}
+
+void initialize_GPIO_dp(void){
+	__HAL_RCC_GPIOB_CLK_ENABLE();
+	GPIO_InitTypeDef GPIO_init;
+	GPIO_init.Pin = GPIO_PIN_1;
+	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_init.Pull = GPIO_NOPULL;
+	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
+	
+	HAL_GPIO_Init(GPIOB,&GPIO_init);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);
+}
+
+void initialize_GPIO_alarms(void){
+	__HAL_RCC_GPIOD_CLK_ENABLE();
+	GPIO_InitTypeDef GPIO_init;
+	GPIO_init.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_init.Pull = GPIO_PULLUP;
+	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
+	
+	HAL_GPIO_Init(GPIOD,&GPIO_init);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15,GPIO_PIN_RESET);
 }
 
 /*
@@ -265,7 +346,7 @@ void initialize_GPIO(void){
 	PIN E10 = G
 
 */
-void led_number(int number, int dot){
+void led_number(int number, int dp){
 	switch(number){
 		
 		//Display number 0
@@ -277,6 +358,8 @@ void led_number(int number, int dot){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);   //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET); //G
+			printf("0 should be displayed \n");
+			break;
 		
 		//Display number 1
 		case 1:
@@ -287,7 +370,8 @@ void led_number(int number, int dot){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET); //G
-		
+			printf("1 should be displayed \n");
+			break;		
 		//Display number 2
 		case 2:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A
@@ -297,7 +381,8 @@ void led_number(int number, int dot){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);   //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);   //G
-		
+			printf("2 should be displayed \n");
+			break;		
 		//Display number 3
 		case 3:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A;
@@ -307,7 +392,8 @@ void led_number(int number, int dot){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);   //G
-			
+			printf("3 should be displayed \n");
+			break;		
 		//Display number 4
 		case 4:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_RESET); //A
@@ -317,7 +403,8 @@ void led_number(int number, int dot){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);   //G
-			
+			printf("4 should be displayed \n");
+			break;		
 		//Display number 5
 		case 5:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A
@@ -327,7 +414,8 @@ void led_number(int number, int dot){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E 
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);   //G
-			
+			printf("5 should be displayed \n");
+			break;		
 		//Display number 6
 		case 6:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A
@@ -337,7 +425,8 @@ void led_number(int number, int dot){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);   //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);   //G
-			
+			printf("6 should be displayed \n");
+			break;		
 		//Display number 7
 		case 7:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A
@@ -347,7 +436,8 @@ void led_number(int number, int dot){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET); //G
-			
+			printf("7 should be displayed \n");
+			break;	
 		//Display number 8
 		case 8:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A
@@ -357,6 +447,8 @@ void led_number(int number, int dot){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);   //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);   //G
+			printf("8 should be displayed \n");
+			break;
 		
 		//Display number 9
 		case 9:
@@ -367,39 +459,48 @@ void led_number(int number, int dot){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);   //G
+			printf("9 should be displayed \n");
+			break;
 
-		//Display 'C'
-		case 10:
+		default:
+		break;
+	}
+	
+	//set decimal point
+	if(dp ==1){
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_SET);		
+	} 
+	//reset decimal point
+	else if(dp==0){
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);
+	} 
+}
+void led_unit(char c_or_f){
+	switch(c_or_f){	
+	//Display character c
+		case 'c':
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);				// A
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_5, GPIO_PIN_RESET);			// B
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, GPIO_PIN_RESET);			// C
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_SET);				// D
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);				// E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);				// F
-			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET);			// G
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET);		// G
+			printf("C should be displayed \n");
 			break;
-					
-		default:
-		break;
+			
+		case 'f':
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);				// A
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_5, GPIO_PIN_RESET);			// B
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, GPIO_PIN_RESET);			// C
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_RESET);			// D
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);				// E
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);				// F
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);		// G
+			printf("F should be displayed \n");
+			break;
 	}
-	
-	//Set lower dot
-	if(dot ==1){
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_SET);		//lower dot
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2,GPIO_PIN_RESET);	//upper dot
-	} 
-	//Set upper dot
-	else if (dot ==2){
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);		//lower dot
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2,GPIO_PIN_SET);			//upper dot
-	}
-	//No dots
-	else{
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);	//lower dot
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2,GPIO_PIN_RESET);	//upper dot
-	} 
 }
-
 void led_display(float temperature,int digit)
 {
 	switch(digit){
@@ -436,7 +537,7 @@ void led_display(float temperature,int digit)
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET);
 			
 			// the number to display
-			led_number(10,0);
+			led_unit('c');
 			break;
 		
 		default:
