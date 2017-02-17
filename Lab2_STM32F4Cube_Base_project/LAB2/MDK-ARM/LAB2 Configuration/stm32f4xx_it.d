@@ -29,3 +29,4 @@ lab2 configuration/\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4x
 lab2 configuration/\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 lab2 configuration/\stm32f4xx_it.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 lab2 configuration/\stm32f4xx_it.o: ../Inc/stm32f4xx_it.h
+lab2 configuration/\stm32f4xx_it.o: ../Inc/main.h
