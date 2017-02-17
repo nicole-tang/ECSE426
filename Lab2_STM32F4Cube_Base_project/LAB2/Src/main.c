@@ -96,32 +96,20 @@ int main(void)
 	initialize_GPIO_dp();	
 	initialize_GPIO_alarms();	
 	initialize_GPIO_button();
-	
-	
-	
-/*	// toggle the display
-	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET);
-	// the number to display
-	led_unit('f');
-*/
 
 
 /* Infinite loop */
  while (1)
   {
+		GPIO_PinState currentState= GPIO_PIN_RESET;
+		GPIO_PinState nextState = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+		
 		//run only at interrupts
 		if(systick_flag==1){
 			//set interrupt back to zero
 			systick_flag=0;
-			
-			int button_pressed=0;
-			if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0)==GPIO_PIN_SET){
-				button_pressed++;
-			}
-			if(button_pressed%2==1){
+
+
 			// sample only when sampling count hits the number of sampling counter (10) 
 			if(sampling_count++ >= SAMPLINGCOUNTER){
 				//reset counter
@@ -150,7 +138,7 @@ int main(void)
 	
 				//put print F and call farenheit
 //				temperature=celsius_to_farenheit(tempConversion(*filteredVoltage));
-				temperature=celsius_to_farenheit(tempConversion(adc_value));
+				temperature=tempConversion(adc_value);
 
 				printf("the temperature (F) is: %f \n", temperature);
 			}
@@ -172,72 +160,17 @@ int main(void)
 					}
 					//display temperature
 					led_display(temperature, digit_count);
+				}else if (currentState!=nextState){
+					currentState=nextState;
+					// display temperature in farenheit
+					led_display(celsius_to_farenheit(temperature), digit_count);
 				}
+				//display temperature in celsius
 				else{
 					led_display(temperature, digit_count);
 				}
 			}
 			}
-			else{
-			// sample only when sampling count hits the number of sampling counter (10) 
-			if(sampling_count++ >= SAMPLINGCOUNTER){
-				//reset counter
-				sampling_count=0;
-				adc_value = function_ADC();
-				printf("the adc_value is: %f \n", adc_value);
-				
-				if(filterArrayCounter<=15){					
-					//store the adc_value at the array
-					inputArray[filterArrayCounter]=adc_value;
-					filterArrayCounter++;
-				}else{
-					filterArrayCounter=0;
-				}
-
-			}
-			// process only when processing counter hits the number of processing counter (200)
-			if(processing_count++ >=PROCESSINGCOUNTER){
-				processing_count=0;
-			
-				//filter the sampled voltage
-				FIR_C(inputArray, filteredVoltage, coeff,15,4);		
-				for (int i =0;i<15;i++){
-				printf("the filteredVoltage is: %f \n", filteredVoltage[i]);
-				}
-				
-
-//							temperature=tempConversion(*filteredVoltage);
-				temperature=tempConversion(adc_value);	
-				
-				printf("the temperature (C) is: %f \n", temperature);
-			}
-			// display only when time counter hits the number of displaying counter (2)
-			if(time_count++ >= DISPLAYINGCOUNTER){
-				//reset time_count
-				time_count=0;
-				//if the increments of digit goes beyond 4, reset it
-				if(digit_count++>=4){
-					digit_count=0;
-				}
-				// if temperature is within threshold, display
-				if(temperature >= TEMPERATURETHRESHOLD){
-					// increment alarm count every CC but only execute the alarm if overheated every ALARMCOUNTER
-					if(alarm_count++ >=ALARMCOUNTER){
-						//reset alarm counter
-						alarm_count=0;
-						alarm_overheating();
-					}
-					//display temperature
-					led_display(temperature, digit_count);
-				}
-				else{
-					led_display(temperature, digit_count);
-				}
-			}
-			
-		}
-  }
-	
 }
 }
 
@@ -693,7 +626,6 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
   HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
 
-	/* might need to change the number to 100? -> 10 ms instead of 1 ms?*/
 	HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
 
   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
