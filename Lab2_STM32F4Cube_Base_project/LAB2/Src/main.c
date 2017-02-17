@@ -61,6 +61,9 @@ void led_display(float,int);
 int FIR_C(float* , float*, float*, int, int);
 void led_number(int,int);
 void led_unit(char);
+float celsius_to_farenheit (float);
+void initialize_GPIO_button(void);
+
 
 int main(void)
 {
@@ -92,7 +95,7 @@ int main(void)
 	initialize_GPIO_digits();
 	initialize_GPIO_dp();	
 	initialize_GPIO_alarms();	
-	
+	initialize_GPIO_button();
 	
 	
 	
@@ -113,6 +116,12 @@ int main(void)
 		if(systick_flag==1){
 			//set interrupt back to zero
 			systick_flag=0;
+			
+			int button_pressed=0;
+			if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0)==GPIO_PIN_SET){
+				button_pressed++;
+			}
+			if(button_pressed%2==1){
 			// sample only when sampling count hits the number of sampling counter (10) 
 			if(sampling_count++ >= SAMPLINGCOUNTER){
 				//reset counter
@@ -127,18 +136,80 @@ int main(void)
 				}else{
 					filterArrayCounter=0;
 				}
+
+			}
+			// process only when processing counter hits the number of processing counter (200)
+			if(processing_count++ >=PROCESSINGCOUNTER){
+				processing_count=0;
+			
 				//filter the sampled voltage
 				FIR_C(inputArray, filteredVoltage, coeff,15,4);		
 				for (int i =0;i<15;i++){
 				printf("the filteredVoltage is: %f \n", filteredVoltage[i]);
 				}
+	
+				//put print F and call farenheit
+//				temperature=celsius_to_farenheit(tempConversion(*filteredVoltage));
+				temperature=celsius_to_farenheit(tempConversion(adc_value));
+
+				printf("the temperature (F) is: %f \n", temperature);
+			}
+			// display only when time counter hits the number of displaying counter (2)
+			if(time_count++ >= DISPLAYINGCOUNTER){
+				//reset time_count
+				time_count=0;
+				//if the increments of digit goes beyond 4, reset it
+				if(digit_count++>=4){
+					digit_count=0;
+				}
+				// if temperature is within threshold, display
+				if(temperature >= TEMPERATURETHRESHOLD){
+					// increment alarm count every CC but only execute the alarm if overheated every ALARMCOUNTER
+					if(alarm_count++ >=ALARMCOUNTER){
+						//reset alarm counter
+						alarm_count=0;
+						alarm_overheating();
+					}
+					//display temperature
+					led_display(temperature, digit_count);
+				}
+				else{
+					led_display(temperature, digit_count);
+				}
+			}
+			}
+			else{
+			// sample only when sampling count hits the number of sampling counter (10) 
+			if(sampling_count++ >= SAMPLINGCOUNTER){
+				//reset counter
+				sampling_count=0;
+				adc_value = function_ADC();
+				printf("the adc_value is: %f \n", adc_value);
+				
+				if(filterArrayCounter<=15){					
+					//store the adc_value at the array
+					inputArray[filterArrayCounter]=adc_value;
+					filterArrayCounter++;
+				}else{
+					filterArrayCounter=0;
+				}
+
 			}
 			// process only when processing counter hits the number of processing counter (200)
 			if(processing_count++ >=PROCESSINGCOUNTER){
 				processing_count=0;
-			temperature=tempConversion(*filteredVoltage);
-//				temperature=tempConversion(adc_value);
-				printf("the temperature is: %f \n", temperature);
+			
+				//filter the sampled voltage
+				FIR_C(inputArray, filteredVoltage, coeff,15,4);		
+				for (int i =0;i<15;i++){
+				printf("the filteredVoltage is: %f \n", filteredVoltage[i]);
+				}
+				
+
+//							temperature=tempConversion(*filteredVoltage);
+				temperature=tempConversion(adc_value);	
+				
+				printf("the temperature (C) is: %f \n", temperature);
 			}
 			// display only when time counter hits the number of displaying counter (2)
 			if(time_count++ >= DISPLAYINGCOUNTER){
@@ -167,6 +238,7 @@ int main(void)
 		}
   }
 	
+}
 }
 
 void alarm_overheating (void){
@@ -209,6 +281,28 @@ void alarm_overheating (void){
 */
 printf("too hot \n\n");
 }
+
+
+//converting celsius to farenheit
+float celsius_to_farenheit(float celsius){
+	
+	printf("result from %f celsius_to_farenheit is:%f",celsius,((celsius*9/5)+32));
+	return ((celsius*9/5)+32);
+}
+
+
+
+
+
+//convert when there is change from 0 to 1 and 1 to 0
+
+//get current state and next state 
+//if current state is not equal to next state then convert
+
+
+
+
+
 
 int FIR_C(float* inputArray, float* outputArray, float* coeff, int length, int order){
 	//for all sample in the inputArray
@@ -333,6 +427,18 @@ void initialize_GPIO_alarms(void){
 	
 	HAL_GPIO_Init(GPIOD,&GPIO_init);
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15,GPIO_PIN_RESET);
+}
+
+void initialize_GPIO_button(void){
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+	GPIO_InitTypeDef GPIO_init;
+	GPIO_init.Pin = GPIO_PIN_0;
+	GPIO_init.Mode = GPIO_MODE_INPUT;
+	GPIO_init.Pull = GPIO_PULLDOWN;
+	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
+	
+	HAL_GPIO_Init(GPIOA,&GPIO_init);
+	HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
 }
 
 /*
@@ -536,8 +642,18 @@ void led_display(float temperature,int digit)
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET); 
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET);
 			
-			// the number to display
-			led_unit('c');
+			GPIO_PinState nextState = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+
+			int currentState = 0;
+			if(currentState != nextState){
+				//unit to display
+				led_unit('f');
+			} else{
+				//unit to display
+				led_unit('c');
+			}
+			
+
 			break;
 		
 		default:
