@@ -36,25 +36,41 @@
 #include "gpio.h"
 
 
+#define SAMPLINGCOUNTER 10
+#define PROCESSINGCOUNTER 200
+#define DISPLAYINGCOUNTER 2
+#define ALARMCOUNTER 100
+#define TEMPERATURETHRESHOLD 60
+
+
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef ADC1_Handle;
-
+volatile int systick_flag;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void initialize_ADC(void);
 void initialize_GPIO(void);
-//float function_ADC(void);
-//float tempConversion(float);
-
-
+float function_ADC(void);
+float tempConversion(float);
+void alarm_overheating(void);
+void led_display(float,int);
+int FIR_C(float*,float*,float*,int,int);
 
 int main(void)
 {
-	float V_25 = 0.76, avg_slope = 2.5/1000;
-	float temp, temperature;
-	uint32_t voltage;
+	// initialize variables
+	float adc_value,filteredVoltage,temperature;
+	// initialize counters for sampling, processing, and displaying
+	int sampling_count=0;
+	int processing_count=0;
+	int digit_count=0;
+	int time_count=0;
+	int alarm_count=0;
+	// coefficient array for FIR filter
+	float coeff[]={0.1,0.15,0.5,0.15,0.1};
 
+	
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
 
@@ -71,24 +87,53 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		HAL_ADC_Start(&ADC1_Handle);
-		if((HAL_ADC_PollForConversion(&ADC1_Handle, 10000) == HAL_OK))
-		voltage = HAL_ADC_GetValue(&ADC1_Handle);
-		HAL_ADC_Stop(&ADC1_Handle);
-		printf("the voltage is %d\n",voltage);
-		temp = voltage * (3.0/4096);
-		printf("temp %f\n", temp);
-		temperature = ((temp-V_25)/avg_slope)+25;
-		printf("the temperature is %f\n", temperature);
-		
-		/*
-		adc_value = function_ADC();
-		printf("the adc_value is %f\n", adc_value);		
-		temp = tempConversion(adc_value);
-		printf("the temperature is %f\n", temp);
-		*/
-		
-		
+		//run only at interrupts
+		if(systick_flag==1){
+			//set interrupt back to zero
+			systick_flag=0;
+			// sample only when sampling count hits the number of sampling counter (10) 
+			if(sampling_count++ >= SAMPLINGCOUNTER){
+				//reset counter
+				sampling_count=0;
+				adc_value = function_ADC();
+				printf("the adc_value is: %f \n", adc_value);
+				//filter the sampled voltage
+//				FIR_C(&adc_value,&filteredVoltage,coeff,1,4);
+//				printf("the filteredVoltage (right after filter) is: %f \n", filteredVoltage);
+			}
+			// process only when processing counter hits the number of processing counter (200)
+			if(processing_count++ >=PROCESSINGCOUNTER){
+				processing_count=0;
+//			temperature=tempConversion(filteredVoltage);
+				temperature=tempConversion(adc_value);
+				printf("the temperature is: %f \n", temperature);
+			}
+			// display only when time counter hits the number of displaying counter (2)
+			if(time_count++ >= DISPLAYINGCOUNTER){
+				//reset time_count
+				time_count=0;
+				//if the increments of digit goes beyond 4, reset it
+				if(++digit_count>=4){
+					digit_count=0;
+				}
+				// if temperature is within threshold, display
+				if(temperature >= TEMPERATURETHRESHOLD){
+					// increment alarm count every CC but only execute the alarm if overheated every ALARMCOUNTER
+					if(alarm_count++ >=ALARMCOUNTER){
+						//reset alarm counter
+						alarm_count=0;
+						alarm_overheating();
+					}
+					//display temperature
+					led_display(temperature, digit_count);
+				}
+				else{
+					led_display(temperature, digit_count);
+				}
+			}
+			
+		}
+	
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -96,6 +141,43 @@ int main(void)
   }
   /* USER CODE END 3 */
 
+}
+
+void alarm_overheating (void){
+	__HAL_RCC_GPIOD_CLK_ENABLE();
+
+	for(int i=0; i<100; i++){
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_SET); 
+	}  
+
+	for(int i=0; i<100; i++){
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_5, GPIO_PIN_SET); 
+	}
+
+	for(int i=0; i<100; i++){
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_6, GPIO_PIN_SET); 
+	}
+
+	for(int i=0; i<100; i++){
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET); 
+	}
+
+}
+
+int FIR_C(float* InputArray, float* OutputArray,float* coeff, int Length, int Order){
+	//for all sample in the InputArray
+	for(int n=0;n<Length-Order-1;n++){
+		//temp variable to store the accumulative sum of the filter
+		float sum=0;
+		//iterate for the number of existing coefficients
+		for(int b=0;b<=Order;b++){
+			//multiply the content of pointer coeff to content of point input array
+			sum+= InputArray[n+b] * coeff[b];
+		}		
+		//store the result
+		OutputArray[n] = sum;
+	}
+	return 0;
 }
 
 // Initialize ADC
@@ -139,14 +221,12 @@ void initialize_ADC(void){
 
 
 // HAL_ADC_Start starts ADC conversions when the polling method is used
-/*
+
 float function_ADC(void){
 	float voltage = 0.0;
 	HAL_ADC_Start(&ADC1_Handle);
-	printf("\nHAL_ADC_PollForConversion(&ADC1_Handle, 10)==%x",(int)HAL_ADC_PollForConversion(&ADC1_Handle, 10000));
 	if((HAL_ADC_PollForConversion(&ADC1_Handle, 10000) == HAL_OK)){
 		voltage = HAL_ADC_GetValue(&ADC1_Handle);
-		printf("the voltage is %f\n",voltage);
 	}
 	HAL_ADC_Stop(&ADC1_Handle);
 	return (voltage*3.0)/4096.0; // resolution is in 12 bits (4096 = 2^12) with Vref = 3V
@@ -159,16 +239,19 @@ float tempConversion(float voltage){
 	float avg_slope = 2.5/1000;
 	return ((voltage-V_25)/avg_slope)+25;
 }
-*/
+
 
 // Initialize GPIO (General-purpose input/output)
 void initialize_GPIO(void){
 	__HAL_RCC_GPIOE_CLK_ENABLE();
 	GPIO_InitTypeDef GPIO_init;
-	GPIO_init.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
+	GPIO_init.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10;
 	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_init.Pull = GPIO_NOPULL;
 	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
+	
+	HAL_GPIO_Init(GPIOE,&GPIO_init);
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10,GPIO_PIN_RESET);
 }
 
 /*
