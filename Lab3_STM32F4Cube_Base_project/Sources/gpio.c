@@ -265,14 +265,14 @@ void led_unit(char degree){
 			break;
 	}
 }
-void led_display(float number,int digit){
+void led_display(int number,int digit){
 	switch(digit){
 		case 1:
 			// toggle the display
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_RESET); 
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_SET);
 			// the number to display
-			led_number((((int)number%100)-((int)number%10))/10);
+			led_number(((number%1000)-(number%100))/100);
 		
 			break;
 		
@@ -282,7 +282,7 @@ void led_display(float number,int digit){
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_SET);
 			
 			// the number to display and lower dot as decimal point
-			led_number((int)number%10);
+			led_number(((number%100)-(number%10))/10);
 
 			break;
 
@@ -291,7 +291,7 @@ void led_display(float number,int digit){
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_RESET); 
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_SET);
 			// the number to display
-			led_number((((int)(number*10))%1000)-(((int)number%100)*10));
+			led_number(number%10);
 	
 		break;
 					
