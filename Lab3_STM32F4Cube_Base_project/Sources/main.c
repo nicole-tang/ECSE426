@@ -12,11 +12,19 @@
 #include "stm32f4xx_hal.h"
 #include "supporting_functions.h"
 #include "lis3dsh.h"
+#include "gpio.h"
 
+
+extern int TIM_flag;
 /* Private variables ---------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config	(void);
+void initialize_GPIO_segments(void);
+void initialize_GPIO_digits(void);
+void initialize_GPIO_led_lights(void);
+void deinitialize_GPIO_button(void);
+
 
 int main(void)
 {	
@@ -28,8 +36,19 @@ int main(void)
   SystemClock_Config();
 	
   /* Initialize all configured peripherals */
-
+	initialize_GPIO_segments();
+	initialize_GPIO_digits();
+	initialize_GPIO_led_lights();
+	
+	
+	
+	
 	while (1){
+		if(TIM_flag == 1){
+			//reset flag
+			TIM_flag = 0;
+		}
+		
 	}
 }
 
