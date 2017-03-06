@@ -1,10 +1,15 @@
 #include "lis3dsh.h"
 #include "stm32f4xx_hal.h"
+#include <math.h>
+
+#define PI ((float)(3.141592653589793))
+#define RAD_TO_DEG(x) ((x)*((float)180.0) / PI)
+
 
 LIS3DSH_InitTypeDef LIS3DSH_InitType;
 LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_DRY;
 
-
+// Initialize accelerometer
 void initialize_accel(void)
 {	
 	/* LIS3DSH struct */
@@ -25,7 +30,8 @@ void initialize_accel(void)
 	LIS3DSH_DataReadyInterruptConfig(&LIS3DSH_DRY);
 }
 
-//Read values from accelerometer
+
+// Read values from accelerometer
 void reading_accel_values(float *ax, float *ay, float *az)
 {
 	float acc[3]; //empty array to store the acceleration values
@@ -36,11 +42,35 @@ void reading_accel_values(float *ax, float *ay, float *az)
 	*az = acc[2];
 }
 
-//Calibrate accelerator
+
+// Function to return the tilt angle
+float tilt_angle(float ax, float ay, float az)
+{
+	float angle;
+	
+	angle = RAD_TO_DEG(atan2f(ay, sqrtf(ax * ax + az * az)));
+	
+	if (az < 0)
+	{
+		angle = ((float)180.0) - angle;
+	}
+	
+	if (angle < 0)
+	{
+		angle += (float)360.0;
+	}
+		
+	return angle;
+	
+}
+
+
+/*
 void calibration_accel(float *ax, float *ay, float *az)
 {
 	
 }
+*/
 
 
 
