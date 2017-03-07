@@ -14,6 +14,7 @@
 #include "lis3dsh.h"
 #include "gpio.h"
 #include "keypad.h"
+#include "accelerometer.h"
 
 
 
@@ -29,6 +30,12 @@ void deinitialize_GPIO_button(void);
 void initialize_accel(void);
 void reading_accel_values(float *ax, float *ay, float *az);
 float tilt_angle(float ax, float ay, float az);
+void set_keypad_column(void);
+void set_keypad_row(void);
+int get_column(void);
+int get_row(void);
+int get_key(void);
+
 
 
 
