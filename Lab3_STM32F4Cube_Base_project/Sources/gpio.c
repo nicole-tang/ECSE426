@@ -42,11 +42,11 @@ void initialize_GPIO_segments(void){
 	GPIO_InitTypeDef GPIO_init;
 	GPIO_init.Pin = GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10;
 	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_init.Pull = GPIO_NOPULL;
+	GPIO_init.Pull = GPIO_PULLDOWN;
 	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
 	
 	HAL_GPIO_Init(GPIOE,&GPIO_init);
-	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10,GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10,GPIO_PIN_RESET);
 }
 
 void initialize_GPIO_digits(void){
@@ -54,11 +54,11 @@ void initialize_GPIO_digits(void){
 	GPIO_InitTypeDef GPIO_init;
 	GPIO_init.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4;
 	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_init.Pull = GPIO_NOPULL;
+	GPIO_init.Pull = GPIO_PULLDOWN;
 	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
 	
 	HAL_GPIO_Init(GPIOD,&GPIO_init);
-	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4,GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4,GPIO_PIN_RESET);
 }
 
 
@@ -67,11 +67,12 @@ void initialize_GPIO_led_lights(void){
 	GPIO_InitTypeDef GPIO_init;
 	GPIO_init.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
 	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_init.Pull = GPIO_NOPULL;
+	GPIO_init.Pull = GPIO_PULLDOWN;
 	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
+	GPIO_init.Alternate = GPIO_AF2_TIM4; // controlled by TIM4
 	
 	HAL_GPIO_Init(GPIOD,&GPIO_init);
-	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15,GPIO_PIN_RESET);
+//	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15,GPIO_PIN_RESET);
 }
 
 //  de-initialize and reset PA0 for maximum assurance according to requirements

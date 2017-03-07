@@ -39,7 +39,6 @@
 /* USER CODE BEGIN 0 */
 TIM_HandleTypeDef TIM_Handle;
 TIM_OC_InitTypeDef TIM_OCHandle;
-int TIM_flag;
 
 void initialize_timer(){
 	//enable the timer clock
@@ -62,24 +61,33 @@ void initialize_timer(){
 		since 42000 is less than 2^16=65536, choose prescaler to 1 and period to 65536
 	*/
 	TIM_Handle.Instance = TIM4;																// general purpose timer for PWM generation; 4 capture channels; 16 bits, APB1 42MHz (max)
+																														// TIM4's output channel is connected to PD12-15 (the LEDs)
 	TIM_Handle.Init.Prescaler = 1;														// Specifies the prescaler value used to divide the TIM clock
 	TIM_Handle.Init.CounterMode = TIM_COUNTERMODE_UP;					// timer counts up until the timer period is reached. Then the timer is reset.
-	TIM_Handle.Init.Period = 42000;																// period does not exceed 65535 (2^16-1) because TIM3 is 16 bit
-	TIM_Handle.Init.ClockDivision=TIM_CLOCKDIVISION_DIV1;			// no division
-	TIM_Handle.Init.RepetitionCounter=0;											// no repetition count
-	
+	TIM_Handle.Init.Period = 42000;														// period does not exceed 65535 (2^16-1) because TIM3 is 16 bit
 	
 	// initialize TIM4
-	HAL_TIM_Base_Init(&TIM_Handle);
-	// Start count on TIM4
-	HAL_TIM_Base_Start(&TIM_Handle);	
-	
+	HAL_TIM_PWM_Init(&TIM_Handle);
+	TIM_OCHandle.Pulse = 0;																		// Specifies the pulse value to be loaded into the Capture Compare Register. 
+	TIM_OCHandle.OCMode = TIM_OCMODE_PWM1;										// Specifies the TIM mode
+																														// PWM1 is set on compare match; PWM2 is clear on compare match
+	TIM_OCHandle.OCPolarity = TIM_OCPOLARITY_HIGH;						// Specifies the output polarity
+																														// the output begins with HIGH and switches to LOW
+	TIM_OCHandle.OCFastMode = TIM_OCFAST_DISABLE;							// Specifies the Fast mode state.
+
+	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,TIM_CHANNEL_1);					//For green LED
+	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,TIM_CHANNEL_2);					//For orange LED
+	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,TIM_CHANNEL_3);					//For red LED
+	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,TIM_CHANNEL_4);					//For blue LED
+
+	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_ALL);		
 }
 
-void initialize_PWM(){
-	
-	// PWM1 is set on compare match; PWM2 is clear on compare match
-	TIM_OCHandle.OCMode = TIM_OCMODE_PWM1;
-	TIM_OCHandle.OCPolarity = TIM_OCPOLARITY_LOW;
+void change_pulse(int degree_difference){
+	TIM_OCHandle.Pulse = ((int)(degree_difference/180))*42000;        					 	
+	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_ALL);	
 }
+
+
+
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

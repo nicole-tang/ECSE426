@@ -7,6 +7,6 @@
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void initialize_timer(void);
-
+void initialize_PWM(int intensity);
 
 #endif /* __TIMER_H */

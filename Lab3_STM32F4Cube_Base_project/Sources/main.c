@@ -17,7 +17,7 @@
 
 
 
-extern int TIM_flag;
+extern int flag;
 /* Private variables ---------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/
@@ -29,7 +29,8 @@ void deinitialize_GPIO_button(void);
 void initialize_accel(void);
 void reading_accel_values(float *ax, float *ay, float *az);
 float tilt_angle(float ax, float ay, float az);
-
+void initialize_timer(void);
+void change_pulse(int intensity);
 
 
 int main(void)
@@ -50,9 +51,9 @@ int main(void)
 	
 	
 	while (1){
-		if(TIM_flag == 1){
+		if(flag == 1){
 			//reset flag
-			TIM_flag = 0;
+			flag = 0;
 		}
 		
 	}
