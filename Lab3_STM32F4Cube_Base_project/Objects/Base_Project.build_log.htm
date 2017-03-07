@@ -27,21 +27,17 @@ Project File Date:  03/06/2017
 <h2>Output:</h2>
 *** Using Compiler 'V5.05 update 2 (build 169)', folder: 'C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Lab 3'
-compiling main.c...
-.\Headers\keypad.h(14): warning:  #1-D: last line of file ends without a newline
-  #endif
-Sources\main.c: 1 warning, 0 errors
-compiling keypad.c...
-.\Headers\keypad.h(14): warning:  #1-D: last line of file ends without a newline
-  #endif
-Sources\keypad.c(115): warning:  #177-D: variable "column" was declared but never referenced
-        uint8_t column, row;
-Sources\keypad.c(115): warning:  #177-D: variable "row" was declared but never referenced
-        uint8_t column, row;
-Sources\keypad.c: 3 warnings, 0 errors
+compiling accelerometer.c...
+Sources\accelerometer.c(64): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        pitch = 
+AD_TO_DEG(atan2f(ay, sqrtf(ax * ax + az * az)));
+Sources\accelerometer.c(75): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        roll = 
+AD_TO_DEG(atan2f(ax, sqrtf(ay * ay + az * az)));
+Sources\accelerometer.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=4212 RO-data=440 RW-data=16 ZI-data=1024  
-".\Objects\Base_Project.axf" - 0 Error(s), 4 Warning(s).
+Program Size: Code=4580 RO-data=440 RW-data=16 ZI-data=1024  
+".\Objects\Base_Project.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
