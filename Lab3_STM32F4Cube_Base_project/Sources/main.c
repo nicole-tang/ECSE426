@@ -13,6 +13,8 @@
 #include "supporting_functions.h"
 #include "lis3dsh.h"
 #include "gpio.h"
+#include "keypad.h"
+
 
 
 extern int TIM_flag;
@@ -24,6 +26,10 @@ void initialize_GPIO_segments(void);
 void initialize_GPIO_digits(void);
 void initialize_GPIO_led_lights(void);
 void deinitialize_GPIO_button(void);
+void initialize_accel(void);
+void reading_accel_values(float *ax, float *ay, float *az);
+float tilt_angle(float ax, float ay, float az);
+
 
 
 int main(void)

@@ -5,7 +5,6 @@
 #define PI ((float)(3.141592653589793))
 #define RAD_TO_DEG(x) ((x)*((float)180.0) / PI)
 
-
 LIS3DSH_InitTypeDef LIS3DSH_InitType;
 LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_DRY;
 
@@ -59,9 +58,7 @@ float tilt_angle(float ax, float ay, float az)
 	{
 		angle += (float)360.0;
 	}
-		
 	return angle;
-	
 }
 
 
