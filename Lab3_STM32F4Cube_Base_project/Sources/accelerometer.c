@@ -53,6 +53,8 @@ void reading_accel_values(float *ax, float *ay, float *az)
 	*ax = acc[0];
 	*ay = acc[1];
 	*az = acc[2];
+	
+	printf("ax: %f, ay: %f , az: %f",*ax,*ay,*az);
 }
 
 

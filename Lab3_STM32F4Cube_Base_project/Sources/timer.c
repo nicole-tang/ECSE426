@@ -40,7 +40,7 @@
 TIM_HandleTypeDef TIM_Handle;
 TIM_OC_InitTypeDef TIM_OCHandle;
 
-void initialize_timer(){
+void initialize_timer(void){
 	//enable the timer clock
 	__TIM4_CLK_ENABLE();
 	

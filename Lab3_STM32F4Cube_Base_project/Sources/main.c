@@ -35,7 +35,8 @@ void set_keypad_row(void);
 int get_column(void);
 int get_row(void);
 int get_key(void);
-
+void initialize_timer(void);
+void change_pulse(int degree_difference);
 
 
 
@@ -52,14 +53,20 @@ int main(void)
 	initialize_GPIO_segments();
 	initialize_GPIO_digits();
 	initialize_GPIO_led_lights();
-	
-	
-	
+	deinitialize_GPIO_button();
+	initialize_accel();
+	initialize_timer();
 	
 	while (1){
 		if(TIM_flag == 1){
 			//reset flag
 			TIM_flag = 0;
+			
+			int degree_difference=0;
+			
+			// for LED light intensity display
+			change_pulse(degree_difference);
+			
 		}
 		
 	}
