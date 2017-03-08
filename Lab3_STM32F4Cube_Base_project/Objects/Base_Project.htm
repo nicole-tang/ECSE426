@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Base_Project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Base_Project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Wed Mar 08 13:28:25 2017
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050169: Last Updated: Wed Mar 08 14:01:51 2017
 <BR><P>
 <H3>Maximum Stack Usage =        216 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -903,7 +903,6 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LIS3DSH_Init
 <LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_key
-<LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;interpret_key
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -984,7 +983,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_key
 </UL>
 
-<P><STRONG><a name="[b4]"></a>get_key</STRONG> (Thumb, 70 bytes, Stack size 16 bytes, keypad.o(i.get_key))
+<P><STRONG><a name="[b4]"></a>get_key</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, keypad.o(i.get_key))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = get_key &rArr; get_row &rArr; set_keypad_row &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_row
@@ -1049,11 +1048,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[bd]"></a>interpret_key</STRONG> (Thumb, 86 bytes, Stack size 16 bytes, keypad.o(i.interpret_key))
+<P><STRONG><a name="[bd]"></a>interpret_key</STRONG> (Thumb, 80 bytes, Stack size 16 bytes, keypad.o(i.interpret_key))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = interpret_key &rArr; get_key &rArr; get_row &rArr; set_keypad_row &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_key
-<LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1092,7 +1090,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;led_display
 </UL>
 
-<P><STRONG><a name="[5b]"></a>main</STRONG> (Thumb, 266 bytes, Stack size 56 bytes, main.o(i.main))
+<P><STRONG><a name="[5b]"></a>main</STRONG> (Thumb, 350 bytes, Stack size 56 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = main &rArr; reading_accel_values &rArr; LIS3DSH_ReadACC &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;roll_tilt_angle
@@ -1136,7 +1134,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[c4]"></a>roll_tilt_angle</STRONG> (Thumb, 142 bytes, Stack size 48 bytes, accelerometer.o(i.roll_tilt_angle))
+<P><STRONG><a name="[c4]"></a>roll_tilt_angle</STRONG> (Thumb, 120 bytes, Stack size 48 bytes, accelerometer.o(i.roll_tilt_angle))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = roll_tilt_angle &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul

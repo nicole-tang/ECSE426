@@ -82,11 +82,22 @@ int main(void)
 	initialize_timer();
 
 	
-/*	input_pitch=interpret_key();
+	input_pitch = interpret_key();
+	while(input_pitch > 180)
+	{
+		printf("Please enter an angle between 0 and 180 degrees");
+		input_pitch = interpret_key();
+	}
 	printf("input_pitch is %d",input_pitch);
+	
 	input_roll=interpret_key();
+	while(input_roll > 180)
+	{
+		printf("Please enter an angle between 0 and 180 degrees");
+		input_roll = interpret_key();
+	}
 	printf("input_roll is %d",input_roll);
-*/	
+	
 	while (1){
 		if(systick_flag==1){
 			systick_flag=0;
@@ -98,7 +109,6 @@ int main(void)
 				if(digit_count++>=4){
 					digit_count=0;
 				}
-				//display temperature
 					led_display(input_angle, digit_count);
 			}
 		}
@@ -117,11 +127,8 @@ int main(void)
 			int pitch = pitch_tilt_angle(acc);
 			int roll = roll_tilt_angle(acc);
 			
-//			get_key();
-			interpret_key();
-			
-//			printf("pitch is %d\n",pitch);
-//			printf("roll is %d\n",roll);
+			printf("pitch is %d\n",pitch);
+			printf("roll is %d\n",roll);
 			
 			int pitch_degree_difference=input_angle-pitch;
 			int roll_degree_difference=input_angle-roll;

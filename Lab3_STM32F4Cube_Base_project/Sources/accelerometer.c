@@ -73,9 +73,11 @@ float roll_tilt_angle(float *acc)
 	
 	roll = RAD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
 	
+	/*
 	if(roll<0){
 		roll+=(float)360.0;
 	}
+	*/
 	
 	return roll;
 }

@@ -115,15 +115,20 @@ int get_key(void)
 	int key;
 	int column = get_column();
 	int row = get_row();
-	printf("the row is %d\n", row);
-	printf("the column is %d\n", column);
+//	printf("the row is %d\n", row);
+//	printf("the column is %d\n", column);
 	
 	if(row==-1 || column==-1){
 		key= -1;
 	}else{
 		key = keypad_map[row][column];
 	}
-	printf("the key is %d\n", key);
+	
+	if(key != -1)
+	{
+		printf("the key is %d\n", key);
+	}
+	
 	return key;
 }
 
@@ -134,20 +139,25 @@ int interpret_key(void)
 	
 	while(1){
 	int key = get_key();
-		if(key < 10){
+		
+		if(key == -1){
+			angle = angle;
+		}
+		else if(key < 10) {
 			angle = angle * 10;
 			angle = angle + key;
 		}else if(key == 11){
-			printf("The angle after * is pressed is %d\n", angle);
+		//	printf("The angle after * is pressed is %d\n", angle);
 			if(angle >= 10){
 				angle = angle / 10;
 			}else{
 				angle = 0;
 			}
 		}else if(key == 12){
+			angle = angle % 1000;
 			break;
 		}
-			printf("the angle entered is %d\n", angle);
+		//	printf("the angle entered is %d\n", angle);
 	}
 	return angle;
 }
