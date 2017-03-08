@@ -88,10 +88,10 @@ void calibration_accel(float *acc)
 {
 	// matrix found using Doc 15, Least Square Method
 	const float calib[4][3] = {
-	{1, 2, 3},
-	{4, 5, 6},
-	{7, 8, 9},
-	{11, 0, 12}
+		{0.0010,-0.0000,0.0000},
+   {0.0000,0.0010,0.0000},
+   {-0.0000,0.0000,0.0010},
+   {-0.0119,0.0010,-0.0209}
 	};
 	
 	float new_x, new_y, new_z;
