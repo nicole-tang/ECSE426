@@ -47,14 +47,14 @@ void initialize_accel(void)
 // Read values from accelerometer
 void reading_accel_values(float *ax, float *ay, float *az)
 {
-	float acc[3]; // Empty array to store the acceleration values
+	float* acc; // Empty array to store the acceleration values
 	
 	LIS3DSH_ReadACC(acc);
 	*ax = acc[0];
 	*ay = acc[1];
 	*az = acc[2];
 	
-	printf("ax: %f, ay: %f , az: %f",*ax,*ay,*az);
+	printf("ax: %f, ay: %f , az: %f \n",*ax,*ay,*az);
 }
 
 

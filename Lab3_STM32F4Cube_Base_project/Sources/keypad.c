@@ -115,10 +115,14 @@ int get_key(void)
 	int key;
 	int column = get_column();
 	int row = get_row();
+	printf("the row is %d\n", row);
+	printf("the column is %d\n", column);
 	
-
-	key = keypad_map[row][column];
-
+	if(row==-1 || column==-1){
+		key=-1;
+	}else{
+		key = keypad_map[row][column];
+	}
 	printf("the key is %d\n", key);
 	return key;
 }

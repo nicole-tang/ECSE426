@@ -10,19 +10,24 @@
 	
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_it.h"
 #include "supporting_functions.h"
 #include "lis3dsh.h"
 #include "gpio.h"
 #include "keypad.h"
 #include "accelerometer.h"
+#include "main.h"
+
+#define DISPLAYINGCOUNTER 1
 
 
+int systick_flag;
+int flag;
 
-extern int TIM_flag;
 /* Private variables ---------------------------------------------------------*/
-float* ax=0;
-float* ay=0;
-float* az=0;
+float* ax;
+float* ay;
+float* az;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config	(void);
@@ -40,6 +45,11 @@ int get_row(void);
 int get_key(void);
 int interpret_key(void);
 
+void led_lights(char color);
+void led_number(int number);
+void led_unit(char degree);
+void led_display(int number,int digit);
+
 void initialize_timer(void);
 void change_pulse(int degree_difference);
 
@@ -47,6 +57,12 @@ void change_pulse(int degree_difference);
 
 int main(void)
 {	
+	int displaying_count=0;
+	int digit_count=0;
+	int input_angle=0;
+	int input_pitch=0;
+	int input_roll=0;
+	
   /* MCU Configuration----------------------------------------------------------*/
 
   HAL_Init();
@@ -61,24 +77,59 @@ int main(void)
 	deinitialize_GPIO_button();
 	initialize_accel();
 	initialize_timer();
+
+	
+	input_pitch=interpret_key();
+	printf("input_pitch is %d",input_pitch);
+	input_roll=interpret_key();
+	printf("input_roll is %d",input_roll);
 	
 	while (1){
-		if(TIM_flag == 1){
+		if(flag == 1){
 			//reset flag
-			TIM_flag = 0;
+			flag = 0;
 			
+
+
+			// reading the inputs
+		
+			
+			//processing		
 			reading_accel_values(ax,ay,az);
+			printf("at main, accel_values are %f,%f,%f\n",*ax,*ay,*az);
 			int pitch = pitch_tilt_angle(*ax,*ay,*az);
 			int roll = roll_tilt_angle(*ax,*ay,*az);
 			
-			int input_angle=interpret_key();
+			printf("pitch is %d\n",pitch);
+			printf("roll is %d\n",roll);
 			
 			int pitch_degree_difference=input_angle-pitch;
 			int roll_degree_difference=input_angle-roll;
+			printf("pitch_degree_difference is %d\n",pitch_degree_difference);
+			printf("roll_degree_difference is %d\n",roll_degree_difference);
 			
 			// for LED light intensity display
-			change_pulse(pitch_degree_difference);
 			
+			change_pulse(pitch_degree_difference);
+			led_lights('o');
+			led_lights('r');
+			led_lights('b');
+			led_lights('g');
+
+			
+			
+			
+			// display only when time counter hits the number of displaying counter (1ms)
+			if(displaying_count++ >= DISPLAYINGCOUNTER){
+				//reset displaying_count
+				displaying_count=0;
+				//if the increments of digit goes beyond 4, reset it
+				if(digit_count++>=4){
+					digit_count=0;
+				}
+				//display temperature
+					led_display(input_angle, digit_count);
+			}
 		}
 		
 	}

@@ -40,6 +40,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_it.h"
+#include "stm32f4xx_hal.h"
+#include "stm32f4xx.h"
 
 /** @addtogroup STM32F4xx_HAL_Examples
   * @{
@@ -157,7 +159,15 @@ void SysTick_Handler(void)
 {
 	HAL_IncTick();
 	HAL_SYSTICK_IRQHandler();
+	systick_flag=1;
 }
+
+void EXTI0_IRQHandle(void)
+{
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
+	flag=1;
+}
+
 
 /******************************************************************************/
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */

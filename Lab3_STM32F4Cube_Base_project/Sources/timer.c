@@ -36,6 +36,7 @@
 #include "timer.h"
 #include "main.h"
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_it.h"
 /* USER CODE BEGIN 0 */
 TIM_HandleTypeDef TIM_Handle;
 TIM_OC_InitTypeDef TIM_OCHandle;
