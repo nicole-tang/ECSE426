@@ -12,9 +12,9 @@
 #define RAD_TO_DEG(x) ((x*180.0) / PI)
 
 void initialize_accel(void);
-void reading_accel_values(float *ax, float *ay, float *az);
-float pitch_tilt_angle(float ax, float ay, float az);
-float roll_tilt_angle(float ax, float ay, float az);
+void reading_accel_values(float *acc);
+float pitch_tilt_angle(float *acc);
+float roll_tilt_angle(float *acc);
 
 	
 #endif

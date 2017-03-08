@@ -27,7 +27,17 @@ Project File Date:  03/07/2017
 <h2>Output:</h2>
 *** Using Compiler 'V5.05 update 2 (build 169)', folder: 'C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Lab 3'
-".\Objects\Base_Project.axf" - 0 Error(s), 0 Warning(s).
+compiling accelerometer.c...
+Sources\accelerometer.c(63): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        pitch = 
+AD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
+Sources\accelerometer.c(74): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        roll = 
+AD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
+Sources\accelerometer.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=13988 RO-data=440 RW-data=52 ZI-data=1204  
+".\Objects\Base_Project.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 

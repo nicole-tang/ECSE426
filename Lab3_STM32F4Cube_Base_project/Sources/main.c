@@ -36,8 +36,9 @@ void initialize_GPIO_digits(void);
 void initialize_GPIO_led_lights(void);
 void deinitialize_GPIO_button(void);
 void initialize_accel(void);
-void reading_accel_values(float *ax, float *ay, float *az);
-float tilt_angle(float ax, float ay, float az);
+void reading_accel_values(float *acc);
+float pitch_tilt_angle(float *acc);
+float roll_tilt_angle(float *acc);
 void set_keypad_column(void);
 void set_keypad_row(void);
 int get_column(void);
@@ -63,6 +64,8 @@ int main(void)
 	int input_pitch=0;
 	int input_roll=0;
 	
+	float acc[3] = {0,0,0}; // Empty array to store the acceleration values
+	
   /* MCU Configuration----------------------------------------------------------*/
 
   HAL_Init();
@@ -79,47 +82,15 @@ int main(void)
 	initialize_timer();
 
 	
-	input_pitch=interpret_key();
+/*	input_pitch=interpret_key();
 	printf("input_pitch is %d",input_pitch);
 	input_roll=interpret_key();
 	printf("input_roll is %d",input_roll);
-	
+*/	
 	while (1){
-		if(flag == 1){
-			//reset flag
-			flag = 0;
-			
-
-
-			// reading the inputs
-		
-			
-			//processing		
-			reading_accel_values(ax,ay,az);
-			printf("at main, accel_values are %f,%f,%f\n",*ax,*ay,*az);
-			int pitch = pitch_tilt_angle(*ax,*ay,*az);
-			int roll = roll_tilt_angle(*ax,*ay,*az);
-			
-			printf("pitch is %d\n",pitch);
-			printf("roll is %d\n",roll);
-			
-			int pitch_degree_difference=input_angle-pitch;
-			int roll_degree_difference=input_angle-roll;
-			printf("pitch_degree_difference is %d\n",pitch_degree_difference);
-			printf("roll_degree_difference is %d\n",roll_degree_difference);
-			
-			// for LED light intensity display
-			
-			change_pulse(pitch_degree_difference);
-			led_lights('o');
-			led_lights('r');
-			led_lights('b');
-			led_lights('g');
-
-			
-			
-			
-			// display only when time counter hits the number of displaying counter (1ms)
+		if(systick_flag==1){
+			systick_flag=0;
+		// display only when time counter hits the number of displaying counter (1ms)
 			if(displaying_count++ >= DISPLAYINGCOUNTER){
 				//reset displaying_count
 				displaying_count=0;
@@ -130,6 +101,37 @@ int main(void)
 				//display temperature
 					led_display(input_angle, digit_count);
 			}
+		}
+		if(flag == 1){
+	
+			//reset flag
+			flag = 0;
+			
+			// reading the inputs
+		
+			
+			
+			//processing		
+			reading_accel_values(acc);
+			printf("at main, accel_values are %f,%f,%f\n",acc[0],acc[1],acc[2]);
+			int pitch = pitch_tilt_angle(acc);
+			int roll = roll_tilt_angle(acc);
+			
+//			printf("pitch is %d\n",pitch);
+//			printf("roll is %d\n",roll);
+			
+			int pitch_degree_difference=input_angle-pitch;
+			int roll_degree_difference=input_angle-roll;
+//			printf("pitch_degree_difference is %d\n",pitch_degree_difference);
+//			printf("roll_degree_difference is %d\n",roll_degree_difference);
+			
+			// for LED light intensity display
+			
+			change_pulse(pitch_degree_difference);
+			led_lights('o');
+			led_lights('r');
+			led_lights('b');
+			led_lights('g');
 		}
 		
 	}

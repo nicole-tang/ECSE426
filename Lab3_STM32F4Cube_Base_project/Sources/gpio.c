@@ -89,7 +89,7 @@ void led_lights(char color){
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);	
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
-			printf("ORANGE LED should be ON \n"); 		
+//			printf("ORANGE LED should be ON \n"); 		
 			break;
 	// red LED
 		case 'r':
@@ -97,7 +97,7 @@ void led_lights(char color){
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);	
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET); 
-			printf("RED LED should be ON \n"); 
+//			printf("RED LED should be ON \n"); 
 			break;
 	// blue LED
 		case 'b':
@@ -105,7 +105,7 @@ void led_lights(char color){
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);	
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET); 
-			printf("BLUE LED should be ON \n"); 	
+//			printf("BLUE LED should be ON \n"); 	
 			break;
 	// green LED
 		case 'g':
@@ -113,7 +113,7 @@ void led_lights(char color){
 		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);	
 		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET); 		
-		printf("GREEN LED should be ON \n"); 	
+//		printf("GREEN LED should be ON \n"); 	
 		break;
 	}
 }
@@ -141,7 +141,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);   //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET); //G
-			printf("0 should be displayed \n");
+//			printf("0 should be displayed \n");
 			break;
 		
 		//Display number 1
@@ -153,7 +153,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET); //G
-			printf("1 should be displayed \n");
+//			printf("1 should be displayed \n");
 			break;		
 		//Display number 2
 		case 2:
@@ -164,7 +164,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);   //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
-			printf("2 should be displayed \n");
+//		printf("2 should be displayed \n");
 			break;		
 		//Display number 3
 		case 3:
@@ -175,7 +175,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
-			printf("3 should be displayed \n");
+//			printf("3 should be displayed \n");
 			break;		
 		//Display number 4
 		case 4:
@@ -186,7 +186,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
-			printf("4 should be displayed \n");
+//			printf("4 should be displayed \n");
 			break;		
 		//Display number 5
 		case 5:
@@ -197,7 +197,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E 
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
-			printf("5 should be displayed \n");
+//			printf("5 should be displayed \n");
 			break;		
 		//Display number 6
 		case 6:
@@ -208,7 +208,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);   //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
-			printf("6 should be displayed \n");
+//			printf("6 should be displayed \n");
 			break;		
 		//Display number 7
 		case 7:
@@ -219,7 +219,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET); //G
-			printf("7 should be displayed \n");
+//			printf("7 should be displayed \n");
 			break;	
 		//Display number 8
 		case 8:
@@ -230,7 +230,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);   //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
-			printf("8 should be displayed \n");
+//			printf("8 should be displayed \n");
 			break;
 		
 		//Display number 9
@@ -242,7 +242,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET); //E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);   //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
-			printf("9 should be displayed \n");
+//			printf("9 should be displayed \n");
 			break;
 
 		default:
@@ -262,7 +262,7 @@ void led_unit(char degree){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_RESET);			// E
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);				// F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);			// G
-			printf("o should be displayed \n");
+//			printf("o should be displayed \n");
 			break;
 	}
 }

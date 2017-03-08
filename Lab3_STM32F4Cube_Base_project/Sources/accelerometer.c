@@ -10,10 +10,12 @@ LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_DRY;
 // Initialize accelerometer
 void initialize_accel(void)
 {	
+	__HAL_RCC_GPIOE_CLK_ENABLE();
+	
 	/* LIS3DSH struct */
 	LIS3DSH_InitType.Power_Mode_Output_DataRate = LIS3DSH_DATARATE_25; // Output data 25 times per second (frequency of 25Hz)
 	LIS3DSH_InitType.Axes_Enable = LIS3DSH_XYZ_ENABLE; // Enable x, y, and z axes
-	LIS3DSH_InitType.Continous_Update = LIS3DSH_ContinousUpdate_Enabled; //
+	LIS3DSH_InitType.Continous_Update = LIS3DSH_ContinousUpdate_Disabled; //
 	LIS3DSH_InitType.AA_Filter_BW = LIS3DSH_AA_BW_50; //
 	LIS3DSH_InitType.Full_Scale = LIS3DSH_FULLSCALE_2; // Full scale of +/- 2g by default
 	LIS3DSH_InitType.Self_Test = LIS3DSH_SELFTEST_NORMAL; // Normal mode by default
@@ -28,53 +30,52 @@ void initialize_accel(void)
 	LIS3DSH_DataReadyInterruptConfig(&LIS3DSH_DRY);
 	
 	/* Initialize the value for GPIO port E pin 0 */
-	__HAL_RCC_GPIOE_CLK_ENABLE();
+	
 	GPIO_InitTypeDef GPIO_Init;
 	GPIO_Init.Pin = GPIO_PIN_0;
-	GPIO_Init.Mode = GPIO_MODE_IT_RISING;
-	GPIO_Init.Pull = GPIO_PULLDOWN;
+	GPIO_Init.Mode = GPIO_MODE_IT_FALLING;
+	GPIO_Init.Pull = GPIO_PULLUP;
 	GPIO_Init.Speed = GPIO_SPEED_FREQ_HIGH;
 	
 	HAL_GPIO_Init(GPIOE, &GPIO_Init);
 
 	/* Enable INT1 line to read interrupt signal */
-	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0); // Set priority for EXTI0_IRQ
 	HAL_NVIC_EnableIRQ(EXTI0_IRQn); // Enable IRQ for the EXTI Line 0 (LSI3DSH generates INT1 interrupt on GPIOE.0)
-	HAL_NVIC_ClearPendingIRQ(EXTI0_IRQn);
+	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 1); // Set priority for EXTI0_IRQ
+
+//	HAL_NVIC_ClearPendingIRQ(EXTI0_IRQn);
 }
 
 
 // Read values from accelerometer
-void reading_accel_values(float *ax, float *ay, float *az)
+void reading_accel_values(float *acc)
 {
-	float* acc; // Empty array to store the acceleration values
-	
 	LIS3DSH_ReadACC(acc);
-	*ax = acc[0];
-	*ay = acc[1];
-	*az = acc[2];
-	
-	printf("ax: %f, ay: %f , az: %f \n",*ax,*ay,*az);
+//	printf("ax: %f, ay: %f , az: %f \n",acc[0],acc[1],acc[2]);
 }
 
 
 // Function to return the tilt angle
-float pitch_tilt_angle(float ax, float ay, float az)
+float pitch_tilt_angle(float *acc)
 {
 	float pitch;
 	
-	pitch = RAD_TO_DEG(atan2f(ay, sqrtf(ax * ax + az * az)));
+	pitch = RAD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
 	
 	return pitch;
 }
 
 
 // Function to return the tilt angle
-float roll_tilt_angle(float ax, float ay, float az)
+float roll_tilt_angle(float *acc)
 {
 	float roll;
 	
-	roll = RAD_TO_DEG(atan2f(ax, sqrtf(ay * ay + az * az)));
+	roll = RAD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
+	
+	if(roll<0){
+		roll+=(float)360.0;
+	}
 	
 	return roll;
 }

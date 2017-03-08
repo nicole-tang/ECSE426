@@ -162,7 +162,7 @@ void SysTick_Handler(void)
 	systick_flag=1;
 }
 
-void EXTI0_IRQHandle(void)
+void EXTI0_IRQHandler(void)
 {
 	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
 	flag=1;
