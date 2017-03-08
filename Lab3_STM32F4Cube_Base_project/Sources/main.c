@@ -20,6 +20,9 @@
 
 extern int TIM_flag;
 /* Private variables ---------------------------------------------------------*/
+float* ax=0;
+float* ay=0;
+float* az=0;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config	(void);
@@ -35,6 +38,8 @@ void set_keypad_row(void);
 int get_column(void);
 int get_row(void);
 int get_key(void);
+int interpret_key(void);
+
 void initialize_timer(void);
 void change_pulse(int degree_difference);
 
@@ -62,10 +67,17 @@ int main(void)
 			//reset flag
 			TIM_flag = 0;
 			
-			int degree_difference=0;
+			reading_accel_values(ax,ay,az);
+			int pitch = pitch_tilt_angle(*ax,*ay,*az);
+			int roll = roll_tilt_angle(*ax,*ay,*az);
+			
+			int input_angle=interpret_key();
+			
+			int pitch_degree_difference=input_angle-pitch;
+			int roll_degree_difference=input_angle-roll;
 			
 			// for LED light intensity display
-			change_pulse(degree_difference);
+			change_pulse(pitch_degree_difference);
 			
 		}
 		
