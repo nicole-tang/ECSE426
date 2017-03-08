@@ -54,14 +54,13 @@ void led_display(int number,int digit);
 
 void initialize_timer(void);
 void change_pulse(int degree_difference);
-
+void turn_off_led_lights(char color);
 
 
 int main(void)
 {	
 	int displaying_count=0;
 	int digit_count=0;
-	int input_angle=0;
 	int input_pitch=0;
 	int input_roll=0;
 	
@@ -82,9 +81,9 @@ int main(void)
 	initialize_accel();
 	initialize_timer();
 
-	
+
 	input_pitch = interpret_key();
-	while(input_pitch > 180)
+	while(input_pitch > 180 || input_pitch<0)
 	{
 		printf("Please enter an angle between 0 and 180 degrees");
 		input_pitch = interpret_key();
@@ -98,7 +97,8 @@ int main(void)
 		input_roll = interpret_key();
 	}
 	printf("input_roll is %d",input_roll);
-	
+
+
 	while (1){
 		if(systick_flag==1){
 			systick_flag=0;
@@ -110,18 +110,12 @@ int main(void)
 				if(digit_count++>=4){
 					digit_count=0;
 				}
-					led_display(input_angle, digit_count);
+					led_display(input_pitch, digit_count);
 			}
 		}
 		if(flag == 1){
-	
 			//reset flag
 			flag = 0;
-			
-			// reading the inputs
-		
-			
-			
 			//processing		
 			reading_accel_values(acc);
 			calibration_accel(acc);
@@ -132,18 +126,22 @@ int main(void)
 			printf("pitch is %d\n",pitch);
 			printf("roll is %d\n",roll);
 			
-			int pitch_degree_difference=input_angle-pitch;
-			int roll_degree_difference=input_angle-roll;
+			int pitch_degree_difference=input_pitch-pitch;
+			int roll_degree_difference=input_roll-roll;
 //			printf("pitch_degree_difference is %d\n",pitch_degree_difference);
 //			printf("roll_degree_difference is %d\n",roll_degree_difference);
 			
 			// for LED light intensity display
-			
-			change_pulse(pitch_degree_difference);
-			led_lights('o');
-			led_lights('r');
-			led_lights('b');
-			led_lights('g');
+				change_pulse(pitch_degree_difference);
+
+				if(pitch_degree_difference<=5){
+					turn_off_led_lights('o');
+					turn_off_led_lights('b');
+				}
+				if(roll_degree_difference<=5){
+					turn_off_led_lights('r');
+					turn_off_led_lights('g');
+				}
 		}
 		
 	}
