@@ -130,29 +130,25 @@ int get_key(void)
 
 int interpret_key(void)
 {
-	
-	//int key = get_key();
 	int angle=0;
 	
 	while(1){
-	printf("in while loop");
 	int key = get_key();
-		
-		if((key!=12) || (key!=11) || (key!=-1)){
-			angle=angle*10;
-			angle=angle+key;
-		}else if(key==11){
-			if(angle>=10){
-				angle=angle%10;
+		if(key < 10){
+			angle = angle * 10;
+			angle = angle + key;
+		}else if(key == 11){
+			printf("The angle after * is pressed is %d\n", angle);
+			if(angle >= 10){
+				angle = angle / 10;
 			}else{
-				angle=0;
+				angle = 0;
 			}
-		}else if(key==12){
+		}else if(key == 12){
 			break;
 		}
 			printf("the angle entered is %d\n", angle);
 	}
 	return angle;
-
 }
 
