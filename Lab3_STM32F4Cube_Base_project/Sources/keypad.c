@@ -5,11 +5,11 @@
 #include <stdio.h>
 
 
-const char keypad_map[4][3] = {
+const int keypad_map[4][3] = {
 	{1, 2, 3},
 	{4, 5, 6},
 	{7, 8, 9},
-	{'*', 0, '#'}
+	{11, 0, 12}
 };
 
 
@@ -68,11 +68,11 @@ int get_column(void)
 	// Return the value of column pressed (pin of column pressed is going to be low)
 	if(HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_8) == GPIO_PIN_RESET)
 	{
-		return 1;
+		return 0;
 	}
 	else if(HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_9) == GPIO_PIN_RESET)
 	{
-		return 0;
+		return 1;
 	}
 	else if(HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_10) == GPIO_PIN_RESET)
 	{
@@ -95,7 +95,7 @@ int get_row(void)
 	}
 	else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_13) == GPIO_PIN_RESET)
 	{
-		return 3;
+		return 1;
 	}
 	else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_14) == GPIO_PIN_RESET)
 	{
@@ -103,7 +103,7 @@ int get_row(void)
 	}
 	else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_15) == GPIO_PIN_RESET)
 	{
-		return 1;
+		return 3;
 	}
 	else return -1;
 }
@@ -119,7 +119,7 @@ int get_key(void)
 	printf("the column is %d\n", column);
 	
 	if(row==-1 || column==-1){
-		key=-1;
+		key= -1;
 	}else{
 		key = keypad_map[row][column];
 	}
@@ -130,22 +130,27 @@ int get_key(void)
 
 int interpret_key(void)
 {
-	int key = get_key();
+	
+	//int key = get_key();
 	int angle=0;
 	
 	while(1){
-		if(key!='#'||key!='*'||key!=-1){
+	printf("in while loop");
+	int key = get_key();
+		
+		if((key!=12) || (key!=11) || (key!=-1)){
 			angle=angle*10;
 			angle=angle+key;
-		}else if(key=='*'){
+		}else if(key==11){
 			if(angle>=10){
 				angle=angle%10;
 			}else{
 				angle=0;
 			}
-		}else if(key=='#'){
+		}else if(key==12){
 			break;
 		}
+			printf("the angle entered is %d\n", angle);
 	}
 	return angle;
 

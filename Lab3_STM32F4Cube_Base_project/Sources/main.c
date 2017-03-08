@@ -117,6 +117,9 @@ int main(void)
 			int pitch = pitch_tilt_angle(acc);
 			int roll = roll_tilt_angle(acc);
 			
+//			get_key();
+			interpret_key();
+			
 //			printf("pitch is %d\n",pitch);
 //			printf("roll is %d\n",roll);
 			
