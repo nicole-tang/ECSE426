@@ -5,11 +5,11 @@
 #include <stdio.h>
 
 
-const uint8_t keypad_map[4][3] = {
+const char keypad_map[4][3] = {
 	{1, 2, 3},
 	{4, 5, 6},
 	{7, 8, 9},
-	{11, 0, 12}
+	{'*', 0, '#'}
 };
 
 
@@ -66,19 +66,19 @@ int get_column(void)
 	set_keypad_column();
 	
 	// Return the value of column pressed (pin of column pressed is going to be low)
-	if(!HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_8))
-	{
-		return 0;
-	}
-	else if(!HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_9))
+	if(HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_8) == GPIO_PIN_RESET)
 	{
 		return 1;
 	}
-	else if(!HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_10))
+	else if(HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_9) == GPIO_PIN_RESET)
+	{
+		return 0;
+	}
+	else if(HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_10) == GPIO_PIN_RESET)
 	{
 		return 2;
 	}
-	else return 8;
+	else return -1;
 }
 
 
@@ -89,23 +89,23 @@ int get_row(void)
 	set_keypad_row();
 	
 	// Return the value of row pressed (pin of row pressed is going to be low)
-	if(!HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_12))
+	if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_12) == GPIO_PIN_RESET)
 	{
 		return 0;
 	}
-	else if(!HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_13))
+	else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_13) == GPIO_PIN_RESET)
 	{
 		return 3;
 	}
-	else if(!HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_14))
+	else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_14) == GPIO_PIN_RESET)
 	{
 		return 2;
 	}
-	else if(!HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_15))
+	else if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_15) == GPIO_PIN_RESET)
 	{
-		return 2;
+		return 1;
 	}
-	else return 8;
+	else return -1;
 }
 
 
@@ -116,16 +116,7 @@ int get_key(void)
 	int column = get_column();
 	int row = get_row();
 	
-	if(column == 8)
-	{
-		return -1;
-	}
-	
-	if(row == 8)
-	{
-		return -1;
-	}
-	
+
 	key = keypad_map[row][column];
 
 	printf("the key is %d\n", key);
@@ -133,26 +124,26 @@ int get_key(void)
 }
 
 
-void interpret_key(int* values)
+int interpret_key(void)
 {
-	int key_pressed = 0;
 	int key = get_key();
+	int angle=0;
 	
-	if(key_pressed == 0)
-	{
-		if((key == -1) || (key == 11) || (key == 12))
-		{
-			
-		}	
-		else 
-		{
-			key_pressed++;
+	while(1){
+		if(key!='#'||key!='*'||key!=-1){
+			angle=angle*10;
+			angle=angle+key;
+		}else if(key=='*'){
+			if(angle>=10){
+				angle=angle%10;
+			}else{
+				angle=0;
+			}
+		}else if(key=='#'){
+			break;
 		}
-	
-	if(key_pressed == 1)
-	{
-		if((key == -1) || (key == 11) || (key == 12))
 	}
-	}
+	return angle;
+
 }
 
