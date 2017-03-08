@@ -83,12 +83,27 @@ float roll_tilt_angle(float *acc)
 }
 
 
-/*
-void calibration_accel(float *ax, float *ay, float *az)
+
+void calibration_accel(float *acc)
 {
+	// matrix found using Doc 15, Least Square Method
+	const float calib[4][3] = {
+	{1, 2, 3},
+	{4, 5, 6},
+	{7, 8, 9},
+	{11, 0, 12}
+	};
 	
+	float new_x, new_y, new_z;
+	
+	new_x = calib[0][0] * (acc[0]) + calib[1][0] * (acc[1]) + calib[2][0] * (acc[2]) + calib[3][0];
+	new_y = calib[0][1] * (acc[0]) + calib[1][1] * (acc[1]) + calib[2][1] * (acc[2]) + calib[3][1];
+	new_z = calib[0][2] * (acc[0]) + calib[1][2] * (acc[1]) + calib[2][2] * (acc[2]) + calib[3][2];
+	
+	acc[0] = new_x;
+	acc[1] = new_y;
+	acc[2] = new_z;
 }
-*/
 
 
 

@@ -15,6 +15,7 @@ void initialize_accel(void);
 void reading_accel_values(float *acc);
 float pitch_tilt_angle(float *acc);
 float roll_tilt_angle(float *acc);
+void calibration_accel(float *acc);
 
 	
 #endif

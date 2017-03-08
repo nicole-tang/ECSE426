@@ -39,6 +39,7 @@ void initialize_accel(void);
 void reading_accel_values(float *acc);
 float pitch_tilt_angle(float *acc);
 float roll_tilt_angle(float *acc);
+void calibration_accel(float *acc);
 void set_keypad_column(void);
 void set_keypad_row(void);
 int get_column(void);
@@ -123,6 +124,7 @@ int main(void)
 			
 			//processing		
 			reading_accel_values(acc);
+			calibration_accel(acc);
 			printf("at main, accel_values are %f,%f,%f\n",acc[0],acc[1],acc[2]);
 			int pitch = pitch_tilt_angle(acc);
 			int roll = roll_tilt_angle(acc);
