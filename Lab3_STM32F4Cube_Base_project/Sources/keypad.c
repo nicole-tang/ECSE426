@@ -108,6 +108,20 @@ int get_row(void)
 	else return -1;
 }
 
+int is_pressed(void){
+	if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_12) == GPIO_PIN_RESET ||
+	HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_13) == GPIO_PIN_RESET ||
+	HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_14) == GPIO_PIN_RESET ||
+	HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_15) == GPIO_PIN_RESET ||
+	HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_8) == GPIO_PIN_RESET ||
+	HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_9) == GPIO_PIN_RESET ||
+	HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_10) == GPIO_PIN_RESET){
+		return 1;
+	}else{
+		return 0;
+	}
+}
+
 
 // Function to return the key pressed
 int get_key(void)
@@ -141,28 +155,33 @@ int get_key(void)
 int interpret_key(void)
 {
 	int angle=0;
+	int prev_status=0;
+
 	
 	while(1){
 	int key = get_key();
-		
-		if(key == -1){
-			angle = angle;
-		}
-		else if(key < 10) {
-			angle = angle * 10;
-			angle = angle + key;
-		}else if(key == 11){
-		//	printf("The angle after * is pressed is %d\n", angle);
-			if(angle >= 10){
-				angle = angle / 10;
-			}else{
-				angle = 0;
+	int current_status=is_pressed;
+		if(prev_status!=current_status){
+			prev_status=current_status;
+			if(key == -1){
+				angle = angle;
 			}
-		}else if(key == 12){
-			angle = angle % 1000;
-			break;
+			else if(key < 10) {
+				angle = angle * 10;
+				angle = angle + key;
+			}else if(key == 11){
+			//	printf("The angle after * is pressed is %d\n", angle);
+				if(angle >= 10){
+					angle = angle / 10;
+				}else{
+					angle = 0;
+				}
+			}else if(key == 12){
+				angle = angle % 1000;
+				break;
+			}
+				printf("the angle entered is %d\n", angle);
 		}
-			printf("the angle entered is %d\n", angle);
 	}
 	return angle;
 }
