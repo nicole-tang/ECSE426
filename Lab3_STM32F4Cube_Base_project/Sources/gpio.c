@@ -118,28 +118,6 @@ void led_lights(char color){
 	}
 }
 
-void turn_off_led_lights(char color){
-	__HAL_RCC_GPIOD_CLK_ENABLE();
-	switch(color){
-		case 'o':
-	// orange LED
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET); 
-			break;
-	// red LED
-		case 'r':
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
-			break;
-	// blue LED
-		case 'b':
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET); 
-			break;
-	// green LED
-		case 'g':
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
-		break;
-	}
-}
-
 
 /*
 	7 segments display to STM32F4XX 

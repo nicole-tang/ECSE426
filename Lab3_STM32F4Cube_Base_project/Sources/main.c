@@ -17,6 +17,7 @@
 #include "keypad.h"
 #include "accelerometer.h"
 #include "main.h"
+#include "stdlib.h"
 
 #define DISPLAYINGCOUNTER 1
 
@@ -53,9 +54,8 @@ void led_unit(char degree);
 void led_display(int number,int digit);
 
 void initialize_timer(void);
-void change_pulse(int degree_difference);
-void turn_off_led_lights(char color);
-
+void change_pulse(int degree_difference, uint32_t Channel);
+void turn_off_led(uint32_t Channel);
 
 int main(void)
 {	
@@ -126,24 +126,55 @@ int main(void)
 			printf("pitch is %d\n",pitch);
 			printf("roll is %d\n",roll);
 			
-			int pitch_degree_difference=input_pitch-pitch;
-			int roll_degree_difference=input_roll-roll;
+			int pitch_degree_difference=abs(input_pitch-pitch);
+			int roll_degree_difference=abs(input_roll-roll);
 //			printf("pitch_degree_difference is %d\n",pitch_degree_difference);
 //			printf("roll_degree_difference is %d\n",roll_degree_difference);
 			
+			/*
+				TIM_CHANNEL_1 For green LED
+				TIM_CHANNEL_2 For orange LED
+				TIM_CHANNEL_3 For red LED
+				TIM_CHANNEL_4 For blue LED
+			*/
+			
 			// for LED light intensity display
-				change_pulse(pitch_degree_difference);
+			change_pulse(roll_degree_difference,TIM_CHANNEL_1);
+			change_pulse(pitch_degree_difference,TIM_CHANNEL_2);
+			change_pulse(roll_degree_difference,TIM_CHANNEL_3);
+			change_pulse(pitch_degree_difference,TIM_CHANNEL_4);
+			
 
+			
 				if(pitch_degree_difference<=5){
-					turn_off_led_lights('o');
-					turn_off_led_lights('b');
+					turn_off_led(TIM_CHANNEL_2);
+					turn_off_led(TIM_CHANNEL_4);
 				}
 				if(roll_degree_difference<=5){
-					turn_off_led_lights('r');
-					turn_off_led_lights('g');
+					turn_off_led(TIM_CHANNEL_1);
+					turn_off_led(TIM_CHANNEL_3);
 				}
+				
+				
 		}
 		
+	}
+}
+
+//Filter
+
+void FIR(float* InputArray, float* OutputArray,float* coeff, int Length, int Order){
+	//for all sample in the InputArray
+	for(int n=0;n<Length-Order-1;n++){
+		//temp variable to store the accumulative sum of the filter
+		float sum=0;
+		//iterate for the number of existing coefficients
+		for(int b=0;b<=Order;b++){
+			//multiply the content of pointer coeff to content of point input array
+			sum+= InputArray[n+b] * coeff[b];
+		}		
+		//store the result
+		OutputArray[n] = sum;
 	}
 }
 

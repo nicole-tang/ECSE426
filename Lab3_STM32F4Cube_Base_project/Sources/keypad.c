@@ -147,7 +147,7 @@ int get_key(void)
 		}
 	}
 */
-	printf("The key is %d\n", key);
+
 	return key;
 }
 
@@ -160,9 +160,10 @@ int interpret_key(void)
 	
 	while(1){
 	int key = get_key();
-	int current_status=is_pressed;
+	int current_status=is_pressed();
 		if(prev_status!=current_status){
 			prev_status=current_status;
+			printf("The key is %d\n", key);
 			if(key == -1){
 				angle = angle;
 			}
