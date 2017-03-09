@@ -43,8 +43,8 @@ TIM_OC_InitTypeDef TIM_OCHandle;
 
 void initialize_timer(void){
 	//enable the timer clock
-	__TIM4_CLK_ENABLE();
-	
+		__HAL_RCC_TIM4_CLK_ENABLE();
+
 	
 	//Create the Timer struct and fill it with configuration options 
 	/*
@@ -63,9 +63,12 @@ void initialize_timer(void){
 	*/
 	TIM_Handle.Instance = TIM4;																// general purpose timer for PWM generation; 4 capture channels; 16 bits, APB1 42MHz (max)
 																														// TIM4's output channel is connected to PD12-15 (the LEDs)
-	TIM_Handle.Init.Prescaler = 1;														// Specifies the prescaler value used to divide the TIM clock
+	TIM_Handle.Init.Prescaler = 100;														// Specifies the prescaler value used to divide the TIM clock
 	TIM_Handle.Init.CounterMode = TIM_COUNTERMODE_UP;					// timer counts up until the timer period is reached. Then the timer is reset.
-	TIM_Handle.Init.Period = 42000;														// period does not exceed 65535 (2^16-1) because TIM3 is 16 bit
+	TIM_Handle.Init.Period = 420;														// period does not exceed 65535 (2^16-1) because TIM3 is 16 bit
+	//TIM_Handle.Channel=TIM_CHANNEL_ALL;
+	TIM_Handle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	TIM_Handle.Init.RepetitionCounter = 0;
 	
 	// initialize TIM4
 	HAL_TIM_PWM_Init(&TIM_Handle);
@@ -81,11 +84,15 @@ void initialize_timer(void){
 	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,TIM_CHANNEL_3);					//For red LED
 	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,TIM_CHANNEL_4);					//For blue LED
 
-	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_ALL);		
+	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_4);
 }
 
 void change_pulse(int degree_difference,uint32_t Channel){
-	TIM_OCHandle.Pulse = ((int)(degree_difference/180))*42000;
+	TIM_OCHandle.Pulse = (degree_difference/180.0)*420;
+	//printf("degree_difference:%d & TIM_OCHandle.Pulse:%d\n",degree_difference,TIM_OCHandle.Pulse);
 	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,Channel);		
 	HAL_TIM_PWM_Start(&TIM_Handle,Channel);	
 }

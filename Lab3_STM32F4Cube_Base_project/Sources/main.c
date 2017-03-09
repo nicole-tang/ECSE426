@@ -63,6 +63,10 @@ int main(void)
 	int digit_count=0;
 	int input_pitch=0;
 	int input_roll=0;
+	int pitch=0;
+	int roll=0;
+	int pitch_degree_difference=0;
+	int roll_degree_difference=0;
 	
 	float acc[3] = {0,0,0}; // Empty array to store the acceleration values
 	
@@ -81,7 +85,7 @@ int main(void)
 	initialize_accel();
 	initialize_timer();
 
-
+/*
 	input_pitch = interpret_key();
 	while(input_pitch > 180 || input_pitch<0)
 	{
@@ -97,39 +101,28 @@ int main(void)
 		input_roll = interpret_key();
 	}
 	printf("input_roll is %d",input_roll);
+*/
 
-
+input_pitch=100;
+input_roll=95;
 	while (1){
-		if(systick_flag==1){
-			systick_flag=0;
-		// display only when time counter hits the number of displaying counter (1ms)
-			if(displaying_count++ >= DISPLAYINGCOUNTER){
-				//reset displaying_count
-				displaying_count=0;
-				//if the increments of digit goes beyond 4, reset it
-				if(digit_count++>=4){
-					digit_count=0;
-				}
-					led_display(input_pitch, digit_count);
-			}
-		}
 		if(flag == 1){
 			//reset flag
 			flag = 0;
+			
 			//processing		
 			reading_accel_values(acc);
 			calibration_accel(acc);
-			printf("at main, accel_values are %f,%f,%f\n",acc[0],acc[1],acc[2]);
-			int pitch = pitch_tilt_angle(acc);
-			int roll = roll_tilt_angle(acc);
 			
-			printf("pitch is %d\n",pitch);
-			printf("roll is %d\n",roll);
+			pitch = pitch_tilt_angle(acc);
+			roll = roll_tilt_angle(acc);
 			
-			int pitch_degree_difference=abs(input_pitch-pitch);
-			int roll_degree_difference=abs(input_roll-roll);
-//			printf("pitch_degree_difference is %d\n",pitch_degree_difference);
-//			printf("roll_degree_difference is %d\n",roll_degree_difference);
+
+			
+			pitch_degree_difference=abs(input_pitch-pitch);
+			roll_degree_difference=abs(input_roll-roll);
+			//printf("pitch_degree_difference is %d\n",pitch_degree_difference);
+			//printf("roll_degree_difference is %d\n",roll_degree_difference);
 			
 			/*
 				TIM_CHANNEL_1 For green LED
@@ -137,14 +130,12 @@ int main(void)
 				TIM_CHANNEL_3 For red LED
 				TIM_CHANNEL_4 For blue LED
 			*/
-			
-			// for LED light intensity display
 			change_pulse(roll_degree_difference,TIM_CHANNEL_1);
 			change_pulse(pitch_degree_difference,TIM_CHANNEL_2);
 			change_pulse(roll_degree_difference,TIM_CHANNEL_3);
-			change_pulse(pitch_degree_difference,TIM_CHANNEL_4);
-			
+			change_pulse(pitch_degree_difference,TIM_CHANNEL_4);		
 
+			
 			
 				if(pitch_degree_difference<=5){
 					turn_off_led(TIM_CHANNEL_2);
@@ -157,7 +148,16 @@ int main(void)
 				
 				
 		}
-		
+					// for LED light intensity display
+			if(HAL_GetTick() % 100 ==0){
+					printf("xyz,%f,%f,%f\n",acc[0],acc[1],acc[2]);
+					printf("pitch is %d\n",pitch);
+					printf("roll is %d\n",roll);
+					
+					//printf("pitch_degree_difference is %d\n",pitch_degree_difference);
+					//printf("roll_degree_difference is %d\n",roll_degree_difference);
+			}
+
 	}
 }
 

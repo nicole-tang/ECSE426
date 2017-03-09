@@ -60,7 +60,7 @@ float pitch_tilt_angle(float *acc)
 {
 	float pitch;
 	
-	pitch = 90-RAD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
+	pitch = 90+RAD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
 	
 	return pitch;
 }
@@ -71,7 +71,7 @@ float roll_tilt_angle(float *acc)
 {
 	float roll;
 	
-	roll = 90-RAD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
+	roll = 90+RAD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
 	
 	/*
 	if(roll<0){
@@ -81,8 +81,6 @@ float roll_tilt_angle(float *acc)
 	
 	return roll;
 }
-
-
 
 void calibration_accel(float *acc)
 {
@@ -104,6 +102,5 @@ void calibration_accel(float *acc)
 	acc[1] = new_y;
 	acc[2] = new_z;
 }
-
 
 

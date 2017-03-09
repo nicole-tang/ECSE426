@@ -64,11 +64,12 @@ void initialize_GPIO_digits(void){
 
 void initialize_GPIO_led_lights(void){
 	__HAL_RCC_GPIOD_CLK_ENABLE();
+	__TIM4_CLK_ENABLE();
 	GPIO_InitTypeDef GPIO_init;
 	GPIO_init.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
 	GPIO_init.Mode = GPIO_MODE_AF_PP;
-	GPIO_init.Pull = GPIO_PULLUP;
-	GPIO_init.Speed = GPIO_SPEED_FREQ_LOW;
+	GPIO_init.Pull = GPIO_NOPULL;
+	GPIO_init.Speed = GPIO_SPEED_FREQ_MEDIUM;
 	GPIO_init.Alternate = GPIO_AF2_TIM4; // controlled by TIM4
 	
 	HAL_GPIO_Init(GPIOD,&GPIO_init);
