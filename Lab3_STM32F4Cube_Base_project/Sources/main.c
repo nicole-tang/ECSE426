@@ -26,22 +26,40 @@
 int systick_flag;
 int flag;
 
-/* Private variables ---------------------------------------------------------*/
-float* ax;
-float* ay;
-float* az;
+/* Variables -------------------------------------------------------------------*/
+float* ax, ay, az;
+int digit_count = 0;
+int input_pitch = 0;
+int input_roll = 0;
+int pitch = 0, filtered_pitch = 0;
+int roll = 0, filtered_roll = 0;
+int pitch_degree_difference = 0;
+int roll_degree_difference = 0;
+float acc[3] = {0,0,0}; // Empty array to store the acceleration values
+
+//to be configured
+float coeff[5]={0.35,0.20,0.15,0.17,0.15};
+float PitchInputArray[]={0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.};
+float RollInputArray[]={0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.};
+int Length = 40;
+int Order = 4;
+void store_result(float* InputArray, int Length, float newData);
+float FIR_C(float* InputArray, float* coeff, int Length, int Order);
+
+
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config	(void);
-void initialize_GPIO_segments(void);
-void initialize_GPIO_digits(void);
+
 void initialize_GPIO_led_lights(void);
 void deinitialize_GPIO_button(void);
+
 void initialize_accel(void);
 void reading_accel_values(float *acc);
 float pitch_tilt_angle(float *acc);
 float roll_tilt_angle(float *acc);
 void calibration_accel(float *acc);
+
 void set_keypad_column(void);
 void set_keypad_row(void);
 int get_column(void);
@@ -50,31 +68,9 @@ int get_key(void);
 int interpret_key(void);
 int reset_key(void);
 
-
-void led_lights(char color);
-void led_number(int number);
-void led_unit(char degree);
-void led_display(int number,int digit);
-
 void initialize_timer(void);
 void change_pulse(int degree_difference, uint32_t Channel);
 void turn_off_led(uint32_t Channel);
-
-	int displaying_count=0;
-	int digit_count=0;
-	int input_pitch=0;
-	int input_roll=0;
-	int pitch=0;
-	int roll=0;
-	int pitch_degree_difference=0;
-	int roll_degree_difference=0;
-	float acc[3] = {0,0,0}; // Empty array to store the acceleration values
-//to be configured
-	float coeff[]={1,1,1,1,1};
-	float PitchInputArray[]={0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.};
-	float RollInputArray[]={0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.};
-	int Length=(sizeof InputArray/sizeof(float));
-	int Order=(sizeof coeff/sizeof(float))-1;
 
 
 int main(void)
@@ -93,27 +89,30 @@ int main(void)
 	initialize_accel();
 	initialize_timer();
 
-	printf("Please enter an inpult angle for the pitch\n");
+	// prompt for input
+	printf("Please enter an input angle for the pitch\n");
 	input_pitch = interpret_key();	
-	printf("\ninput_pitch is %d\n",input_pitch);
+	printf("\nThe input angle for the pitch is %d\n",input_pitch);
 	
-	printf("\nPlease enter an inpult angle for the roll\n");
+	printf("\nPlease enter an input angle for the roll\n");
 	input_roll = interpret_key();	
-	printf("\ninput_roll is %d\n",input_roll);
-
+	printf("\nThe input angle for the roll is %d\n",input_roll);
+	
 
 	while (1){
+		// If '*' is pressed for a long time, reset the input angle operation
+
 		if(reset_key() == 1)
 		{
-			printf("Please enter an inpult angle for the pitch\n");
+			printf("Please enter an input angle for the pitch\n");
 			input_pitch = interpret_key();	
-			printf("\ninput_pitch is %d\n",input_pitch);
+			printf("\nThe input angle for the pitch is %d\n",input_pitch);
 			
-			printf("\nPlease enter an inpult angle for the roll\n");
+			printf("\nPlease enter an input angle for the roll\n");
 			input_roll = interpret_key();	
-			printf("\ninput_roll is %d\n",input_roll);
+			printf("\nThe input angle for the roll is %d\n",input_roll);
 		}
-		
+		// flag from data ready interrupt
 		else if(flag == 1){
 			//reset flag
 			flag = 0;
@@ -126,21 +125,16 @@ int main(void)
 			roll = roll_tilt_angle(acc);
 
 			//uncomment this to print unfiltered result
-			printf("%d,%d",pitch,roll);
+			printf("%d,%d\n",pitch,roll);
 
 			store_result(PitchInputArray, Length, pitch);
 			store_result(RollInputArray, Length, roll);
 
-			pitch=FIR_C(PitchInputArray,coeff,Length,Order);
-			roll=FIR_C(RollInputArray,coeff,Length,Order);			
+			filtered_pitch = FIR_C(PitchInputArray,coeff,Length,Order);
+			filtered_roll = FIR_C(RollInputArray,coeff,Length,Order);			
 
-			//uncomment this to print filtered result
-			//printf("%d,%d",pitch,roll);
-
-			pitch_degree_difference=abs(input_pitch-pitch);
-			roll_degree_difference=abs(input_roll-roll);
-			//printf("pitch_degree_difference is %d\n",pitch_degree_difference);
-			//printf("roll_degree_difference is %d\n",roll_degree_difference);
+			pitch_degree_difference=abs(input_pitch-filtered_pitch);
+			roll_degree_difference=abs(input_roll-filtered_roll);
 			
 			/*
 				TIM_CHANNEL_1 For green LED
@@ -153,8 +147,7 @@ int main(void)
 			change_pulse(roll_degree_difference,TIM_CHANNEL_3);
 			change_pulse(pitch_degree_difference,TIM_CHANNEL_4);		
 
-			
-			
+			// if degree different is less than 5, turn off the led
 				if(pitch_degree_difference<=5){
 					turn_off_led(TIM_CHANNEL_2);
 					turn_off_led(TIM_CHANNEL_4);
@@ -163,8 +156,6 @@ int main(void)
 					turn_off_led(TIM_CHANNEL_1);
 					turn_off_led(TIM_CHANNEL_3);
 				}
-				
-				
 		}
 	}
 }
@@ -188,6 +179,7 @@ float FIR_C(float* InputArray, float* coeff, int Length, int Order){
 	return OutputArray[0];
 }
 
+
 void store_result(float* InputArray, int Length, float newData){
 //shift array
 for (int i=Length-1;i>0;i--){
@@ -195,7 +187,8 @@ for (int i=Length-1;i>0;i--){
 }
 // put the new data onto the last element of the array
 	InputArray[Length-1]=newData;
-}
+} 
+
 
 /** System Clock Configuration*/
 void SystemClock_Config(void){

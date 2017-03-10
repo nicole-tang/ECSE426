@@ -91,12 +91,13 @@ void initialize_timer(void){
 }
 
 void change_pulse(int degree_difference,uint32_t Channel){
+	//the percentage of degree difference to period determines the pulse
 	TIM_OCHandle.Pulse = (degree_difference/180.0)*420;
-	//printf("degree_difference:%d & TIM_OCHandle.Pulse:%d\n",degree_difference,TIM_OCHandle.Pulse);
 	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,Channel);		
 	HAL_TIM_PWM_Start(&TIM_Handle,Channel);	
 }
 
+// to turn off led
 void turn_off_led(uint32_t Channel){
 	HAL_TIM_PWM_Stop(&TIM_Handle, Channel);
 }

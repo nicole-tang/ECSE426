@@ -116,7 +116,8 @@ int get_key(void)
 	int column = get_column();
 	int row = get_row();
 
-	if( (row == -1) || (column == -1)){
+	
+	if( (row == -1) || (column == -1)){ // If key is not pressed
 		key = -1;
 	}else{
 		key = keypad_map[row][column];
@@ -145,14 +146,14 @@ int interpret_key(void)
 				angle = angle + key;
 				counter++;
 				unpressed_counter = 0;
-				printf("%d", key);
+				printf("%d\n", angle);
 			}
 			else if(counter > 0 && key == 11 && unpressed_counter > 100) // If '*' is pressed
 			{ 
 				counter--;
 				unpressed_counter = 0;
 				angle = angle / 10;
-				printf("\n%d\n",angle);
+				printf("%d\n",angle);
 			}
 			else if(key == 12 && unpressed_counter > 100 && counter > 0) // If '#' is pressed
 			{	
@@ -166,6 +167,9 @@ int interpret_key(void)
 					{
 						break_off = 1;
 					}
+			}//if * is pressed for a long time, reset the entire system
+			else if(reset_key()==1){
+				NVIC_SystemReset();
 			}
 		}
 	return angle;
@@ -180,7 +184,8 @@ int reset_key(void)
 	{
 		int counter = 0;
 		int reset_counter = 0;
-		while(counter < 20000)
+		
+		while(counter < 100000)
 		{
 			if(get_key() == 11)
 			{
@@ -189,7 +194,7 @@ int reset_key(void)
 			counter++;
 		}
 		
-		if(reset_counter > 10000)
+		if(reset_counter > 50000)
 		{
 			return 1;
 		} 

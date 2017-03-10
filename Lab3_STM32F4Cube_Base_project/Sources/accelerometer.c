@@ -10,13 +10,14 @@ LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_DRY;
 // Initialize accelerometer
 void initialize_accel(void)
 {	
+	// Enabling the clock for GPIO port E
 	__HAL_RCC_GPIOE_CLK_ENABLE();
 	
-	/* LIS3DSH struct */
+	/* LIS3DSH struct to configure */
 	LIS3DSH_InitType.Power_Mode_Output_DataRate = LIS3DSH_DATARATE_25; // Output data 25 times per second (frequency of 25Hz)
 	LIS3DSH_InitType.Axes_Enable = LIS3DSH_XYZ_ENABLE; // Enable x, y, and z axes
-	LIS3DSH_InitType.Continous_Update = LIS3DSH_ContinousUpdate_Disabled; //
-	LIS3DSH_InitType.AA_Filter_BW = LIS3DSH_AA_BW_50; //
+	LIS3DSH_InitType.Continous_Update = LIS3DSH_ContinousUpdate_Disabled; 
+	LIS3DSH_InitType.AA_Filter_BW = LIS3DSH_AA_BW_50; 
 	LIS3DSH_InitType.Full_Scale = LIS3DSH_FULLSCALE_2; // Full scale of +/- 2g by default
 	LIS3DSH_InitType.Self_Test = LIS3DSH_SELFTEST_NORMAL; // Normal mode by default
 	
@@ -30,10 +31,9 @@ void initialize_accel(void)
 	LIS3DSH_DataReadyInterruptConfig(&LIS3DSH_DRY);
 	
 	/* Initialize the value for GPIO port E pin 0 */
-	
 	GPIO_InitTypeDef GPIO_Init;
 	GPIO_Init.Pin = GPIO_PIN_0;
-	GPIO_Init.Mode = GPIO_MODE_IT_FALLING;
+	GPIO_Init.Mode = GPIO_MODE_IT_FALLING; // External Interrupt Mode with Falling edge trigger detection
 	GPIO_Init.Pull = GPIO_PULLUP;
 	GPIO_Init.Speed = GPIO_SPEED_FREQ_HIGH;
 	
@@ -43,7 +43,6 @@ void initialize_accel(void)
 	HAL_NVIC_EnableIRQ(EXTI0_IRQn); // Enable IRQ for the EXTI Line 0 (LSI3DSH generates INT1 interrupt on GPIOE.0)
 	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 1); // Set priority for EXTI0_IRQ
 
-//	HAL_NVIC_ClearPendingIRQ(EXTI0_IRQn);
 }
 
 
@@ -59,9 +58,7 @@ void reading_accel_values(float *acc)
 float pitch_tilt_angle(float *acc)
 {
 	float pitch;
-	
 	pitch = 90+RAD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
-	
 	return pitch;
 }
 
@@ -70,15 +67,7 @@ float pitch_tilt_angle(float *acc)
 float roll_tilt_angle(float *acc)
 {
 	float roll;
-	
 	roll = 90+RAD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
-	
-	/*
-	if(roll<0){
-		roll+=(float)360.0;
-	}
-	*/
-	
 	return roll;
 }
 
