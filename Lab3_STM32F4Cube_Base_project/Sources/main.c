@@ -125,13 +125,18 @@ int main(void)
 			pitch = pitch_tilt_angle(acc);
 			roll = roll_tilt_angle(acc);
 
+			//uncomment this to print unfiltered result
+			printf("%d,%d",pitch,roll);
+
 			store_result(PitchInputArray, Length, pitch);
 			store_result(RollInputArray, Length, roll);
 
 			pitch=FIR_C(PitchInputArray,coeff,Length,Order);
 			roll=FIR_C(RollInputArray,coeff,Length,Order);			
 
-			
+			//uncomment this to print filtered result
+			//printf("%d,%d",pitch,roll);
+
 			pitch_degree_difference=abs(input_pitch-pitch);
 			roll_degree_difference=abs(input_roll-roll);
 			//printf("pitch_degree_difference is %d\n",pitch_degree_difference);
