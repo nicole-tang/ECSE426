@@ -13,5 +13,6 @@
 /* Exported functions ------------------------------------------------------- */
 void initialize_timer(void);
 void change_pulse(int degree_difference, uint32_t Channel);
+void turn_off_led(uint32_t Channel);
 
 #endif /* __TIMER_H */

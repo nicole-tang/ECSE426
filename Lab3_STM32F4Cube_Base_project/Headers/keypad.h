@@ -10,6 +10,6 @@ int get_column(void);
 int get_row(void);
 int get_key(void);
 int interpret_key(void);
-
+int reset_key(void);
 
 #endif

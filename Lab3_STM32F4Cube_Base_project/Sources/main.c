@@ -18,6 +18,7 @@
 #include "accelerometer.h"
 #include "main.h"
 #include "stdlib.h"
+#include "timer.h"
 
 #define DISPLAYINGCOUNTER 1
 
@@ -47,6 +48,8 @@ int get_column(void);
 int get_row(void);
 int get_key(void);
 int interpret_key(void);
+int reset_key(void);
+
 
 void led_lights(char color);
 void led_number(int number);
@@ -57,8 +60,6 @@ void initialize_timer(void);
 void change_pulse(int degree_difference, uint32_t Channel);
 void turn_off_led(uint32_t Channel);
 
-int main(void)
-{	
 	int displaying_count=0;
 	int digit_count=0;
 	int input_pitch=0;
@@ -67,9 +68,11 @@ int main(void)
 	int roll=0;
 	int pitch_degree_difference=0;
 	int roll_degree_difference=0;
-	
 	float acc[3] = {0,0,0}; // Empty array to store the acceleration values
-	
+
+int main(void)
+{	
+
   /* MCU Configuration----------------------------------------------------------*/
 
   HAL_Init();
@@ -78,35 +81,33 @@ int main(void)
   SystemClock_Config();
 	
   /* Initialize all configured peripherals */
-	initialize_GPIO_segments();
-	initialize_GPIO_digits();
 	initialize_GPIO_led_lights();
 	deinitialize_GPIO_button();
 	initialize_accel();
 	initialize_timer();
 
-/*
-	input_pitch = interpret_key();
-	while(input_pitch > 180 || input_pitch<0)
-	{
-		printf("Please enter an angle between 0 and 180 degrees");
-		input_pitch = interpret_key();
-	}
-	printf("input_pitch is %d",input_pitch);
+	printf("Please enter an inpult angle for the pitch\n");
+	input_pitch = interpret_key();	
+	printf("\ninput_pitch is %d\n",input_pitch);
 	
-	input_roll=interpret_key();
-	while(input_roll > 180)
-	{
-		printf("Please enter an angle between 0 and 180 degrees");
-		input_roll = interpret_key();
-	}
-	printf("input_roll is %d",input_roll);
-*/
+	printf("\nPlease enter an inpult angle for the roll\n");
+	input_roll = interpret_key();	
+	printf("\ninput_roll is %d\n",input_roll);
 
-input_pitch=100;
-input_roll=95;
+
 	while (1){
-		if(flag == 1){
+		if(reset_key() == 1)
+		{
+			printf("Please enter an inpult angle for the pitch\n");
+			input_pitch = interpret_key();	
+			printf("\ninput_pitch is %d\n",input_pitch);
+			
+			printf("\nPlease enter an inpult angle for the roll\n");
+			input_roll = interpret_key();	
+			printf("\ninput_roll is %d\n",input_roll);
+		}
+		
+		else if(flag == 1){
 			//reset flag
 			flag = 0;
 			
@@ -150,9 +151,9 @@ input_roll=95;
 		}
 					// for LED light intensity display
 			if(HAL_GetTick() % 100 ==0){
-					printf("xyz,%f,%f,%f\n",acc[0],acc[1],acc[2]);
-					printf("pitch is %d\n",pitch);
-					printf("roll is %d\n",roll);
+					//printf("xyz,%f,%f,%f\n",acc[0],acc[1],acc[2]);
+					//printf("pitch is %d\n",pitch);
+					//printf("roll is %d\n",roll);
 					
 					//printf("pitch_degree_difference is %d\n",pitch_degree_difference);
 					//printf("roll_degree_difference is %d\n",roll_degree_difference);

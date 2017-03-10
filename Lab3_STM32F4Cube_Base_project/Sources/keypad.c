@@ -108,20 +108,6 @@ int get_row(void)
 	else return -1;
 }
 
-int is_pressed(void){
-	if(HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_12) == GPIO_PIN_RESET ||
-	HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_13) == GPIO_PIN_RESET ||
-	HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_14) == GPIO_PIN_RESET ||
-	HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_15) == GPIO_PIN_RESET ||
-	HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_8) == GPIO_PIN_RESET ||
-	HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_9) == GPIO_PIN_RESET ||
-	HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_10) == GPIO_PIN_RESET){
-		return 1;
-	}else{
-		return 0;
-	}
-}
-
 
 // Function to return the key pressed
 int get_key(void)
@@ -129,61 +115,91 @@ int get_key(void)
 	int key;
 	int column = get_column();
 	int row = get_row();
-	int counter_unpressed = 0;
-	printf("the row is %d\n", row);
-	printf("the column is %d\n", column);
-	
-	if(row==-1 || column==-1){
-		key= -1;
+
+	if( (row == -1) || (column == -1)){
+		key = -1;
 	}else{
 		key = keypad_map[row][column];
 	}
-/*
-	while(keypad_map[get_row()][get_column()] == -1)
-	{
-		counter_unpressed++;
-		if(counter_unpressed > 100){
-		return get_key();
-		}
-	}
-*/
-
 	return key;
 }
 
 
+// Function to relate input digits to input angle
 int interpret_key(void)
 {
-	int angle=0;
-	int prev_status=0;
-
+	int angle = 0;
+	int unpressed_counter = 0;
+	int counter = 0;
+	int break_off = 0;
 	
-	while(1){
+	while(break_off == 0){
 	int key = get_key();
-	int current_status=is_pressed();
-		if(prev_status!=current_status){
-			prev_status=current_status;
-			printf("The key is %d\n", key);
-			if(key == -1){
-				angle = angle;
+			if(key == -1)
+			{
+				unpressed_counter++; // Counter increments when nothing is pressed
 			}
-			else if(key < 10) {
+			else if(counter < 3 && key < 10 && unpressed_counter > 100) // If a digit between 0 and 9 is pressed 
+			{ 
 				angle = angle * 10;
 				angle = angle + key;
-			}else if(key == 11){
-			//	printf("The angle after * is pressed is %d\n", angle);
-				if(angle >= 10){
-					angle = angle / 10;
-				}else{
-					angle = 0;
-				}
-			}else if(key == 12){
-				angle = angle % 1000;
-				break;
+				counter++;
+				unpressed_counter = 0;
+				printf("%d", key);
 			}
-				printf("the angle entered is %d\n", angle);
+			else if(counter > 0 && key == 11 && unpressed_counter > 100) // If '*' is pressed
+			{ 
+				counter--;
+				unpressed_counter = 0;
+				angle = angle / 10;
+				printf("\n%d\n",angle);
+			}
+			else if(key == 12 && unpressed_counter > 100 && counter > 0) // If '#' is pressed
+			{	
+				if(angle > 180)
+					{
+						printf("\nPlease enter an angle between 0 and 180\n");
+						angle = 0;
+						counter = 0;
+					}		
+					else 
+					{
+						break_off = 1;
+					}
+			}
 		}
-	}
 	return angle;
 }
 
+
+//Function to reset input angle operation
+int reset_key(void)
+{
+	int key = get_key();
+	if(key == 11)
+	{
+		int counter = 0;
+		int reset_counter = 0;
+		while(counter < 20000)
+		{
+			if(get_key() == 11)
+			{
+				reset_counter++;
+			}
+			counter++;
+		}
+		
+		if(reset_counter > 10000)
+		{
+			return 1;
+		} 
+		else 
+		{
+			return 0;
+		}
+	} 
+	else 
+	{
+		return 0;
+	}
+}
