@@ -69,6 +69,13 @@ void turn_off_led(uint32_t Channel);
 	int pitch_degree_difference=0;
 	int roll_degree_difference=0;
 	float acc[3] = {0,0,0}; // Empty array to store the acceleration values
+//to be configured
+	float coeff[]={1,1,1,1,1};
+	float PitchInputArray[]={0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.};
+	float RollInputArray[]={0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.};
+	int Length=(sizeof InputArray/sizeof(float));
+	int Order=(sizeof coeff/sizeof(float))-1;
+
 
 int main(void)
 {	
@@ -117,7 +124,12 @@ int main(void)
 			
 			pitch = pitch_tilt_angle(acc);
 			roll = roll_tilt_angle(acc);
-			
+
+			store_result(PitchInputArray, Length, pitch);
+			store_result(RollInputArray, Length, roll);
+
+			pitch=FIR_C(PitchInputArray,coeff,Length,Order);
+			roll=FIR_C(RollInputArray,coeff,Length,Order);			
 
 			
 			pitch_degree_difference=abs(input_pitch-pitch);
@@ -149,22 +161,13 @@ int main(void)
 				
 				
 		}
-					// for LED light intensity display
-			if(HAL_GetTick() % 100 ==0){
-					//printf("xyz,%f,%f,%f\n",acc[0],acc[1],acc[2]);
-					//printf("pitch is %d\n",pitch);
-					//printf("roll is %d\n",roll);
-					
-					//printf("pitch_degree_difference is %d\n",pitch_degree_difference);
-					//printf("roll_degree_difference is %d\n",roll_degree_difference);
-			}
-
 	}
 }
 
 //Filter
 
-void FIR(float* InputArray, float* OutputArray,float* coeff, int Length, int Order){
+float FIR_C(float* InputArray, float* coeff, int Length, int Order){
+	float OutputArray[Length-Order-1];
 	//for all sample in the InputArray
 	for(int n=0;n<Length-Order-1;n++){
 		//temp variable to store the accumulative sum of the filter
@@ -177,6 +180,16 @@ void FIR(float* InputArray, float* OutputArray,float* coeff, int Length, int Ord
 		//store the result
 		OutputArray[n] = sum;
 	}
+	return OutputArray[0];
+}
+
+void store_result(float* InputArray, int Length, float newData){
+//shift array
+for (int i=Length-1;i>0;i--){
+	InputArray[i-1]=InputArray[i];
+}
+// put the new data onto the last element of the array
+	InputArray[Length-1]=newData;
 }
 
 /** System Clock Configuration*/
