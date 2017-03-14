@@ -62,7 +62,7 @@ void initialize_GPIO_digits(void){
 }
 
 
-void initialize_GPIO_led_lights(void){
+void initialize_GPIO_led_lights_PWM(void){
 	__HAL_RCC_GPIOD_CLK_ENABLE();
 	__TIM4_CLK_ENABLE();
 	GPIO_InitTypeDef GPIO_init;
@@ -73,13 +73,26 @@ void initialize_GPIO_led_lights(void){
 	GPIO_init.Alternate = GPIO_AF2_TIM4; // controlled by TIM4
 	
 	HAL_GPIO_Init(GPIOD,&GPIO_init);
-//	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15,GPIO_PIN_RESET);
 }
 
 //  de-initialize and reset PA0 for maximum assurance according to requirements
 void deinitialize_GPIO_button(void){
 	HAL_GPIO_DeInit(GPIOA,GPIO_PIN_0);
 }
+
+void initialize_GPIO_dp(void){
+	__HAL_RCC_GPIOB_CLK_ENABLE();
+	GPIO_InitTypeDef GPIO_init;
+	GPIO_init.Pin = GPIO_PIN_1;
+	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_init.Pull = GPIO_NOPULL;
+	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
+	
+	HAL_GPIO_Init(GPIOB,&GPIO_init);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);
+}
+
+
 
 void led_lights(char color){
 	__HAL_RCC_GPIOD_CLK_ENABLE();

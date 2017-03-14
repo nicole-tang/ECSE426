@@ -64,6 +64,22 @@ void SystemClock_Config(void) {
   HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
 }
 
+
+// Conversion from voltage to celsius
+float tempConversion(float voltage){
+	float V_25 = 0.76;
+	float avg_slope = 2.5/1000;
+	return ((voltage-V_25)/avg_slope)+25;
+}
+
+//converting celsius to farenheit
+float celsius_to_farenheit(float celsius){
+	
+	printf("result from %f celsius_to_farenheit is:%f",celsius,((celsius*9/5)+32));
+	return ((celsius*9/5)+32);
+}
+
+
 /**
   * Main function
   */
@@ -82,3 +98,6 @@ int main (void) {
   
 	osKernelStart();                          /* start thread execution         */
 }
+
+
+
