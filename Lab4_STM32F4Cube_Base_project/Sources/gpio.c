@@ -94,44 +94,6 @@ void initialize_GPIO_dp(void){
 
 
 
-void led_lights(char color){
-	__HAL_RCC_GPIOD_CLK_ENABLE();
-	switch(color){
-		case 'o':
-	// orange LED
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_SET); 
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);	
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
-//			printf("ORANGE LED should be ON \n"); 		
-			break;
-	// red LED
-		case 'r':
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);	
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET); 
-//			printf("RED LED should be ON \n"); 
-			break;
-	// blue LED
-		case 'b':
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET); 
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET);	
-			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET); 
-//			printf("BLUE LED should be ON \n"); 	
-			break;
-	// green LED
-		case 'g':
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);	
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_13, GPIO_PIN_RESET); 		
-//		printf("GREEN LED should be ON \n"); 	
-		break;
-	}
-}
-
 
 /*
 	7 segments display to STM32F4XX 
@@ -265,9 +227,31 @@ void led_number(int number){
 }
 
 
-void led_unit(char degree){
-	switch(degree){	
+void led_unit(char c_f_o){
+	switch(c_f_o){	
 	//Display character c
+		case 'c':
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);				// A
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_5, GPIO_PIN_RESET);			// B
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, GPIO_PIN_RESET);			// C
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_SET);				// D
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);				// E
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);				// F
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET);		// G
+//			printf("C should be displayed \n");
+			break;
+			
+		case 'f':
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);				// A
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_5, GPIO_PIN_RESET);			// B
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, GPIO_PIN_RESET);			// C
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_7, GPIO_PIN_RESET);			// D
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_8, GPIO_PIN_SET);				// E
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_SET);				// F
+			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);			// G
+//			printf("F should be displayed \n");
+			break;
+		
 		case 'o':
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);				// A
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_5, GPIO_PIN_SET);				// B
@@ -280,7 +264,7 @@ void led_unit(char degree){
 			break;
 	}
 }
-void led_display(int number,int digit){
+void led_display(int number,int digit,char unit){
 	switch(digit){
 		case 1:
 			// toggle the display
@@ -315,7 +299,7 @@ void led_display(int number,int digit){
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET); 
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET);
 			// display the degree unit 
-			led_unit('o');
+			led_unit(unit);
 			break;
 		
 		default:

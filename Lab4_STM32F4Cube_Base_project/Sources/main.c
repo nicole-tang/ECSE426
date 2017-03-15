@@ -11,11 +11,15 @@
 #include "stm32f4xx_hal.h"              // Keil::Device:STM32Cube HAL:Common
 #include "cmsis_os.h"                   // ARM::CMSIS:RTOS:Keil RTX
 #include "RTE_Components.h"             // Component selection
+#include "adc.h"
 
 extern void initializeLED_IO			(void);
 extern void start_Thread_LED			(void);
 extern void Thread_LED(void const *argument);
 extern osThreadId tid_Thread_LED;
+
+void initialize_ADC(void);
+
 
 /**
 	These lines are mandatory to make CMSIS-RTOS RTX work with te new Cube HAL
@@ -65,19 +69,7 @@ void SystemClock_Config(void) {
 }
 
 
-// Conversion from voltage to celsius
-float tempConversion(float voltage){
-	float V_25 = 0.76;
-	float avg_slope = 2.5/1000;
-	return ((voltage-V_25)/avg_slope)+25;
-}
 
-//converting celsius to farenheit
-float celsius_to_farenheit(float celsius){
-	
-	printf("result from %f celsius_to_farenheit is:%f",celsius,((celsius*9/5)+32));
-	return ((celsius*9/5)+32);
-}
 
 
 /**
@@ -96,6 +88,10 @@ int main (void) {
   start_Thread_LED();                       /* Create LED thread              */
 	/* User codes ends here*/
   
+	initialize_ADC();
+	
+	
+	
 	osKernelStart();                          /* start thread execution         */
 }
 
