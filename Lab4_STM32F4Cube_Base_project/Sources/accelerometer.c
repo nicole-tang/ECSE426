@@ -14,7 +14,7 @@ LIS3DSH_InitTypeDef LIS3DSH_InitType;
 LIS3DSH_DRYInterruptConfigTypeDef LIS3DSH_DRY;
 
 
-// Accelerometer thread
+// Thread declaration
 void Thread_acceleration(void const *argument);
 osThreadId tid_Thread_acceleration; // Thread ID
 osThreadDef(Thread_acceleration, osPriorityAboveNormal, 1, 800); // Thread name, priority, instances, stack size
@@ -79,6 +79,7 @@ void initialize_accel(void)
 	/* Enable INT1 line to read interrupt signal */
 	HAL_NVIC_EnableIRQ(EXTI0_IRQn); // Enable IRQ for the EXTI Line 0 (LSI3DSH generates INT1 interrupt on GPIOE.0)
 	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 1); // Set priority for EXTI0_IRQ
+
 }
 
 
@@ -94,7 +95,7 @@ void reading_accel_values(float *acc)
 float pitch_tilt_angle(float *acc)
 {
 	float pitch;
-	pitch = 90 + RAD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
+	pitch = 90+RAD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
 	return pitch;
 }
 
@@ -103,7 +104,7 @@ float pitch_tilt_angle(float *acc)
 float roll_tilt_angle(float *acc)
 {
 	float roll;
-	roll = 90 + RAD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
+	roll = 90+RAD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
 	return roll;
 }
 
