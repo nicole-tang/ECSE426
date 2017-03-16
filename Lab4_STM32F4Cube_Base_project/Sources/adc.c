@@ -43,7 +43,9 @@
 
 // For thread
 void Thread_ADC (void const *argument);                 // thread function
-osThreadId tid_Thread_ADC;                              // thread id
+osThreadId tid_Thread_ADC;     
+
+// thread id
 osThreadDef(Thread_ADC, osPriorityHigh, 1, 0);
 
 ADC_HandleTypeDef ADC1_Handle;
@@ -82,7 +84,7 @@ int start_Thread_ADC (void) {
 
 
  /*----------------------------------------------------------------------------
-*      Thread  'LED_Thread': Toggles LED
+*      Thread  'Thread_ADC'
  *---------------------------------------------------------------------------*/
 	void Thread_ADC (void const *argument) {
 		float voltage = 0.0;

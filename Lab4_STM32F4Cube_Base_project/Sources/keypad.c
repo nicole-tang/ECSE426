@@ -4,7 +4,7 @@
 #include "keypad.h"
 #include <stdio.h>
 #include "cmsis_os.h"                   // ARM::CMSIS:RTOS:Keil RTX
-
+#include "display.h"
 
 const int keypad_map[4][3] = {
 	{1, 2, 3},
@@ -14,11 +14,7 @@ const int keypad_map[4][3] = {
 };
 
 
-// Variables
-int temp_mode = 0;
-
-
-// For thread
+// Keypad thread
 void Thread_keypad(void const *argument); // Thread function
 osThreadId tid_Thread_keypad; // Thread id
 osThreadDef(Thread_keypad, osPriorityNormal, 1, 200); // Thread name, priority, instance, stack size
@@ -145,64 +141,6 @@ int get_key(void)
 }
 
 
-// Keypad thread function
-void Thread_keypad(void const *argument)
-{
-	int angle = 0;
-	int unpressed_counter = 0;
-	int counter = 0;
-	int key = get_key();
-	int break_off = 0;
-	
-	int is_pressed = 0;
-	
-	while(1)
-	{
-		osSignalWait(0x0003, osWaitForever);
-		
-			while(break_off == 0){
-			int key = get_key();
-			if(key == -1)
-			{
-				unpressed_counter++; // Counter increments when nothing is pressed
-			}
-			else if(counter < 3 && key < 10 && unpressed_counter > 100) // If a digit between 0 and 9 is pressed 
-			{ 
-				angle = angle * 10;
-				angle = angle + key;
-				counter++;
-				unpressed_counter = 0;
-				printf("%d\n", angle);
-			}
-			else if(counter > 0 && key == 11 && unpressed_counter > 100) // If '*' is pressed
-			{ 
-				counter--;
-				unpressed_counter = 0;
-				angle = angle / 10;
-				printf("%d\n",angle);
-			}
-			else if(key == 12 && unpressed_counter > 100 && counter > 0) // If '#' is pressed
-			{
-				if(angle > 180)
-					{
-						printf("\nPlease enter an angle between 0 and 180\n");
-						angle = 0;
-						counter = 0;
-					}		
-					else 
-					{
-						temp_mode = 1; // To change modes from acc to temp
-						break_off = 1;
-					}
-			}
-			else if(reset_key()==1){ // If '*' is pressed for a long time, reset the entire system
-				NVIC_SystemReset();
-			}
-		}
-	}
-}
-
-
 //Function to reset input angle operation
 int reset_key(void)
 {
@@ -235,3 +173,89 @@ int reset_key(void)
 		return 0;
 	}
 }
+
+
+// Function to relate input digits to input angle
+int interpret_key(void)
+{
+	int angle = 0;
+	int unpressed_counter = 0;
+	int counter = 0;
+	int break_off = 0;
+	
+	while(break_off == 0){
+	int key = get_key();
+			if(key == -1)
+			{
+				unpressed_counter++; // Counter increments when nothing is pressed
+			}
+			else if(counter < 3 && key < 10 && unpressed_counter > 100) // If a digit between 0 and 9 is pressed 
+			{ 
+				angle = angle * 10;
+				angle = angle + key;
+				counter++;
+				unpressed_counter = 0;
+				printf("%d\n", angle);
+			}
+			else if(counter > 0 && key == 11 && unpressed_counter > 100) // If '*' is pressed
+			{ 
+				counter--;
+				unpressed_counter = 0;
+				angle = angle / 10;
+				printf("%d\n",angle);
+			}
+			else if(key == 12 && unpressed_counter > 100 && counter > 0) // If '#' is pressed
+			{	
+				if(angle > 180)
+					{
+						printf("\nPlease enter an angle between 0 and 180\n");
+						angle = 0;
+						counter = 0;
+					}		
+					else 
+					{
+						break_off = 1;
+					}
+			}
+			else if(reset_key()==1) // If '*' is pressed for a long time, reset the entire system
+			{
+				NVIC_SystemReset();
+			}
+		}
+	return angle;
+}
+
+
+/*
+void Thread_keypad(void const *argument)
+{
+	int key;
+	is_pressed = 0;
+	
+	while(1)
+	{
+		osSignalWait(0x0003, osWaitForever);
+		key = getKey();
+
+		if((is_pressed == 0) && (key != -1))
+		{
+			is_pressed = 1;
+			if(key < 10)
+			{	
+				mode = 1; //acceleration mode
+			}
+
+			if(key == 12)
+			{
+				mode = 2; //temperature mode 
+			}
+		}
+		
+		if((is_pressed == 1) && (key == -1))
+		{
+			is_pressed = 0;
+		}
+	}
+}
+*/
+

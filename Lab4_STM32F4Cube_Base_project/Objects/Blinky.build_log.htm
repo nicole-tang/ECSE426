@@ -28,21 +28,24 @@ Project File Date:  03/16/2017
 *** Using Compiler 'V5.05 update 2 (build 169)', folder: 'C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Lab4'
 compiling main.c...
-compiling Thread_LED.c...
-Sources\Thread_LED.c(55): warning:  #1-D: last line of file ends without a newline
-   *---------------------------------------------------------------------------*/
-Sources\Thread_LED.c: 1 warning, 0 errors
+.\Headers\display.h(44): warning:  #1295-D: Deprecated declaration seven_segment_flash - give arg types
+  void seven_segment_flash();
+.\Headers\display.h(45): warning:  #1295-D: Deprecated declaration seven_segment_stop_flash - give arg types
+  void seven_segment_stop_flash();
+.\Headers\display.h(54): warning:  #1-D: last line of file ends without a newline
+  #endif
+Sources\main.c: 3 warnings, 0 errors
 compiling gpio.c...
 compiling adc.c...
 .\Headers\display.h(44): warning:  #1295-D: Deprecated declaration seven_segment_flash - give arg types
   void seven_segment_flash();
 .\Headers\display.h(45): warning:  #1295-D: Deprecated declaration seven_segment_stop_flash - give arg types
   void seven_segment_stop_flash();
-.\Headers\display.h(50): warning:  #1-D: last line of file ends without a newline
+.\Headers\display.h(54): warning:  #1-D: last line of file ends without a newline
   #endif
-Sources\adc.c(105): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+Sources\adc.c(107): warning:  #1035-D: single-precision operand implicitly converted to double-precision
                                 voltage_temp=(voltage*3.0)/4096.0;
-Sources\adc.c(156): warning:  #188-D: enumerated type mixed with another type
+Sources\adc.c(158): warning:  #188-D: enumerated type mixed with another type
         ADC1_Handle.State = 0;
 Sources\adc.c: 5 warnings, 0 errors
 compiling display.c...
@@ -50,26 +53,38 @@ compiling display.c...
   void seven_segment_flash();
 .\Headers\display.h(45): warning:  #1295-D: Deprecated declaration seven_segment_stop_flash - give arg types
   void seven_segment_stop_flash();
-.\Headers\display.h(50): warning:  #1-D: last line of file ends without a newline
+.\Headers\display.h(54): warning:  #1-D: last line of file ends without a newline
   #endif
-Sources\display.c: 3 warnings, 0 errors
+Sources\display.c(25): warning:  #550-D: variable "flash_counter" was set but never used
+        int is_flashing, flash_counter, flash_on, flash_off;
+Sources\display.c(25): warning:  #550-D: variable "flash_on" was set but never used
+        int is_flashing, flash_counter, flash_on, flash_off;
+Sources\display.c(25): warning:  #550-D: variable "flash_off" was set but never used
+        int is_flashing, flash_counter, flash_on, flash_off;
+Sources\display.c: 6 warnings, 0 errors
 compiling accelerometer.c...
-accelerometer.c(98): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        pitch = 90+
+Sources\accelerometer.c(97): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        pitch = 90 + 
 AD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
-accelerometer.c(107): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        roll = 90+
+Sources\accelerometer.c(106): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+        roll = 90 + 
 AD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
-accelerometer.c: 2 warnings, 0 errors
+Sources\accelerometer.c: 2 warnings, 0 errors
 compiling keypad.c...
-keypad.c(157): warning:  #177-D: variable "is_pressed" was declared but never referenced
-        int is_pressed = 0;
-keypad.c(237): warning:  #1-D: last line of file ends without a newline
-  }
-keypad.c: 2 warnings, 0 errors
+.\Headers\display.h(44): warning:  #1295-D: Deprecated declaration seven_segment_flash - give arg types
+  void seven_segment_flash();
+.\Headers\display.h(45): warning:  #1295-D: Deprecated declaration seven_segment_stop_flash - give arg types
+  void seven_segment_stop_flash();
+.\Headers\display.h(54): warning:  #1-D: last line of file ends without a newline
+  #endif
+Sources\keypad.c: 3 warnings, 0 errors
 linking...
-Program Size: Code=19508 RO-data=700 RW-data=100 ZI-data=7900  
-".\Objects\Blinky.axf" - 0 Error(s), 13 Warning(s).
+.\Objects\Blinky.axf: Error: L6218E: Undefined symbol filtered_temp (referred from display.o).
+.\Objects\Blinky.axf: Error: L6218E: Undefined symbol mode (referred from display.o).
+.\Objects\Blinky.axf: Error: L6218E: Undefined symbol Thread_keypad (referred from keypad.o).
+Not enough information to list image symbols.
+Finished: 1 information, 0 warning and 3 error messages.
+".\Objects\Blinky.axf" - 3 Error(s), 19 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -190,6 +205,7 @@ Package Vendor: Keil
 
    * Component: Keil::Device:STM32Cube HAL:GPIO:1.4.2
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_gpio.c
+Target not created.
 </pre>
 </body>
 </html>

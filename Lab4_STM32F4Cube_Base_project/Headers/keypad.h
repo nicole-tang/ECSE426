@@ -9,11 +9,13 @@ void set_keypad_row(void);
 int get_column(void);
 int get_row(void);
 int get_key(void);
-// int interpret_key(void);
+int interpret_key(void);
 int reset_key(void);
 
 void Thread_keypad(void const *argument);
 int start_Thread_keypad(void);
+
+extern int is_pressed;
 
 #endif
 

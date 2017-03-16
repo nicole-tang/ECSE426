@@ -49,6 +49,7 @@ void initialize_GPIO_segments(void){
 //	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10,GPIO_PIN_RESET);
 }
 
+
 void initialize_GPIO_digits(void){
 	__HAL_RCC_GPIOD_CLK_ENABLE();
 	GPIO_InitTypeDef GPIO_init;
@@ -75,10 +76,12 @@ void initialize_GPIO_led_lights_PWM(void){
 	HAL_GPIO_Init(GPIOD,&GPIO_init);
 }
 
+
 //  de-initialize and reset PA0 for maximum assurance according to requirements
 void deinitialize_GPIO_button(void){
 	HAL_GPIO_DeInit(GPIOA,GPIO_PIN_0);
 }
+
 
 void initialize_GPIO_dp(void){
 	__HAL_RCC_GPIOB_CLK_ENABLE();
@@ -286,7 +289,6 @@ void led_display(int number,int digit,char unit){
 			// toggle the display
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_RESET); 
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_SET);
-			
 			// the number to display and lower dot as decimal point
 			led_number(((number%100)-(number%10))/10);
 

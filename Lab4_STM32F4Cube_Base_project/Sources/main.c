@@ -13,6 +13,8 @@
 #include "RTE_Components.h"             // Component selection
 #include "adc.h"
 #include "keypad.h"
+#include "accelerometer.h"
+#include "display.h"
 
 extern void initializeLED_IO			(void);
 extern void start_Thread_LED			(void);
@@ -84,16 +86,22 @@ int main (void) {
 
   SystemClock_Config();                     /* Configure the System Clock     */
 
+	initialize_ADC();
+	
 	/* User codes goes here*/
   initializeLED_IO();                       /* Initialize LED GPIO Buttons    */
   start_Thread_LED();                       /* Create LED thread              */
 	
+	
 	start_Thread_keypad();
+	start_Thread_acceleration();
+	start_Thread_ADC();
+	start_Thread_display();
 	
-	
+
 	/* User codes ends here*/
   
-	initialize_ADC();
+	
 	
 	
 	

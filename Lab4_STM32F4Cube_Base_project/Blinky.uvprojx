@@ -450,12 +450,12 @@
             <File>
               <FileName>accelerometer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>E:\accelerometer.c</FilePath>
+              <FilePath>.\Sources\accelerometer.c</FilePath>
             </File>
             <File>
               <FileName>keypad.c</FileName>
               <FileType>1</FileType>
-              <FilePath>E:\keypad.c</FilePath>
+              <FilePath>.\Sources\keypad.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -921,12 +921,12 @@
             <File>
               <FileName>accelerometer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>E:\accelerometer.c</FilePath>
+              <FilePath>.\Sources\accelerometer.c</FilePath>
             </File>
             <File>
               <FileName>keypad.c</FileName>
               <FileType>1</FileType>
-              <FilePath>E:\keypad.c</FilePath>
+              <FilePath>.\Sources\keypad.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1392,12 +1392,12 @@
             <File>
               <FileName>accelerometer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>E:\accelerometer.c</FilePath>
+              <FilePath>.\Sources\accelerometer.c</FilePath>
             </File>
             <File>
               <FileName>keypad.c</FileName>
               <FileType>1</FileType>
-              <FilePath>E:\keypad.c</FilePath>
+              <FilePath>.\Sources\keypad.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -35,4 +35,8 @@
 .\objects\display.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\display.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h
 .\objects\display.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\display.o: .\Headers\adc.h
+.\objects\display.o: .\Headers\main.h
+.\objects\display.o: .\Headers\stm32f4xx_it.h
+.\objects\display.o: .\Headers\main.h
 .\objects\display.o: .\Headers\display.h

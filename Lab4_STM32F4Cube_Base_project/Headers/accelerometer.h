@@ -6,7 +6,7 @@
 #include <math.h>
 #include "lis3dsh.h"
 #include <stdint.h>
-
+#include "cmsis_os.h"  
 
 #define PI 3.141592653589793
 #define RAD_TO_DEG(x) ((x*180.0) / PI)

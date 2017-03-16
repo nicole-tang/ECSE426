@@ -45,6 +45,10 @@ void seven_segment_flash();
 void seven_segment_stop_flash();
 void seven_segment_set_temp(float filtered_temp);
 
-extern int temp_mode, acc_mode;
+int start_Thread_display(void);
+void Thread_display(void const *argument);
+
+
+extern int mode, submode;
 
 #endif
