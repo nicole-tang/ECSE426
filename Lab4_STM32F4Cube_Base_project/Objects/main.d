@@ -35,3 +35,5 @@
 .\objects\main.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h
 .\objects\main.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\main.o: .\Headers\adc.h
+.\objects\main.o: .\Headers\keypad.h
+.\objects\main.o: .\Headers\gpio.h

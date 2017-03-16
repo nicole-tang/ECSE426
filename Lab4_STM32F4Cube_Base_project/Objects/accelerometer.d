@@ -1,4 +1,4 @@
-.\objects\accelerometer.o: E:\accelerometer.c
+.\objects\accelerometer.o: accelerometer.c
 .\objects\accelerometer.o: .\Accelerometer\inc\lis3dsh.h
 .\objects\accelerometer.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
 .\objects\accelerometer.o: P:\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h
