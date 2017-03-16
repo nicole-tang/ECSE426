@@ -17,5 +17,9 @@ float pitch_tilt_angle(float *acc);
 float roll_tilt_angle(float *acc);
 void calibration_accel(float *acc);
 
+int start_Thread_acceleration(void);
+void Thread_acceleration(void const *argument);
+
+extern int pitch_output, roll_output;
 	
 #endif

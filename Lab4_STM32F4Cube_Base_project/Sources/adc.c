@@ -36,15 +36,17 @@
 #include "adc.h"
 #include "cmsis_os.h"                   // ARM::CMSIS:RTOS:Keil RTX
 #include "stm32f4xx_hal.h"
+#include "display.h"
 
 #define TEMPERATURETHRESHOLD 30
 #define DISPLAYINGCOUNTER 100
 
+// For thread
 void Thread_ADC (void const *argument);                 // thread function
 osThreadId tid_Thread_ADC;                              // thread id
 osThreadDef(Thread_ADC, osPriorityHigh, 1, 0);
-ADC_HandleTypeDef ADC1_Handle;
 
+ADC_HandleTypeDef ADC1_Handle;
 
 // Conversion from voltage to celsius
 float tempConversion(float voltage){

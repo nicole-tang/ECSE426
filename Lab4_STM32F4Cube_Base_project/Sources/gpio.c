@@ -93,8 +93,6 @@ void initialize_GPIO_dp(void){
 }
 
 
-
-
 /*
 	7 segments display to STM32F4XX 
 	PIN E4 = A 
@@ -130,7 +128,8 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_9, GPIO_PIN_RESET); //F
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET); //G
 //			printf("1 should be displayed \n");
-			break;		
+			break;
+		
 		//Display number 2
 		case 2:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A
@@ -142,6 +141,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
 //		printf("2 should be displayed \n");
 			break;		
+		
 		//Display number 3
 		case 3:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A;
@@ -153,6 +153,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
 //			printf("3 should be displayed \n");
 			break;		
+		
 		//Display number 4
 		case 4:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_RESET); //A
@@ -164,6 +165,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
 //			printf("4 should be displayed \n");
 			break;		
+		
 		//Display number 5
 		case 5:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A
@@ -175,6 +177,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
 //			printf("5 should be displayed \n");
 			break;		
+		
 		//Display number 6
 		case 6:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A
@@ -186,6 +189,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);  //G
 //			printf("6 should be displayed \n");
 			break;		
+		
 		//Display number 7
 		case 7:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A
@@ -197,6 +201,7 @@ void led_number(int number){
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_RESET); //G
 //			printf("7 should be displayed \n");
 			break;	
+		
 		//Display number 8
 		case 8:
 			HAL_GPIO_WritePin(GPIOE, GPIO_PIN_4, GPIO_PIN_SET);   //A
@@ -264,6 +269,8 @@ void led_unit(char c_f_o){
 			break;
 	}
 }
+
+
 void led_display(int number,int digit,char unit){
 	switch(digit){
 		case 1:

@@ -14,6 +14,7 @@
 void Thread_LED (void const *argument);                 // thread function
 osThreadId tid_Thread_LED;                              // thread id
 osThreadDef(Thread_LED, osPriorityNormal, 1, 0);
+
 GPIO_InitTypeDef 				LED_configuration;
 
 /*----------------------------------------------------------------------------

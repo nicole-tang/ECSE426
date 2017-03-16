@@ -12,6 +12,7 @@
 #include "cmsis_os.h"                   // ARM::CMSIS:RTOS:Keil RTX
 #include "RTE_Components.h"             // Component selection
 #include "adc.h"
+#include "keypad.h"
 
 extern void initializeLED_IO			(void);
 extern void start_Thread_LED			(void);
@@ -86,6 +87,10 @@ int main (void) {
 	/* User codes goes here*/
   initializeLED_IO();                       /* Initialize LED GPIO Buttons    */
   start_Thread_LED();                       /* Create LED thread              */
+	
+	start_Thread_keypad();
+	
+	
 	/* User codes ends here*/
   
 	initialize_ADC();

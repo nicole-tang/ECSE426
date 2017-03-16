@@ -1,8 +1,8 @@
 .\objects\adc.o: Sources\adc.c
 .\objects\adc.o: .\Headers\adc.h
 .\objects\adc.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h
-.\objects\adc.o: P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h
-.\objects\adc.o: P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\RTE_Components.h
+.\objects\adc.o: P:\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h
+.\objects\adc.o: P:\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\RTE_Components.h
 .\objects\adc.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h
 .\objects\adc.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h
 .\objects\adc.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
@@ -35,3 +35,4 @@
 .\objects\adc.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
 .\objects\adc.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h
 .\objects\adc.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\adc.o: .\Headers\display.h
