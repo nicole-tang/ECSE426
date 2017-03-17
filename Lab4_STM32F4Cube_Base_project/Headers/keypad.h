@@ -2,7 +2,6 @@
 #define _KEYPAD_H
 
 #include "stm32f4xx_hal.h"
-#include "gpio.h"
 
 void set_keypad_column(void);
 void set_keypad_row(void);
