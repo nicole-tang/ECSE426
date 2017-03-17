@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "cmsis_os.h"                   // ARM::CMSIS:RTOS:Keil RTX
 #include "display.h"
+#include "lis3dsh.h"
 
 const int keypad_map[4][3] = {
 	{1, 2, 3},
@@ -16,25 +17,10 @@ const int keypad_map[4][3] = {
 // Variables
 int enter_counter = 0;
 int angle = 0;
-
-// Keypad thread
-void Thread_keypad(void const *argument); // Thread function
-osThreadId tid_Thread_keypad; // Thread id
-osThreadDef(Thread_keypad, osPriorityNormal, 1, 200); // Thread name, priority, instance, stack size
-
+int key_is_pressed = 0;
 
 GPIO_InitTypeDef GPIO_init1;
 GPIO_InitTypeDef GPIO_init2;
-
-
-// Start thread
-int start_Thread_keypad(void)
-{
-	tid_Thread_keypad = osThreadCreate(osThread(Thread_keypad), NULL);
-	if(!tid_Thread_keypad) return (-1);
-	return 0;
-}
-
 
 // Initialization of pins to allow column read
 void set_keypad_column(void)
@@ -179,7 +165,7 @@ int reset_key(void)
 
 
 // Function to relate input digits to input angle
-void Thread_keypad(void const *argument)
+int interpret_key(void)
 {
 	int key;
 	int unpressed_counter = 0;
@@ -187,10 +173,8 @@ void Thread_keypad(void const *argument)
 	int break_off = 0;
 	
 	while(1)
-	{
-		osSignalWait(0x3, osWaitForever);	
-		
-		while(break_off == 0){
+	{		
+		if(key_is_pressed == 1){
 		key = get_key();
 				if(key == -1)
 				{
@@ -198,37 +182,30 @@ void Thread_keypad(void const *argument)
 				}
 				else if(counter < 3 && key < 10 && unpressed_counter > 100) // If a digit between 0 and 9 is pressed 
 				{ 
-					mode = 2; // change into accelerometer mode
 					angle = angle * 10;
 					angle = angle + key;
 					counter++;
 					unpressed_counter = 0;
-					//printf("%d\n", angle);
+					printf("%d\n", angle);
 				}
 				else if(counter > 0 && key == 11 && unpressed_counter > 100) // If '*' is pressed
 				{ 
 					counter--;
 					unpressed_counter = 0;
 					angle = angle / 10;
-					//printf("%d\n",angle);
+					printf("%d\n",angle);
 				}
 				else if(key == 12 && unpressed_counter > 100 && counter > 0) // If '#' is pressed
 				{	
-					enter_counter++;
-					if(enter_counter % 2 == 0)
-					{
-						mode = 1; // change mode from accelerometer to temperature
-					}
-					
 					if(angle > 180)
 						{
-							//printf("\nPlease enter an angle between 0 and 180\n");
+							printf("\nPlease enter an angle between 0 and 180\n");
 							angle = 0;
 							counter = 0;
 						}		
 						else 
 						{
-							break_off = 1;
+							key_is_pressed = 0;
 						}
 				}
 				else if(reset_key()==1) // If '* is pressed for a long time, reset the entire system
@@ -237,5 +214,27 @@ void Thread_keypad(void const *argument)
 				}
 			}
 		}
+	return angle;
+}
+
+
+// Function to check if key is pressed
+int is_key_pressed(void)
+{
+	int key;
+	int unpressed_counter = 0;
+		while(key_is_pressed == 0)
+		{
+			key = get_key();
+			if(key == -1)
+			{
+				unpressed_counter++; // Counter increments when nothing is pressed
+			}
+			else if((key < 10) && (unpressed_counter > 100))
+			{
+				key_is_pressed = 1;
+			}
+		}
+		return key_is_pressed;
 }
 
