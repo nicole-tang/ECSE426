@@ -16,6 +16,7 @@ void Thread_keypad(void const *argument);
 int start_Thread_keypad(void);
 
 extern int is_pressed;
+extern int angle;
 
 #endif
 

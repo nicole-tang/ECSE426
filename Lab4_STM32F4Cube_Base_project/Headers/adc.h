@@ -10,8 +10,12 @@
 #define _ADC_H
 
 #include "stm32f4xx_hal.h"
+<<<<<<< HEAD
 #include "main.h"
 #include "cmsis_os.h"   
+=======
+
+>>>>>>> 6c3ac3963c31dcee3b6b17e6137875243465773f
 void Thread_ADC (void const *argument); 
 float tempConversion(float voltage);
 int FIR_C(float* InputArray, float* OutputArray,float* coeff, int Length, int Order);
