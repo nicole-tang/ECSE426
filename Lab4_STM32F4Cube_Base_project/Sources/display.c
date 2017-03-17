@@ -85,13 +85,3 @@ void Thread_display(void const *argument)
 	}
 }
 
-void seven_segment_flash(){
-	
-}
-
-void seven_segment_stop_flash(){
-}
-
-void seven_segment_set_temp(float filtered_temp){
-}
-

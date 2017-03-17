@@ -50,6 +50,10 @@ osThreadDef(Thread_ADC, osPriorityHigh, 1, 0);
 
 ADC_HandleTypeDef ADC1_Handle;
 
+//variables
+float temperature=0.0;
+
+
 // Conversion from voltage to celsius
 float tempConversion(float voltage){
 	float V_25 = 0.76;
@@ -89,7 +93,7 @@ int start_Thread_ADC (void) {
 	void Thread_ADC (void const *argument) {
 		float voltage = 0.0;
 		float voltage_temp = 0.0;
-		float temperature=0.0;
+
 		float filtered_temp=0.0;
 		float coeff[]={0.6,0.5,0.01,0.3,0.5};
 		int displaying_count=0;
@@ -99,28 +103,18 @@ int start_Thread_ADC (void) {
 		osEvent event;
 		while(1){
 			//wait for an infinite time until the signal from ADC(0x1) is set.
-			event = osSignalWait(0x1, osWaitForever);
+			osSignalWait(0x1, osWaitForever);
+			// HAL_ADC_Start starts ADC conversions when the polling method is used
+			HAL_ADC_Start(&ADC1_Handle);
 			//osEventSignal: signal occurred, value.signals contains the signal flags
 			//these signal flags are cleared.
-			if((event.status == osEventSignal) && (HAL_ADC_PollForConversion(&ADC1_Handle, 10000) == HAL_OK)){
+			if(HAL_ADC_PollForConversion(&ADC1_Handle, 10000) == HAL_OK){
 				voltage = HAL_ADC_GetValue(&ADC1_Handle);
 				voltage_temp=(voltage*3.0)/4096.0;
 				temperature=tempConversion(voltage_temp);
 				
 				FIR_C(&temperature, &filtered_temp,coeff,1,(sizeof coeff/sizeof(float))-1);
-				
-				if(temperature>TEMPERATURETHRESHOLD){
-					seven_segment_flash();
-				}else if(temperature<TEMPERATURETHRESHOLD){
-					seven_segment_stop_flash();	
-				}
-				
-				// display only when time counter hits the number of displaying counter 
-			if(displaying_count++ >= DISPLAYINGCOUNTER){
-				//reset displaying_count
-				displaying_count=0;
-				seven_segment_set_temp(filtered_temp);				
-			}
+	
 				
 			}
 	}
@@ -166,8 +160,7 @@ void initialize_ADC(void){
 	
 	HAL_ADC_ConfigChannel(&ADC1_Handle, &channelConfig);
 	HAL_ADC_Init(&ADC1_Handle);
-	// HAL_ADC_Start starts ADC conversions when the polling method is used
-	HAL_ADC_Start(&ADC1_Handle);
+
 }
 	
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

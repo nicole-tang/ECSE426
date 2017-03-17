@@ -18,7 +18,7 @@ int start_Thread_ADC (void);
 void Thread_ADC (void const *argument);
 void initialize_ADC(void);
 
-extern float filtered_temp;
+extern float temperature;
 
 #endif
 

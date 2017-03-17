@@ -41,10 +41,6 @@ A (A   SEGMENT   ): BIT 4  => GPIO_PIN_4
 
 #define FLASH_PERIOD				70
 
-void seven_segment_flash();
-void seven_segment_stop_flash();
-void seven_segment_set_temp(float filtered_temp);
-
 int start_Thread_display(void);
 void Thread_display(void const *argument);
 
