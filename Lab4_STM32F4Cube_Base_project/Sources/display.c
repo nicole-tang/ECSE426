@@ -14,6 +14,75 @@ osThreadId tid_Thread_display;                              // thread id
 osThreadDef(Thread_display, osPriorityNormal, 1, 0);
 
 
+int start_Thread_display(void)
+{
+	printf("start_Thread_display\n");
+	tid_Thread_display = osThreadCreate(osThread(Thread_display), NULL);
+	if(!tid_Thread_display) return (-1);
+	return (0);
+}
+
+
+void Thread_display(void const *argument)
+{
+	printf("Thread_display\n");
+	int is_flashing, flash_counter, flash_on, flash_off, display_value;
+	
+	flash_counter = 0;
+	is_flashing = 0;
+	flash_on = FLASH_INTERVAL;
+	flash_off = FLASH_INTERVAL * 2;
+	int displaying_count=0;
+	int digit_count=0;
+	
+	
+	initialize_GPIO_dp();
+	initialize_GPIO_digits();
+	initialize_GPIO_segments();
+	
+	while(1)
+	{
+		if(filtered_temp > HEAT_THRESHOLD)
+		{
+			is_flashing = 1;
+		} else {
+			is_flashing = 0;
+		}
+		
+		if(mode == 1){	//temperature mode 
+			display_value = filtered_temp;
+		}else if(mode == 2){	//accelerometer mode
+			display_value = angle;
+		}
+		
+		if(is_flashing == 1){
+
+				//if the increments of digit goes beyond 4, reset it
+				if(digit_count++>=4){
+					digit_count=0;
+				}
+					osSignalWait(0x5,osWaitForever);
+					led_display(display_value, digit_count,'o',mode);
+			//	printf("%d should be displaying\n", display_value);
+
+					//osDelay(50);
+				//	turn_off_seven_segment();
+				//	osDelay(50);
+		}else{
+
+				//if the increments of digit goes beyond 4, reset it
+				if(digit_count++>=4){
+					digit_count=0;
+				}
+							osSignalWait(0x4,osWaitForever);
+					led_display(display_value, digit_count,'o',mode);
+					//		printf("%d should be displaying\n", display_value);
+		}
+			
+	}
+}
+
+
 /*initialization*/
 // Initialize GPIO (General-purpose input/output)
 void initialize_GPIO_segments(void){
@@ -39,12 +108,13 @@ void initialize_GPIO_digits(void){
 	HAL_GPIO_Init(GPIOD,&GPIO_init);
 }
 
+
 void initialize_GPIO_dp(void){
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 	GPIO_InitTypeDef GPIO_init;
 	GPIO_init.Pin = GPIO_PIN_1;
 	GPIO_init.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_init.Pull = GPIO_NOPULL;
+	GPIO_init.Pull = GPIO_PULLDOWN;
 	GPIO_init.Speed = GPIO_SPEED_FREQ_HIGH;
 	
 	HAL_GPIO_Init(GPIOB,&GPIO_init);
@@ -230,7 +300,7 @@ void led_unit(char c_f_o){
 
 
 void led_display(int number,int digit,char unit,int mode){
-	if(mode==1){//temperature mode
+	if(mode == 1){//temperature mode
 	switch(digit){
 		case 1:
 			// toggle the display
@@ -325,7 +395,7 @@ void led_display(int number,int digit,char unit,int mode){
 		
 		default:
 			break;
-	}
+		}
 	}
 }
 
@@ -336,71 +406,5 @@ void turn_off_seven_segment(void){
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_RESET);
 }
 
-int start_Thread_display(void)
-{
-	tid_Thread_display = osThreadCreate(osThread(Thread_display), NULL);
-	if(!tid_Thread_display) return (-1);
-	return (0);
-}
-
-void Thread_display(void const *argument)
-{
-	int is_flashing, flash_counter, flash_on, flash_off,display_value;
-	
-	flash_counter = 0;
-	is_flashing = 0;
-	flash_on = FLASH_INTERVAL;
-	flash_off = FLASH_INTERVAL * 2;
-	
-	initialize_GPIO_dp();
-	initialize_GPIO_digits();
-	initialize_GPIO_segments();
-	
-	while(1)
-	{
-		
-		if(filtered_temp > HEAT_THRESHOLD)
-		{
-			is_flashing = 1;
-		} else {
-			is_flashing = 0;
-		}
-		
-		/*
-			if mode = temperature, 
-				display_value = temperature; 
-			else 
-				display_value=angle;
-			
-			if flash=true
-				display(value) for x seconds
-				turn off for x seconds
-			else 
-				display(value)
-		*/
-		
-		if(mode==1){	//temperature mode 
-			display_value=filtered_temp;
-		}else if(mode==2){	//accelerometer mode
-			display_value=angle;
-		}
-		
-		if(is_flashing ==1){
-			led_display(display_value,1,'o',mode);
-			led_display(display_value,2,'o',mode);
-			led_display(display_value,3,'o',mode);
-			led_display(display_value,4,'o',mode);
-			osDelay(50);
-			turn_off_seven_segment();
-			osDelay(50);
-		}else{
-			led_display(display_value,1,'o',mode);
-			led_display(display_value,2,'o',mode);
-			led_display(display_value,3,'o',mode);
-			led_display(display_value,4,'o',mode);
-		}
-			
-	}
-}
 
 

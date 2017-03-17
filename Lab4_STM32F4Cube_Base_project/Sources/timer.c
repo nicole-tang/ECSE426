@@ -44,6 +44,7 @@ TIM_HandleTypeDef TIM3_Handle;
 TIM_HandleTypeDef TIM4_Handle;
 TIM_OC_InitTypeDef TIM_OCHandle;
 int counter=0;
+int counter2=0;
 
 void initialize_timer(void){
 	//enable the timer clock
@@ -90,9 +91,10 @@ void initialize_timer(void){
 	HAL_TIM_PWM_Start(&TIM4_Handle,TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start(&TIM4_Handle,TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start(&TIM4_Handle,TIM_CHANNEL_4);
+	
 	/*--Initialize another timer------------------------*/
 	__HAL_RCC_TIM3_CLK_ENABLE();	
-	TIM3_Handle.Instance = TIM4;																// general purpose timer for PWM generation; 4 capture channels; 16 bits, APB1 42MHz (max)
+	TIM3_Handle.Instance = TIM3;																// general purpose timer for PWM generation; 4 capture channels; 16 bits, APB1 42MHz (max)
 																														// TIM4's output channel is connected to PD12-15 (the LEDs)
 	TIM3_Handle.Init.Prescaler = 100;														// Specifies the prescaler value used to divide the TIM clock
 	TIM3_Handle.Init.CounterMode = TIM_COUNTERMODE_UP;					// timer counts up until the timer period is reached. Then the timer is reset.
@@ -104,17 +106,20 @@ void initialize_timer(void){
 	HAL_TIM_Base_Start_IT(&TIM3_Handle);
 	HAL_NVIC_SetPriority(TIM3_IRQn,0,1); //highest priority
 	HAL_NVIC_EnableIRQ(TIM3_IRQn);
-	
 }
+
+
 void TIM3_IRQHandler(void)
 {
 	HAL_TIM_IRQHandler(&TIM3_Handle);
 }
 
+
 void TIM4_IRQHandler(void)
 {
 	HAL_TIM_IRQHandler(&TIM4_Handle);
 }
+
 
 void change_pulse(int degree_difference,uint32_t Channel){
 	//the percentage of degree difference to period determines the pulse
@@ -123,20 +128,29 @@ void change_pulse(int degree_difference,uint32_t Channel){
 	HAL_TIM_PWM_Start(&TIM4_Handle,Channel);	
 }
 
+
 // to turn off led
 void turn_off_led(uint32_t Channel){
 	HAL_TIM_PWM_Stop(&TIM4_Handle, Channel);
 }
 
+//Callback in non blocking modes (Interrupt and DMA) 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
+	osSignalSet(tid_Thread_display, 0x4);
 	if (counter == 10)
 	{
 		// 100hz for ADC
 		osSignalSet(tid_Thread_ADC, 0x1);
+			
 		counter = 0;
 	}
 	counter++;	
+	if(counter2==30){
+			osSignalSet(tid_Thread_display, 0x5);
+		counter2=0;
+	}
+	counter2++;
 }
 
 

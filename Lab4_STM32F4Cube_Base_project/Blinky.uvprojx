@@ -442,6 +442,11 @@
               <FileType>1</FileType>
               <FilePath>.\Sources\keypad.c</FilePath>
             </File>
+            <File>
+              <FileName>fput_debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sources\fput_debug.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -898,6 +903,11 @@
               <FileType>1</FileType>
               <FilePath>.\Sources\keypad.c</FilePath>
             </File>
+            <File>
+              <FileName>fput_debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sources\fput_debug.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1353,6 +1363,11 @@
               <FileName>keypad.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Sources\keypad.c</FilePath>
+            </File>
+            <File>
+              <FileName>fput_debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Sources\fput_debug.c</FilePath>
             </File>
           </Files>
         </Group>

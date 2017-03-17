@@ -41,8 +41,17 @@ A (A   SEGMENT   ): BIT 4  => GPIO_PIN_4
 
 #define FLASH_PERIOD				70
 
+
+void Thread_display (void const *argument); 
+void initialize_GPIO_segments(void);
+void initialize_GPIO_digits(void);
+void initialize_GPIO_dp(void);
+void led_number(int number);
+void led_unit(char c_f_o);
+void led_display(int number,int digit,char unit,int mode);
+void turn_off_seven_segment(void);
 int start_Thread_display(void);
 void Thread_display(void const *argument);
-void led_display(int number,int digit,char unit,int mode);
+
 
 #endif

@@ -17,6 +17,8 @@ const int keypad_map[4][3] = {
 int enter_counter = 0;
 int angle = 0;
 int key_is_pressed = 0;
+int curr_key=-1;
+int prev_key=-1;
 
 GPIO_InitTypeDef GPIO_init1;
 GPIO_InitTypeDef GPIO_init2;
@@ -147,7 +149,7 @@ int reset_key(void)
 			counter++;
 		}
 		
-		if(reset_counter > 50000)
+		if(reset_counter > 30)
 		{
 			return 1;
 		} 
@@ -171,10 +173,9 @@ int interpret_key(void)
 	int counter = 0;
 	int break_off = 0;
 	
-	while(1)
-	{		
-		if(key_is_pressed == 1){
-		key = get_key();
+	while(break_off == 0)
+	{
+			key = get_key();
 				if(key == -1)
 				{
 					unpressed_counter++; // Counter increments when nothing is pressed
@@ -185,14 +186,14 @@ int interpret_key(void)
 					angle = angle + key;
 					counter++;
 					unpressed_counter = 0;
-					printf("%d\n", angle);
+					printf("angle is %d\n", angle);
 				}
 				else if(counter > 0 && key == 11 && unpressed_counter > 100) // If '*' is pressed
 				{ 
 					counter--;
 					unpressed_counter = 0;
 					angle = angle / 10;
-					printf("%d\n",angle);
+					printf("angle is %d\n",angle);
 				}
 				else if(key == 12 && unpressed_counter > 100 && counter > 0) // If '#' is pressed
 				{	
@@ -204,36 +205,25 @@ int interpret_key(void)
 						}		
 						else 
 						{
-							key_is_pressed = 0;
+							break_off = 1;
 						}
 				}
 				else if(reset_key()==1) // If '* is pressed for a long time, reset the entire system
 				{
 					NVIC_SystemReset();
 				}
-			}
 		}
 	return angle;
 }
 
 
 // Function to check if key is pressed
-int is_key_pressed(void)
+void is_key_pressed(void)
 {
-	int key;
-	int unpressed_counter = 0;
-		while(key_is_pressed == 0)
-		{
-			key = get_key();
-			if(key == -1)
-			{
-				unpressed_counter++; // Counter increments when nothing is pressed
-			}
-			else if((key < 10) && (unpressed_counter > 100))
-			{
-				key_is_pressed = 1;
-				unpressed_counter=0;
-			}
-		}
-		return key_is_pressed;
+	curr_key = get_key();
+	if(curr_key != prev_key)
+	{
+		key_is_pressed = 1;
+	}
+	prev_key = curr_key;
 }

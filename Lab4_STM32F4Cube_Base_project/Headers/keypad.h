@@ -12,7 +12,7 @@ int get_row(void);
 int get_key(void);
 int interpret_key(void);
 int reset_key(void);
-int is_key_pressed(void);
+void is_key_pressed(void);
 
 //void Thread_keypad(void const *argument);
 //int start_Thread_keypad(void);

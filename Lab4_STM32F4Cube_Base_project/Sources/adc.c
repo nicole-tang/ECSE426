@@ -40,11 +40,9 @@
 
 
 // For thread
-void Thread_ADC (void const *argument);                 // thread function
-osThreadId tid_Thread_ADC;     
-
-// thread id
-osThreadDef(Thread_ADC, osPriorityHigh, 1, 0);
+void Thread_ADC (void const *argument);		// thread function
+osThreadId tid_Thread_ADC;		// thread id
+osThreadDef(Thread_ADC, osPriorityHigh, 1, 0);		
 
 ADC_HandleTypeDef ADC1_Handle;
 
@@ -52,20 +50,74 @@ ADC_HandleTypeDef ADC1_Handle;
 float filtered_temp=0.0;
 
 
+/*----------------------------------------------------------------------------
+ *      Create the thread within RTOS context
+ *---------------------------------------------------------------------------*/
+int start_Thread_ADC (void) 
+{
+	printf("start_Thread_ADC\n");
+  tid_Thread_ADC = osThreadCreate(osThread(Thread_ADC ), NULL); // Start ADC_Thread
+  if (!tid_Thread_ADC) return(-1); 
+  return(0);
+}
+
+
+ /*----------------------------------------------------------------------------
+*      Thread  'Thread_ADC'
+ *---------------------------------------------------------------------------*/
+void Thread_ADC (void const *argument)
+{
+	printf("Thread_ADC\n");
+	float voltage = 0.0;
+	float voltage_temp = 0.0;
+	float temperature=0.0;
+
+	float coeff[]={0.6,0.5,0.01,0.3,0.5};
+	initialize_ADC();
+
+	while(1){
+
+		//wait for an infinite time until the signal from ADC(0x1) is set.
+		osSignalWait(0x1, osWaitForever);
+		// HAL_ADC_Start starts ADC conversions when the polling method is used
+		HAL_ADC_Start(&ADC1_Handle);
+		//osEventSignal: signal occurred, value.signals contains the signal flags
+		//these signal flags are cleared.
+		if(HAL_ADC_PollForConversion(&ADC1_Handle, 10000) == HAL_OK)
+		{
+			voltage = HAL_ADC_GetValue(&ADC1_Handle);
+		//	printf("The voltage is %f\n", voltage);
+			voltage_temp =(voltage*3.0)/4096.0;
+			temperature = tempConversion(voltage_temp);
+		//	printf("The temperature is %f\n", temperature);
+		//	FIR_C(&temperature, &filtered_temp,coeff,1,(sizeof coeff/sizeof(float))-1);	
+			filtered_temp = temperature;
+		//	printf("The temp is %f \n",filtered_temp);
+			
+		}
+	}
+}
+	
+
 // Conversion from voltage to celsius
-float tempConversion(float voltage){
+float tempConversion(float voltage)
+{
 	float V_25 = 0.76;
 	float avg_slope = 2.5/1000;
 	return ((voltage-V_25)/avg_slope)+25;
 }
 
-int FIR_C(float* InputArray, float* OutputArray,float* coeff, int Length, int Order){
+
+int FIR_C(float* InputArray, float* OutputArray,float* coeff, int Length, int Order)
+{
 	//for all sample in the InputArray
-	for(int n=0;n<Length-Order-1;n++){
+	for(int n=0;n<Length-Order-1;n++)
+	{
 		//temp variable to store the accumulative sum of the filter
 		float sum=0;
 		//iterate for the number of existing coefficients
-		for(int b=0;b<=Order;b++){
+		for(int b=0;b<=Order;b++)
+		{
 			//multiply the content of pointer coeff to content of point input array
 			sum+= InputArray[n+b] * coeff[b];
 		}		
@@ -82,7 +134,8 @@ int FIR_C(float* InputArray, float* OutputArray,float* coeff, int Length, int Or
  *      Initialize ADC
  *---------------------------------------------------------------------------*/
 	
-void initialize_ADC(void){
+void initialize_ADC(void)
+{
 	__HAL_RCC_ADC1_CLK_ENABLE();
 	
 	ADC_InitTypeDef ADC_init;
@@ -121,43 +174,5 @@ void initialize_ADC(void){
 
 }
 
-/*----------------------------------------------------------------------------
- *      Create the thread within RTOS context
- *---------------------------------------------------------------------------*/
-int start_Thread_ADC (void) {
-  tid_Thread_ADC = osThreadCreate(osThread(Thread_ADC ), NULL); // Start ADC_Thread
-  if (!tid_Thread_ADC) return(-1); 
-  return(0);
-}
-
-
- /*----------------------------------------------------------------------------
-*      Thread  'Thread_ADC'
- *---------------------------------------------------------------------------*/
-	void Thread_ADC (void const *argument) {
-		float voltage = 0.0;
-		float voltage_temp = 0.0;
-		float temperature=0.0;
-
-		float coeff[]={0.6,0.5,0.01,0.3,0.5};
-		initialize_ADC();
-
-		while(1){
-			//wait for an infinite time until the signal from ADC(0x1) is set.
-			osSignalWait(0x1, osWaitForever);
-			// HAL_ADC_Start starts ADC conversions when the polling method is used
-			HAL_ADC_Start(&ADC1_Handle);
-			//osEventSignal: signal occurred, value.signals contains the signal flags
-			//these signal flags are cleared.
-			if(HAL_ADC_PollForConversion(&ADC1_Handle, 10000) == HAL_OK){
-				voltage = HAL_ADC_GetValue(&ADC1_Handle);
-				voltage_temp=(voltage*3.0)/4096.0;
-				temperature=tempConversion(voltage_temp);
-				FIR_C(&temperature, &filtered_temp,coeff,1,(sizeof coeff/sizeof(float))-1);
-	
-				
-			}
-	}
-}
 	
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

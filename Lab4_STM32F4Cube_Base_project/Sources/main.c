@@ -15,6 +15,8 @@
 #include "keypad.h"
 #include "accelerometer.h"
 #include "display.h"
+#include "main.h"
+#include "timer.h"
 
 extern void initializeLED_IO			(void);
 extern void start_Thread_LED			(void);
@@ -87,19 +89,28 @@ int main (void) {
 
   SystemClock_Config();                     /* Configure the System Clock     */
 
-	
-	/* User codes goes here*/
-	start_Thread_accelerometer();
- 	start_Thread_ADC(); 	
 
-	start_Thread_display();
+	/* User codes goes here*/
 	
+	printf("start main\n");
+	
+			
+
+	int acc_thread_status=2;
+	int adc_thread_status=2;
+	int display_thread_status=2;
+	
+	acc_thread_status=start_Thread_accelerometer();
+	printf("acc_thread_status %d \n",acc_thread_status);
+	
+ 	adc_thread_status=start_Thread_ADC(); 	
+	printf("adc_thread_status %d \n",adc_thread_status);
+	
+	display_thread_status=start_Thread_display();
+	printf("display_thread_status %d \n",display_thread_status);
+
 
 	/* User codes ends here*/
-  
-	
-	
-	
 	
 	osKernelStart();                          /* start thread execution         */
 }

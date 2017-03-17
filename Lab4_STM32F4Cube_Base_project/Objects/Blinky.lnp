@@ -5,6 +5,7 @@
 ".\objects\display.o"
 ".\objects\accelerometer.o"
 ".\objects\keypad.o"
+".\objects\fput_debug.o"
 ".\objects\lis3dsh.o"
 "C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Lib\ARM\arm_cortexM4lf_math.lib"
 "C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\LIB\ARM\RTX_CM4.lib"
