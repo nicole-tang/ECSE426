@@ -45,8 +45,8 @@ void Thread_acceleration(void const *argument)
 		calibration_accel(acc);
 		
 		pitch_input = interpret_key();
-		pitch_output = interpret_key();
-
+		roll_input = interpret_key();
+		printf("The input pitch is %d and the input roll is %d", pitch_input, roll_input);
 		pitch_output = pitch_tilt_angle(acc);
 		roll_output = roll_tilt_angle(acc);
 		
@@ -192,3 +192,6 @@ void calibration_accel(float *acc)
 	acc[1] = new_y;
 	acc[2] = new_z;
 }
+
+
+
