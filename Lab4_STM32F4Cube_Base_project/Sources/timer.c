@@ -36,11 +36,15 @@
 #include "timer.h"
 #include "main.h"
 #include "stm32f4xx_hal.h"
-#include "stm32f4xx_it.h"
 #include "display.h"
+#include "cmsis_os.h" 
+
 /* USER CODE BEGIN 0 */
-TIM_HandleTypeDef TIM_Handle;
+TIM_HandleTypeDef TIM3_Handle;
+TIM_HandleTypeDef TIM4_Handle;
 TIM_OC_InitTypeDef TIM_OCHandle;
+int counter4=0;
+int counter10=0;
 
 void initialize_timer(void){
 	//enable the timer clock
@@ -60,17 +64,17 @@ void initialize_timer(void){
 		prescalar*period = 84MHz/2000Hz = 42000
 		since 42000 is less than 2^16=65536, choose prescaler to 1 and period to 65536
 	*/
-	TIM_Handle.Instance = TIM4;																// general purpose timer for PWM generation; 4 capture channels; 16 bits, APB1 42MHz (max)
+	TIM4_Handle.Instance = TIM4;																// general purpose timer for PWM generation; 4 capture channels; 16 bits, APB1 42MHz (max)
 																														// TIM4's output channel is connected to PD12-15 (the LEDs)
-	TIM_Handle.Init.Prescaler = 100;														// Specifies the prescaler value used to divide the TIM clock
-	TIM_Handle.Init.CounterMode = TIM_COUNTERMODE_UP;					// timer counts up until the timer period is reached. Then the timer is reset.
-	TIM_Handle.Init.Period = 420;														// period does not exceed 65535 (2^16-1) because TIM3 is 16 bit
-	//TIM_Handle.Channel=TIM_CHANNEL_ALL;
-	TIM_Handle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	TIM_Handle.Init.RepetitionCounter = 0;
+	TIM4_Handle.Init.Prescaler = 100;														// Specifies the prescaler value used to divide the TIM clock
+	TIM4_Handle.Init.CounterMode = TIM_COUNTERMODE_UP;					// timer counts up until the timer period is reached. Then the timer is reset.
+	TIM4_Handle.Init.Period = 420;														// period does not exceed 65535 (2^16-1) because TIM3 is 16 bit
+	//TIM4_Handle.Channel=TIM_CHANNEL_ALL;
+	TIM4_Handle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	TIM4_Handle.Init.RepetitionCounter = 0;
 	
 	// initialize TIM4
-	HAL_TIM_PWM_Init(&TIM_Handle);
+	HAL_TIM_PWM_Init(&TIM4_Handle);
 	TIM_OCHandle.Pulse = 0;																		// Specifies the pulse value to be loaded into the Capture Compare Register. 
 	TIM_OCHandle.OCMode = TIM_OCMODE_PWM1;										// Specifies the TIM mode
 																														// PWM1 is set on compare match; PWM2 is clear on compare match
@@ -78,50 +82,75 @@ void initialize_timer(void){
 																														// the output begins with HIGH and switches to LOW
 	TIM_OCHandle.OCFastMode = TIM_OCFAST_DISABLE;							// Specifies the Fast mode state.
 
-	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,TIM_CHANNEL_1);					//For green LED
-	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,TIM_CHANNEL_2);					//For orange LED
-	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,TIM_CHANNEL_3);					//For red LED
-	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,TIM_CHANNEL_4);					//For blue LED
+	HAL_TIM_PWM_ConfigChannel(&TIM4_Handle, &TIM_OCHandle,TIM_CHANNEL_1);					//For green LED
+	HAL_TIM_PWM_ConfigChannel(&TIM4_Handle, &TIM_OCHandle,TIM_CHANNEL_2);					//For orange LED
+	HAL_TIM_PWM_ConfigChannel(&TIM4_Handle, &TIM_OCHandle,TIM_CHANNEL_3);					//For red LED
+	HAL_TIM_PWM_ConfigChannel(&TIM4_Handle, &TIM_OCHandle,TIM_CHANNEL_4);					//For blue LED
 
-	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&TIM_Handle,TIM_CHANNEL_4);
+	HAL_TIM_PWM_Start(&TIM4_Handle,TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&TIM4_Handle,TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&TIM4_Handle,TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&TIM4_Handle,TIM_CHANNEL_4);
+	/*--Initialize another timer------------------------*/
+	__HAL_RCC_TIM3_CLK_ENABLE();	
+	TIM3_Handle.Instance = TIM4;																// general purpose timer for PWM generation; 4 capture channels; 16 bits, APB1 42MHz (max)
+																														// TIM4's output channel is connected to PD12-15 (the LEDs)
+	TIM3_Handle.Init.Prescaler = 100;														// Specifies the prescaler value used to divide the TIM clock
+	TIM3_Handle.Init.CounterMode = TIM_COUNTERMODE_UP;					// timer counts up until the timer period is reached. Then the timer is reset.
+	TIM3_Handle.Init.Period = 840;														// period does not exceed 65535 (2^16-1) because TIM3 is 16 bit
+	TIM3_Handle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	TIM3_Handle.Init.RepetitionCounter = 0;
+	
+	HAL_TIM_Base_Init(&TIM3_Handle);
+	HAL_TIM_Base_Start_IT(&TIM3_Handle);
+	HAL_NVIC_SetPriority(TIM3_IRQn,0,1); //highest priority
+	HAL_NVIC_EnableIRQ(TIM3_IRQn);
+	
+}
+void TIM3_IRQHandler(void)
+{
+	HAL_TIM_IRQHandler(&TIM3_Handle);
+}
+
+void TIM4_IRQHandler(void)
+{
+	HAL_TIM_IRQHandler(&TIM4_Handle);
 }
 
 void change_pulse(int degree_difference,uint32_t Channel){
 	//the percentage of degree difference to period determines the pulse
 	TIM_OCHandle.Pulse = (degree_difference/180.0)*420;
-	HAL_TIM_PWM_ConfigChannel(&TIM_Handle, &TIM_OCHandle,Channel);		
-	HAL_TIM_PWM_Start(&TIM_Handle,Channel);	
+	HAL_TIM_PWM_ConfigChannel(&TIM4_Handle, &TIM_OCHandle,Channel);		
+	HAL_TIM_PWM_Start(&TIM4_Handle,Channel);	
 }
 
 // to turn off led
 void turn_off_led(uint32_t Channel){
-	HAL_TIM_PWM_Stop(&TIM_Handle, Channel);
+	HAL_TIM_PWM_Stop(&TIM4_Handle, Channel);
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	// 1000hz for display
-	osSignalSet(tid_Thread_display, 0x0004);
-	if (four == 4)
+	osSignalSet(tid_Thread_display, 0x4);
+	if (counter4 == 4)
 	{
 		// 250hz for display flash
-		osSignalSet(tid_Thread_display, 0x0005);
-		four = 0;
+		osSignalSet(tid_Thread_display, 0x5);
+		counter4 = 0;
 	}
-	four++;
-	if (ten == 10)
+	counter4++;
+	if (counter10 == 10)
 	{
-		// 100hz for ADC
-		osSignalSet(tid_Thread_ADCTemp, 0x0002);
 		// 100hz for keypad
-		osSignalSet(tid_Thread_keyPad, 0x0003);
-		ten = 0;
+		osSignalSet(tid_Thread_keypad, 0x3);
+		// 100hz for ADC
+		osSignalSet(tid_Thread_ADC, 0x1);
+		counter10 = 0;
 	}
-	ten++;	
+	counter10++;	
 }
+
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

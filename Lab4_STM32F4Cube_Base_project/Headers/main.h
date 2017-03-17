@@ -42,10 +42,16 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_it.h"
+#include "cmsis_os.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 extern int flag;
+extern osThreadId tid_Thread_display;
+extern osThreadId tid_Thread_ADC;     
+extern osThreadId tid_Thread_keypad;
+extern osThreadId tid_Thread_acceleration;
+
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 

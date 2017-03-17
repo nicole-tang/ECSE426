@@ -22,7 +22,8 @@ extern void Thread_LED(void const *argument);
 extern osThreadId tid_Thread_LED;
 
 void initialize_ADC(void);
-
+void initialize_GPIO_led_lights_PWM(void);
+void deinitialize_GPIO_button(void);
 
 /**
 	These lines are mandatory to make CMSIS-RTOS RTX work with te new Cube HAL
@@ -87,6 +88,8 @@ int main (void) {
   SystemClock_Config();                     /* Configure the System Clock     */
 
 	initialize_ADC();
+	initialize_GPIO_led_lights_PWM();
+	deinitialize_GPIO_button();
 	
 	/* User codes goes here*/
   initializeLED_IO();                       /* Initialize LED GPIO Buttons    */

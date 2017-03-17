@@ -33,7 +33,7 @@ void Thread_acceleration(void const *argument)
 {
 	while(1)
 	{
-		osSignalWait(0x0001, osWaitForever); // Wait for accelerometer signal
+		osSignalWait(0x2, osWaitForever); // Wait for accelerometer signal
 
 		reading_accel_values(acc);
 		calibration_accel(acc);
@@ -43,6 +43,23 @@ void Thread_acceleration(void const *argument)
 	}
 }
 
+//  de-initialize and reset PA0 for maximum assurance according to requirements
+void deinitialize_GPIO_button(void){
+	HAL_GPIO_DeInit(GPIOA,GPIO_PIN_0);
+}
+
+void initialize_GPIO_led_lights_PWM(void){
+	__HAL_RCC_GPIOD_CLK_ENABLE();
+	__TIM4_CLK_ENABLE();
+	GPIO_InitTypeDef GPIO_init;
+	GPIO_init.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+	GPIO_init.Mode = GPIO_MODE_AF_PP;
+	GPIO_init.Pull = GPIO_NOPULL;
+	GPIO_init.Speed = GPIO_SPEED_FREQ_MEDIUM;
+	GPIO_init.Alternate = GPIO_AF2_TIM4; // controlled by TIM4
+	
+	HAL_GPIO_Init(GPIOD,&GPIO_init);
+}
 
 // Initialize accelerometer
 void initialize_accel(void)
@@ -81,7 +98,18 @@ void initialize_accel(void)
 	HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 1); // Set priority for EXTI0_IRQ
 
 }
+void EXTI0_IRQHandler(void)
+{
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);	
+}
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == GPIO_PIN_0) // check if pins are correct
+	{		
+		osSignalSet(tid_Thread_acceleration, 0x2);
+	}
+}
 
 // Read values from accelerometer
 void reading_accel_values(float *acc)

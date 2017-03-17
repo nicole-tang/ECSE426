@@ -11,16 +11,15 @@
 
 #include "stm32f4xx_hal.h"
 #include "main.h"
-
+#include "cmsis_os.h"   
 void Thread_ADC (void const *argument); 
 float tempConversion(float voltage);
 int FIR_C(float* InputArray, float* OutputArray,float* coeff, int Length, int Order);
 int start_Thread_ADC (void);
-void Thread_ADC (void const *argument);
 void initialize_ADC(void);
 
-extern float temperature;
-
+extern float filtered_temp;
+extern osThreadId tid_Thread_ADC;   
 #endif
 
 

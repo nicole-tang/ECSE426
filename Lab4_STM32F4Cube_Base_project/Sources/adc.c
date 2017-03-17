@@ -38,8 +38,6 @@
 #include "stm32f4xx_hal.h"
 #include "display.h"
 
-#define TEMPERATURETHRESHOLD 30
-#define DISPLAYINGCOUNTER 100
 
 // For thread
 void Thread_ADC (void const *argument);                 // thread function
@@ -51,7 +49,7 @@ osThreadDef(Thread_ADC, osPriorityHigh, 1, 0);
 ADC_HandleTypeDef ADC1_Handle;
 
 //variables
-float temperature=0.0;
+float filtered_temp=0.0;
 
 
 // Conversion from voltage to celsius
@@ -77,6 +75,7 @@ int FIR_C(float* InputArray, float* OutputArray,float* coeff, int Length, int Or
 	return 0;
 }
 
+
 /*----------------------------------------------------------------------------
  *      Create the thread within RTOS context
  *---------------------------------------------------------------------------*/
@@ -93,14 +92,9 @@ int start_Thread_ADC (void) {
 	void Thread_ADC (void const *argument) {
 		float voltage = 0.0;
 		float voltage_temp = 0.0;
+		float temperature=0.0;
 
-		float filtered_temp=0.0;
 		float coeff[]={0.6,0.5,0.01,0.3,0.5};
-		int displaying_count=0;
-			
-		
-		
-		osEvent event;
 		while(1){
 			//wait for an infinite time until the signal from ADC(0x1) is set.
 			osSignalWait(0x1, osWaitForever);
@@ -112,7 +106,6 @@ int start_Thread_ADC (void) {
 				voltage = HAL_ADC_GetValue(&ADC1_Handle);
 				voltage_temp=(voltage*3.0)/4096.0;
 				temperature=tempConversion(voltage_temp);
-				
 				FIR_C(&temperature, &filtered_temp,coeff,1,(sizeof coeff/sizeof(float))-1);
 	
 				
@@ -149,7 +142,7 @@ void initialize_ADC(void){
 	ADC1_Handle.Instance = ADC1;                           
 	ADC1_Handle.Init = ADC_init;
 	ADC1_Handle.NbrOfCurrentConversionRank = 1;
-	ADC1_Handle.State = 0;
+	ADC1_Handle.State = HAL_ADC_STATE_RESET;
 	ADC1_Handle.ErrorCode = HAL_ADC_ERROR_NONE;
 	
 	/*Third struct ADC_ChannelConfTypeDef*/
