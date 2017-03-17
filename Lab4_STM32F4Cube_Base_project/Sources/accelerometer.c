@@ -3,11 +3,18 @@
 #include "accelerometer.h"
 #include "gpio.h"
 #include "cmsis_os.h"  
+#include "timer.h"
+#include "keypad.h"
+#include "stdlib.h"
 
 // Variables
 float acc[3] = {0, 0, 0};
 int pitch_output = 0;
 int roll_output = 0; 
+int pitch_input = 0;
+int roll_input = 0;
+int roll_degree_difference = 0;
+int pitch_degree_difference = 0;
 
 
 LIS3DSH_InitTypeDef LIS3DSH_InitType;
@@ -33,13 +40,42 @@ void Thread_acceleration(void const *argument)
 {
 	while(1)
 	{
-		osSignalWait(0x0001, osWaitForever); // Wait for accelerometer signal
+		osSignalWait(0x2, osWaitForever); // Wait for accelerometer signal
 
 		reading_accel_values(acc);
 		calibration_accel(acc);
+		
+		pitch_input = interpret_key();
+		pitch_output = interpret_key();
 
 		pitch_output = pitch_tilt_angle(acc);
 		roll_output = roll_tilt_angle(acc);
+		
+		roll_degree_difference = abs(roll_input - roll_output);
+		pitch_degree_difference = abs(pitch_input - pitch_output);
+		
+		/*
+		TIM_CHANNEL_1 For green LED
+		TIM_CHANNEL_2 For orange LED
+		TIM_CHANNEL_3 For red LED
+		TIM_CHANNEL_4 For blue LED
+		*/
+		change_pulse(roll_degree_difference, TIM_CHANNEL_1);
+		change_pulse(pitch_degree_difference, TIM_CHANNEL_2);
+		change_pulse(roll_degree_difference, TIM_CHANNEL_3);
+		change_pulse(pitch_degree_difference, TIM_CHANNEL_4);
+		
+		// If degree different is less than 5, turn off the led
+		if(pitch_degree_difference<=5)
+		{
+			turn_off_led(TIM_CHANNEL_2);
+			turn_off_led(TIM_CHANNEL_4);
+		}
+		if(roll_degree_difference<=5)
+		{
+			turn_off_led(TIM_CHANNEL_1);
+			turn_off_led(TIM_CHANNEL_3);
+		}
 	}
 }
 
@@ -62,8 +98,8 @@ void initialize_accel(void)
 	
 	/* LIS3DSH Data ready interrupt struct */
 	LIS3DSH_DRY.Dataready_Interrupt = LIS3DSH_DATA_READY_INTERRUPT_ENABLED; // Enable DRY interrupt
-  	LIS3DSH_DRY.Interrupt_signal = LIS3DSH_ACTIVE_HIGH_INTERRUPT_SIGNAL; // Interrupt Signal Active High (requirements)
-  	LIS3DSH_DRY.Interrupt_type = LIS3DSH_INTERRUPT_REQUEST_PULSED; // Interrupt type to be pulsed (requirements)
+  LIS3DSH_DRY.Interrupt_signal = LIS3DSH_ACTIVE_HIGH_INTERRUPT_SIGNAL; // Interrupt Signal Active High (requirements)
+  LIS3DSH_DRY.Interrupt_type = LIS3DSH_INTERRUPT_REQUEST_PULSED; // Interrupt type to be pulsed (requirements)
 	
 	LIS3DSH_DataReadyInterruptConfig(&LIS3DSH_DRY);
 	
@@ -95,7 +131,7 @@ void reading_accel_values(float *acc)
 float pitch_tilt_angle(float *acc)
 {
 	float pitch;
-	pitch = 90+RAD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
+	pitch = 90 + RAD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
 	return pitch;
 }
 
@@ -104,7 +140,7 @@ float pitch_tilt_angle(float *acc)
 float roll_tilt_angle(float *acc)
 {
 	float roll;
-	roll = 90+RAD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
+	roll = 90 + RAD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
 	return roll;
 }
 

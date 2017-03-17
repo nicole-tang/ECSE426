@@ -56,6 +56,7 @@ void Thread_display(void const *argument)
 	
 			if(mode == 2)
 			{
+				
 			}
 		}
 		

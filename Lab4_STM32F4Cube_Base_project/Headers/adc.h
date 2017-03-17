@@ -10,7 +10,6 @@
 #define _ADC_H
 
 #include "stm32f4xx_hal.h"
-#include "main.h"
 
 void Thread_ADC (void const *argument); 
 float tempConversion(float voltage);
