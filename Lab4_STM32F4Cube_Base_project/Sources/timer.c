@@ -37,6 +37,7 @@
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_it.h"
+#include "display.h"
 /* USER CODE BEGIN 0 */
 TIM_HandleTypeDef TIM_Handle;
 TIM_OC_InitTypeDef TIM_OCHandle;
@@ -44,8 +45,6 @@ TIM_OC_InitTypeDef TIM_OCHandle;
 void initialize_timer(void){
 	//enable the timer clock
 		__HAL_RCC_TIM4_CLK_ENABLE();
-
-	
 	//Create the Timer struct and fill it with configuration options 
 	/*
 		TIM4 is connected to APB1 bus, has 42MHz clock
@@ -100,6 +99,28 @@ void change_pulse(int degree_difference,uint32_t Channel){
 // to turn off led
 void turn_off_led(uint32_t Channel){
 	HAL_TIM_PWM_Stop(&TIM_Handle, Channel);
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	// 1000hz for display
+	osSignalSet(tid_Thread_display, 0x0004);
+	if (four == 4)
+	{
+		// 250hz for display flash
+		osSignalSet(tid_Thread_display, 0x0005);
+		four = 0;
+	}
+	four++;
+	if (ten == 10)
+	{
+		// 100hz for ADC
+		osSignalSet(tid_Thread_ADCTemp, 0x0002);
+		// 100hz for keypad
+		osSignalSet(tid_Thread_keyPad, 0x0003);
+		ten = 0;
+	}
+	ten++;	
 }
 
 
