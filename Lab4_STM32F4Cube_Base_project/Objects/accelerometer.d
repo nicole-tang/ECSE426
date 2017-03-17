@@ -37,4 +37,9 @@
 .\objects\accelerometer.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\accelerometer.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h
 .\objects\accelerometer.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\accelerometer.o: .\Headers\gpio.h
+.\objects\accelerometer.o: .\Headers\timer.h
+.\objects\accelerometer.o: .\Headers\stm32f4xx_it.h
+.\objects\accelerometer.o: .\Headers\main.h
+.\objects\accelerometer.o: .\Headers\stm32f4xx_it.h
+.\objects\accelerometer.o: .\Headers\keypad.h
+.\objects\accelerometer.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

@@ -43,8 +43,6 @@ A (A   SEGMENT   ): BIT 4  => GPIO_PIN_4
 
 int start_Thread_display(void);
 void Thread_display(void const *argument);
-
-
-extern int mode, submode;
+void led_display(int number,int digit,char unit,int mode);
 
 #endif

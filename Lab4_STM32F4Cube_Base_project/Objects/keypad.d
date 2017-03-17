@@ -32,8 +32,8 @@
 .\objects\keypad.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h
 .\objects\keypad.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h
 .\objects\keypad.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h
-.\objects\keypad.o: .\Headers\gpio.h
 .\objects\keypad.o: .\Headers\keypad.h
 .\objects\keypad.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h
 .\objects\keypad.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\keypad.o: .\Headers\display.h
+.\objects\keypad.o: .\Accelerometer\inc\lis3dsh.h

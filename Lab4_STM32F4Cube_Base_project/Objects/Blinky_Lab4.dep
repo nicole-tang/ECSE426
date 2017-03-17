@@ -1,5 +1,5 @@
 Dependencies for Project 'Blinky', Target 'Lab4': (DO NOT MODIFY !)
-F (.\Sources\main.c)(0x58CB46EF)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\Sources\main.c)(0x58CB84AD)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x5644DD4A)
 I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h)(0x58C859E9)
 I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\RTE_Components.h)(0x58C859E9)
@@ -34,56 +34,16 @@ I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Driv
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h)(0x5644DD4C)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h)(0x5825FEC0)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C30A98)
-I (.\Headers\adc.h)(0x58CB4011)
-I (.\Headers\main.h)(0x58CB4271)
+I (.\Headers\adc.h)(0x58CB5937)
+I (.\Headers\main.h)(0x58CB6F75)
 I (.\Headers\stm32f4xx_it.h)(0x58C853CC)
-I (.\Headers\keypad.h)(0x58CB0D4B)
-I (.\Headers\gpio.h)(0x58C853CC)
-I (.\Headers\accelerometer.h)(0x58CB0D4B)
+I (.\Headers\keypad.h)(0x58CB5D0C)
+I (.\Headers\accelerometer.h)(0x58CB847E)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\math.h)(0x54C30A98)
 I (.\Accelerometer\inc\lis3dsh.h)(0x58C859E9)
-I (.\Headers\display.h)(0x58CB3C6F)
-F (.\Sources\Thread_LED.c)(0x58CB0D57)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\thread_led.o --omf_browse .\objects\thread_led.crf --depend .\objects\thread_led.d)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h)(0x5825FEC0)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stdint.h)(0x54C30A98)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C30A98)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x5644DD4A)
-I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h)(0x58C859E9)
-I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\RTE_Components.h)(0x58C859E9)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x5644DD48)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h)(0x5644DD48)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm4.h)(0x5825FEBE)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x5825FEBE)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x5825FEBE)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x5644DD46)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x564A5654)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stdio.h)(0x54C30A98)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_dma.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_dma_ex.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_cortex.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc_ex.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ex.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ramfunc.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h)(0x5644DD4C)
-F (.\Sources\supporting_functions.c)(0x58C859E9)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\supporting_functions.o --omf_browse .\objects\supporting_functions.crf --depend .\objects\supporting_functions.d)
-I (.\Headers\supporting_functions.h)(0x58C859E9)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stdint.h)(0x54C30A98)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stdio.h)(0x54C30A98)
-F (.\Sources\gpio.c)(0x58CB48B4)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\gpio.o --omf_browse .\objects\gpio.crf --depend .\objects\gpio.d)
-I (.\Headers\gpio.h)(0x58C853CC)
+I (.\Headers\display.h)(0x58CB8A02)
+F (.\Sources\adc.c)(0x58CB8131)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\adc.o --omf_browse .\objects\adc.crf --depend .\objects\adc.d)
+I (.\Headers\adc.h)(0x58CB5937)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x5644DD4A)
 I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h)(0x58C859E9)
 I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\RTE_Components.h)(0x58C859E9)
@@ -116,46 +76,12 @@ I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Driv
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h)(0x5644DD4C)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h)(0x5644DD4A)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h)(0x5644DD4C)
-F (.\Sources\adc.c)(0x58CB4246)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\adc.o --omf_browse .\objects\adc.crf --depend .\objects\adc.d)
-I (.\Headers\adc.h)(0x58CB4011)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x5644DD4A)
-I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h)(0x58C859E9)
-I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\RTE_Components.h)(0x58C859E9)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x5644DD48)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f407xx.h)(0x5644DD48)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\core_cm4.h)(0x5825FEBE)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stdint.h)(0x54C30A98)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_compiler.h)(0x5825FEBE)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include\cmsis_armcc.h)(0x5825FEBE)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x5644DD46)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x564A5654)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stdio.h)(0x54C30A98)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc_ex.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_gpio_ex.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_dma.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_dma_ex.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_cortex.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_adc_ex.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ex.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_flash_ramfunc.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h)(0x5644DD4C)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h)(0x5644DD4A)
-I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h)(0x5644DD4C)
-I (.\Headers\main.h)(0x58CB4271)
+I (.\Headers\main.h)(0x58CB6F75)
 I (.\Headers\stm32f4xx_it.h)(0x58C853CC)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h)(0x5825FEC0)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C30A98)
-I (.\Headers\display.h)(0x58CB3C6F)
-F (.\Sources\timer.c)(0x58CB5280)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\timer.o --omf_browse .\objects\timer.crf --depend .\objects\timer.d)
+I (.\Headers\display.h)(0x58CB8A02)
+F (.\Sources\timer.c)(0x58CB8444)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\timer.o --omf_browse .\objects\timer.crf --depend .\objects\timer.d)
 I (.\Headers\timer.h)(0x58C853CC)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x5644DD4A)
 I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h)(0x58C859E9)
@@ -190,11 +116,11 @@ I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Driv
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h)(0x5644DD4A)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h)(0x5644DD4C)
 I (.\Headers\stm32f4xx_it.h)(0x58C853CC)
-I (.\Headers\main.h)(0x58CB4271)
+I (.\Headers\main.h)(0x58CB6F75)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h)(0x5825FEC0)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C30A98)
-I (.\Headers\display.h)(0x58CB3C6F)
-F (.\Sources\display.c)(0x58CB4880)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\display.o --omf_browse .\objects\display.crf --depend .\objects\display.d)
+I (.\Headers\display.h)(0x58CB8A02)
+F (.\Sources\display.c)(0x58CB89ED)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\display.o --omf_browse .\objects\display.crf --depend .\objects\display.d)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x5644DD4A)
 I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h)(0x58C859E9)
 I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\RTE_Components.h)(0x58C859E9)
@@ -230,11 +156,14 @@ I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Driv
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\math.h)(0x54C30A98)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h)(0x5825FEC0)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C30A98)
-I (.\Headers\adc.h)(0x58CB4011)
-I (.\Headers\main.h)(0x58CB4271)
+I (.\Headers\adc.h)(0x58CB5937)
+I (.\Headers\main.h)(0x58CB6F75)
 I (.\Headers\stm32f4xx_it.h)(0x58C853CC)
-I (.\Headers\display.h)(0x58CB3C6F)
-F (.\Sources\accelerometer.c)(0x58CB46F2)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\accelerometer.o --omf_browse .\objects\accelerometer.crf --depend .\objects\accelerometer.d)
+I (.\Headers\display.h)(0x58CB8A02)
+I (.\Headers\keypad.h)(0x58CB5D0C)
+I (.\Headers\accelerometer.h)(0x58CB847E)
+I (.\Accelerometer\inc\lis3dsh.h)(0x58C859E9)
+F (.\Sources\accelerometer.c)(0x58CB86AE)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\accelerometer.o --omf_browse .\objects\accelerometer.crf --depend .\objects\accelerometer.d)
 I (.\Accelerometer\inc\lis3dsh.h)(0x58C859E9)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x5644DD4A)
 I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h)(0x58C859E9)
@@ -268,12 +197,16 @@ I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Driv
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h)(0x5644DD4C)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h)(0x5644DD4A)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h)(0x5644DD4C)
-I (.\Headers\accelerometer.h)(0x58CB0D4B)
+I (.\Headers\accelerometer.h)(0x58CB847E)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\math.h)(0x54C30A98)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h)(0x5825FEC0)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C30A98)
-I (.\Headers\gpio.h)(0x58C853CC)
-F (.\Sources\keypad.c)(0x58CB0D57)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\keypad.o --omf_browse .\objects\keypad.crf --depend .\objects\keypad.d)
+I (.\Headers\timer.h)(0x58C853CC)
+I (.\Headers\stm32f4xx_it.h)(0x58C853CC)
+I (.\Headers\main.h)(0x58CB6F75)
+I (.\Headers\keypad.h)(0x58CB5D0C)
+I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x54C30A98)
+F (.\Sources\keypad.c)(0x58CB8548)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\keypad.o --omf_browse .\objects\keypad.crf --depend .\objects\keypad.d)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x5644DD4A)
 I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx\stm32f4xx_hal_conf.h)(0x58C859E9)
 I (P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\RTE_Components.h)(0x58C859E9)
@@ -306,11 +239,11 @@ I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Driv
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h)(0x5644DD4C)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h)(0x5644DD4A)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_usart.h)(0x5644DD4C)
-I (.\Headers\gpio.h)(0x58C853CC)
-I (.\Headers\keypad.h)(0x58CB0D4B)
+I (.\Headers\keypad.h)(0x58CB5D0C)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC\cmsis_os.h)(0x5825FEC0)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\include\stddef.h)(0x54C30A98)
-I (.\Headers\display.h)(0x58CB3C6F)
+I (.\Headers\display.h)(0x58CB8A02)
+I (.\Accelerometer\inc\lis3dsh.h)(0x58C859E9)
 F (.\Accelerometer\src\LIS3DSH.c)(0x58C859E9)(-c --cpu Cortex-M4.fp -D__RTX -D__MICROLIB -g -O0 --apcs=interwork -I.\Headers -I.\Accelerometer\inc-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE"-I "P:\Winter 2017\ECSE426\Lab4_STM32F4Cube_Base_project\RTE\Device\STM32F407VGTx"-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\RTOS\RTX\INC-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc-I C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="515" -D_RTE_ -DSTM32F407xx -DUSE_HAL_DRIVER -DSTM32F407xx -D__FPU_PRESENT="1" -DHSE_VALUE="8000000" --C99-o .\objects\lis3dsh.o --omf_browse .\objects\lis3dsh.crf --depend .\objects\lis3dsh.d)
 I (.\Accelerometer\inc\lis3dsh.h)(0x58C859E9)
 I (C:\McGill\Software_Install\EDU\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.8.0\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x5644DD4A)

@@ -43,8 +43,7 @@
 TIM_HandleTypeDef TIM3_Handle;
 TIM_HandleTypeDef TIM4_Handle;
 TIM_OC_InitTypeDef TIM_OCHandle;
-int counter4=0;
-int counter10=0;
+int counter=0;
 
 void initialize_timer(void){
 	//enable the timer clock
@@ -131,24 +130,13 @@ void turn_off_led(uint32_t Channel){
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	// 1000hz for display
-	osSignalSet(tid_Thread_display, 0x4);
-	if (counter4 == 4)
+	if (counter == 10)
 	{
-		// 250hz for display flash
-		osSignalSet(tid_Thread_display, 0x5);
-		counter4 = 0;
-	}
-	counter4++;
-	if (counter10 == 10)
-	{
-		// 100hz for keypad
-		osSignalSet(tid_Thread_keypad, 0x3);
 		// 100hz for ADC
 		osSignalSet(tid_Thread_ADC, 0x1);
-		counter10 = 0;
+		counter = 0;
 	}
-	counter10++;	
+	counter++;	
 }
 
 

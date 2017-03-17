@@ -232,6 +232,7 @@ int is_key_pressed(void)
 			else if((key < 10) && (unpressed_counter > 100))
 			{
 				key_is_pressed = 1;
+				unpressed_counter=0;
 			}
 		}
 		return key_is_pressed;

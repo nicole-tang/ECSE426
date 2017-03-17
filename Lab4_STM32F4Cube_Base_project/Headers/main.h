@@ -49,7 +49,6 @@
 extern int flag;
 extern osThreadId tid_Thread_display;
 extern osThreadId tid_Thread_ADC;     
-extern osThreadId tid_Thread_keypad;
 extern osThreadId tid_Thread_acceleration;
 
 /* Exported macro ------------------------------------------------------------*/

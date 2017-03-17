@@ -40,3 +40,6 @@
 .\objects\display.o: .\Headers\stm32f4xx_it.h
 .\objects\display.o: .\Headers\main.h
 .\objects\display.o: .\Headers\display.h
+.\objects\display.o: .\Headers\keypad.h
+.\objects\display.o: .\Headers\accelerometer.h
+.\objects\display.o: .\Accelerometer\inc\lis3dsh.h

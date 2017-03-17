@@ -3,90 +3,15 @@
 #include "cmsis_os.h"
 #include "adc.h" 
 #include "display.h"
+#include "keypad.h"
+#include "accelerometer.h"
 
 #define HEAT_THRESHOLD 60
 #define FLASH_INTERVAL 70
 
-
-//variables
-float temperature=0.0;
-
 void Thread_display (void const *argument);                 // thread function
 osThreadId tid_Thread_display;                              // thread id
 osThreadDef(Thread_display, osPriorityNormal, 1, 0);
-
-
-int start_Thread_display(void)
-{
-	tid_Thread_display = osThreadCreate(osThread(Thread_display), NULL);
-	if(!tid_Thread_display) return (-1);
-	return (0);
-}
-
-void Thread_display(void const *argument)
-{
-	int is_flashing, flash_counter, flash_on, flash_off;
-	
-	flash_counter = 0;
-	is_flashing = 0;
-	flash_on = FLASH_INTERVAL;
-	flash_off = FLASH_INTERVAL * 2;
-	
-	while(1)
-	{
-		if(temperature > HEAT_THRESHOLD)
-		{
-			is_flashing = 1;
-		} else {
-			is_flashing = 0;
-		}
-		
-		if(is_flashing == 1)
-		{
-			if(mode == 1)
-			{
-				if(submode == 0) 
-				{
-					//display pitch angle
-
-				}
-		
-				if(submode == 1)
-				{
-					//display roll angle
-				}
-			}
-	
-			if(mode == 2)
-			{
-				
-			}
-		}
-		
-		if(is_flashing == 0)
-		{
-			if(mode == 1)
-			{
-			if(submode == 0) 
-				{
-					//display pitch angle
-
-				}
-		
-				if(submode == 1)
-				{
-					//display roll angle
-				}
-			}
-			
-			if(mode == 2)
-			{
-			
-			}
-				
-		}
-	}
-}
 
 
 /*initialization*/
@@ -304,13 +229,64 @@ void led_unit(char c_f_o){
 }
 
 
-void led_display(int number,int digit,char unit){
+void led_display(int number,int digit,char unit,int mode){
+	if(mode==1){//temperature mode
 	switch(digit){
 		case 1:
 			// toggle the display
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_RESET); 
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_SET);
-			// the number to display
+	// do not need decimal point here	
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);		
+		// the number to display
+			led_number(((number%100)-(number%10))/10);
+		
+			break;
+		
+		case 2:
+			// toggle the display
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_RESET); 
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_SET);
+		// need decimal point here	
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_SET);	
+		// the number to display and lower dot as decimal point
+			led_number(number%10);
+
+			break;
+
+		case 3:
+			// toggle the display
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_RESET); 
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_SET);
+	// do not need decimal point here	
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);		
+		// the number to display
+			led_number((((number*10))%1000)-((number%100)*10));
+	
+		break;
+					
+		case 4:
+			// toggle the display
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET); 
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET);
+	// do not need decimal point here	
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);		
+		// display the degree unit 
+			led_unit(unit);
+			break;
+		
+		default:
+			break;
+	}
+}else{//acc mode
+			switch(digit){
+		case 1:
+			// toggle the display
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_RESET); 
+			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_SET);
+	// do not need decimal point here	
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);	
+		// the number to display
 			led_number(((number%1000)-(number%100))/100);
 		
 			break;
@@ -319,7 +295,9 @@ void led_display(int number,int digit,char unit){
 			// toggle the display
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_RESET); 
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_SET);
-			// the number to display and lower dot as decimal point
+	// do not need decimal point here	
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);		
+		// the number to display and lower dot as decimal point
 			led_number(((number%100)-(number%10))/10);
 
 			break;
@@ -328,7 +306,9 @@ void led_display(int number,int digit,char unit){
 			// toggle the display
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_RESET); 
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_SET);
-			// the number to display
+	// do not need decimal point here	
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);	
+		// the number to display
 			led_number(number%10);
 	
 		break;
@@ -337,14 +317,90 @@ void led_display(int number,int digit,char unit){
 			// toggle the display
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET); 
 			HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_SET);
-			// display the degree unit 
+	// do not need decimal point here	
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1,GPIO_PIN_RESET);	
+		// display the degree unit 
 			led_unit(unit);
 			break;
 		
 		default:
 			break;
 	}
+	}
 }
 
+void turn_off_seven_segment(void){
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_RESET);
+}
+
+int start_Thread_display(void)
+{
+	tid_Thread_display = osThreadCreate(osThread(Thread_display), NULL);
+	if(!tid_Thread_display) return (-1);
+	return (0);
+}
+
+void Thread_display(void const *argument)
+{
+	int is_flashing, flash_counter, flash_on, flash_off,display_value;
+	
+	flash_counter = 0;
+	is_flashing = 0;
+	flash_on = FLASH_INTERVAL;
+	flash_off = FLASH_INTERVAL * 2;
+	
+	initialize_GPIO_dp();
+	initialize_GPIO_digits();
+	initialize_GPIO_segments();
+	
+	while(1)
+	{
+		
+		if(filtered_temp > HEAT_THRESHOLD)
+		{
+			is_flashing = 1;
+		} else {
+			is_flashing = 0;
+		}
+		
+		/*
+			if mode = temperature, 
+				display_value = temperature; 
+			else 
+				display_value=angle;
+			
+			if flash=true
+				display(value) for x seconds
+				turn off for x seconds
+			else 
+				display(value)
+		*/
+		
+		if(mode==1){	//temperature mode 
+			display_value=filtered_temp;
+		}else if(mode==2){	//accelerometer mode
+			display_value=angle;
+		}
+		
+		if(is_flashing ==1){
+			led_display(display_value,1,'o',mode);
+			led_display(display_value,2,'o',mode);
+			led_display(display_value,3,'o',mode);
+			led_display(display_value,4,'o',mode);
+			osDelay(50);
+			turn_off_seven_segment();
+			osDelay(50);
+		}else{
+			led_display(display_value,1,'o',mode);
+			led_display(display_value,2,'o',mode);
+			led_display(display_value,3,'o',mode);
+			led_display(display_value,4,'o',mode);
+		}
+			
+	}
+}
 
 

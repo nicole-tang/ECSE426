@@ -418,21 +418,6 @@
               <FilePath>.\Sources\main.c</FilePath>
             </File>
             <File>
-              <FileName>Thread_LED.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Sources\Thread_LED.c</FilePath>
-            </File>
-            <File>
-              <FileName>supporting_functions.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Sources\supporting_functions.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Sources\gpio.c</FilePath>
-            </File>
-            <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Sources\adc.c</FilePath>
@@ -889,21 +874,6 @@
               <FilePath>.\Sources\main.c</FilePath>
             </File>
             <File>
-              <FileName>Thread_LED.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Sources\Thread_LED.c</FilePath>
-            </File>
-            <File>
-              <FileName>supporting_functions.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Sources\supporting_functions.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Sources\gpio.c</FilePath>
-            </File>
-            <File>
               <FileName>adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Sources\adc.c</FilePath>
@@ -1358,21 +1328,6 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Sources\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>Thread_LED.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Sources\Thread_LED.c</FilePath>
-            </File>
-            <File>
-              <FileName>supporting_functions.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Sources\supporting_functions.c</FilePath>
-            </File>
-            <File>
-              <FileName>gpio.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Sources\gpio.c</FilePath>
             </File>
             <File>
               <FileName>adc.c</FileName>

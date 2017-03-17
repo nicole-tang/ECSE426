@@ -87,18 +87,11 @@ int main (void) {
 
   SystemClock_Config();                     /* Configure the System Clock     */
 
-	initialize_ADC();
-	initialize_GPIO_led_lights_PWM();
-	deinitialize_GPIO_button();
 	
 	/* User codes goes here*/
-  initializeLED_IO();                       /* Initialize LED GPIO Buttons    */
-  start_Thread_LED();                       /* Create LED thread              */
-	
-	
-	start_Thread_keypad();
-	start_Thread_acceleration();
-	start_Thread_ADC();
+	start_Thread_accelerometer();
+ 	start_Thread_ADC(); 	
+
 	start_Thread_display();
 	
 

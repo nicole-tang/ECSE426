@@ -39,7 +39,6 @@
 .\objects\main.o: .\Headers\stm32f4xx_it.h
 .\objects\main.o: .\Headers\main.h
 .\objects\main.o: .\Headers\keypad.h
-.\objects\main.o: .\Headers\gpio.h
 .\objects\main.o: .\Headers\accelerometer.h
 .\objects\main.o: C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\main.o: .\Accelerometer\inc\lis3dsh.h

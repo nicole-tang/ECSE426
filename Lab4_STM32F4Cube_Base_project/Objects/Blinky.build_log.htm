@@ -27,27 +27,29 @@ Project File Date:  03/16/2017
 <h2>Output:</h2>
 *** Using Compiler 'V5.05 update 2 (build 169)', folder: 'C:\McGill\Software_Install\EDU\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Lab4'
-compiling accelerometer.c...
-Sources\accelerometer.c(126): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        pitch = 90+
-AD_TO_DEG(atan2f(acc[1], sqrtf(acc[0] * acc[0] + acc[2] * acc[2])));
-Sources\accelerometer.c(135): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        roll = 90+
-AD_TO_DEG(atan2f(acc[0], sqrtf(acc[1] * acc[1] + acc[2] * acc[2])));
-Sources\accelerometer.c: 2 warnings, 0 errors
+compiling main.c...
+compiling adc.c...
+Sources\adc.c(154): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                                voltage_temp=(voltage*3.0)/4096.0;
+Sources\adc.c: 1 warning, 0 errors
+compiling timer.c...
+compiling display.c...
+Sources\display.c(348): warning:  #550-D: variable "flash_counter" was set but never used
+        int is_flashing, flash_counter, flash_on, flash_off,display_value;
+Sources\display.c(348): warning:  #550-D: variable "flash_on" was set but never used
+        int is_flashing, flash_counter, flash_on, flash_off,display_value;
+Sources\display.c(348): warning:  #550-D: variable "flash_off" was set but never used
+        int is_flashing, flash_counter, flash_on, flash_off,display_value;
+Sources\display.c: 3 warnings, 0 errors
+compiling keypad.c...
+Sources\keypad.c(216): warning:  #111-D: statement is unreachable
+        return angle;
+Sources\keypad.c(172): warning:  #177-D: variable "break_off" was declared but never referenced
+        int break_off = 0;
+Sources\keypad.c: 2 warnings, 0 errors
 linking...
-.\Objects\Blinky.axf: Error: L6200E: Symbol deinitialize_GPIO_button multiply defined (by accelerometer.o and gpio.o).
-.\Objects\Blinky.axf: Error: L6200E: Symbol initialize_GPIO_led_lights_PWM multiply defined (by accelerometer.o and gpio.o).
-.\Objects\Blinky.axf: Error: L6200E: Symbol initialize_GPIO_segments multiply defined (by display.o and gpio.o).
-.\Objects\Blinky.axf: Error: L6200E: Symbol initialize_GPIO_digits multiply defined (by display.o and gpio.o).
-.\Objects\Blinky.axf: Error: L6200E: Symbol initialize_GPIO_dp multiply defined (by display.o and gpio.o).
-.\Objects\Blinky.axf: Error: L6200E: Symbol led_number multiply defined (by display.o and gpio.o).
-.\Objects\Blinky.axf: Error: L6200E: Symbol led_unit multiply defined (by display.o and gpio.o).
-.\Objects\Blinky.axf: Error: L6200E: Symbol led_display multiply defined (by display.o and gpio.o).
-Not enough information to list image symbols.
-Not enough information to list the image map.
-Finished: 2 information, 0 warning and 8 error messages.
-".\Objects\Blinky.axf" - 8 Error(s), 2 Warning(s).
+Program Size: Code=45104 RO-data=732 RW-data=148 ZI-data=8124  
+".\Objects\Blinky.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -168,7 +170,6 @@ Package Vendor: Keil
 
    * Component: Keil::Device:STM32Cube HAL:SPI:1.4.2
       Source file:   Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_spi.c
-Target not created.
 </pre>
 </body>
 </html>
