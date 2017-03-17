@@ -1,5 +1,6 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx.h"
+#include "gpio.h"
 #include "keypad.h"
 #include <stdio.h>
 #include "cmsis_os.h"                   // ARM::CMSIS:RTOS:Keil RTX
@@ -236,4 +237,3 @@ int is_key_pressed(void)
 		}
 		return key_is_pressed;
 }
-

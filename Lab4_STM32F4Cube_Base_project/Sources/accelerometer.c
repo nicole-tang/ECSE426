@@ -1,6 +1,7 @@
 #include "lis3dsh.h"
 #include "stm32f4xx_hal.h"
 #include "accelerometer.h"
+#include "gpio.h"
 #include "cmsis_os.h"  
 #include "timer.h"
 #include "keypad.h"
@@ -192,6 +193,3 @@ void calibration_accel(float *acc)
 	acc[1] = new_y;
 	acc[2] = new_z;
 }
-
-
-
